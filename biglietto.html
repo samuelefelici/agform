@@ -15,8 +15,9 @@
       --shadow: 0 30px 90px rgba(0,0,0,.55);
       --r: 22px;
 
+      /* Gradienti del logo */
       --gA: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
-      --gB: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
+      --gG: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -83,7 +84,7 @@
       position:relative;
     }
 
-    /* STAGE */
+    /* ========== STAGE PRINCIPALE ========== */
     .stage{
       min-height: 560px;
       border-radius: var(--r);
@@ -114,7 +115,7 @@
     @keyframes spin{to{transform: rotate(360deg)}}
     .stage > *{position:relative; z-index:1}
 
-    /* Logo wrapper */
+    /* ========== LOGO WRAPPER ========== */
     .logo-wrapper{
       cursor: pointer;
       transition: transform .25s ease, opacity .6s ease;
@@ -123,9 +124,17 @@
       align-items:center;
       gap: 16px;
       user-select:none;
+      position: absolute;
+      inset: 0;
+      justify-content: center;
     }
-    .logo-wrapper:hover{ transform: scale(1.04); }
+    .logo-wrapper:hover:not(.transforming){ transform: scale(1.04); }
     .logo-wrapper.transforming{ pointer-events:none; }
+    .logo-wrapper.hidden{
+      opacity: 0;
+      pointer-events: none;
+    }
+
     #particleCanvas{
       display:block;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
@@ -144,15 +153,15 @@
     }
     .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
-    /* Transformers */
-    .transformers{
+    /* ========== NOME ANDREA GONNELLA CON A e G IN RILIEVO ========== */
+    .name-display{
       position:absolute;
-      inset:0;
+      inset: 0;
       display:flex;
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 14px;
+      gap: 8px;
       opacity:0;
       visibility:hidden;
       pointer-events:none;
@@ -160,44 +169,68 @@
       text-align:center;
       padding: 24px;
     }
-    .transformers.active{
+    .name-display.active{
       opacity:1;
       visibility:visible;
       pointer-events:auto;
     }
 
-    .name{
+    .full-name{
       font-weight: 900;
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
+      line-height: 1.1;
       letter-spacing: -0.03em;
-      font-size: clamp(3.0rem, 8vw, 5.4rem);
-      line-height: 1.0;
-      display:flex;
-      justify-content:center;
-      flex-wrap:wrap;
-      gap: 0;
-    }
-    .andrea{
-      background: var(--gA);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-    }
-    .gonnella{
-      background: var(--gB);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
     }
 
+    .name-part{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Le lettere A e G hanno il gradiente del logo e sono in rilievo */
     .letter{
       display:inline-block;
       opacity:0;
       transform: translateY(22px) scale(.92);
       filter: blur(10px);
     }
-    .transformers.active .letter{
+    
+    .name-display.active .letter{
       animation: letterReveal 0.85s cubic-bezier(.34,1.56,.64,1) forwards;
     }
+
+    /* A maiuscola con gradiente arancio-rosa */
+    .letter.big-a{
+      background: var(--gA);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      font-size: 1.3em;
+      text-shadow: 0 4px 20px rgba(255,138,60,.4);
+      filter: drop-shadow(0 2px 8px rgba(233,30,99,.3));
+    }
+
+    /* G maiuscola con gradiente blu-verde */
+    .letter.big-g{
+      background: var(--gG);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      font-size: 1.3em;
+      text-shadow: 0 4px 20px rgba(30,136,229,.4);
+      filter: drop-shadow(0 2px 8px rgba(38,194,129,.3));
+    }
+
+    /* Lettere normali */
+    .letter.normal{
+      color: var(--txt);
+    }
+
     @keyframes letterReveal{
       to{
         opacity:1;
@@ -206,120 +239,124 @@
       }
     }
 
+    /* Tagline */
     .tagline{
-      margin-top: 10px;
+      margin-top: 20px;
       color: var(--mut);
-      font-size: 1.08rem;
+      font-size: 1.1rem;
       max-width: 720px;
       opacity:0;
       transform: translateY(16px);
     }
-    .transformers.active .tagline{
+    .name-display.active .tagline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .4s;
+      animation-delay: .5s;
     }
     @keyframes slideUp{ to{opacity:1; transform: translateY(0);} }
 
-    /* Info card */
-    .info-card{
-      margin-top: 24px;
-      border-radius: var(--r);
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      box-shadow: var(--shadow);
-      padding: 26px;
-      display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      opacity:0;
-      transform: translateY(26px);
+    /* ========== CONTATTI NELLA STESSA AREA ========== */
+    .contacts-inline{
+      margin-top: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(20px);
     }
-    .info-card.visible{
-      animation: fadeInUp 1s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: 1.0s;
-    }
-    .actions{
-      margin-top: 18px;
-      display:flex;
-      gap: 12px;
-      justify-content:center;
-      flex-wrap:wrap;
-      opacity:0;
-      transform: translateY(26px);
-    }
-    .actions.visible{
-      animation: fadeInUp 1s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: 1.2s;
-    }
-    @keyframes fadeInUp{ to{opacity:1; transform: translateY(0);} }
 
-    .contact-item{
-      display:flex;
+    .name-display.active .contacts-inline{
+      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: .7s;
+    }
+
+    .contact-link{
+      display: flex;
+      align-items: center;
       gap: 12px;
-      align-items:flex-start;
-      padding: 14px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(255,255,255,.08);
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      text-decoration: none;
+      color: var(--txt);
       transition: all .25s ease;
+      min-width: 320px;
+      justify-content: flex-start;
     }
-    .contact-item:hover{
-      background: rgba(255,255,255,.08);
-      border-color: rgba(255,255,255,.16);
-      transform: translateY(-2px);
+
+    .contact-link:hover{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.20);
+      transform: translateX(4px);
     }
-    .contact-icon{ font-size: 1.55rem; flex-shrink:0; }
-    .contact-content strong{
-      display:block; font-size: 1.02rem; margin-bottom: 4px;
+
+    .contact-link .icon{
+      font-size: 1.5rem;
+      flex-shrink: 0;
     }
-    .contact-content span,
-    .contact-content a{
-      display:block;
+
+    .contact-link .text{
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      text-align: left;
+    }
+
+    .contact-link .label{
+      font-size: 0.85rem;
       color: var(--mut);
-      font-size: .95rem;
-      text-decoration:none;
-      line-height:1.5;
-      overflow-wrap:anywhere;
+      font-weight: 600;
     }
-    .contact-content a:hover{ color: var(--txt); }
+
+    .contact-link .value{
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--txt);
+    }
+
+    /* ========== PULSANTE RESET ========== */
+    .reset-wrapper{
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .name-display.active .reset-wrapper{
+      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: .9s;
+    }
 
     .btn{
       text-decoration:none;
       color: var(--txt);
-      font-weight: 800;
-      padding: .95rem 1.35rem;
+      font-weight: 700;
+      padding: .85rem 1.5rem;
       border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.16);
-      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,107,53,.3);
+      background: rgba(255,107,53,.15);
       backdrop-filter: blur(12px);
       transition: all .25s ease;
       user-select:none;
       cursor:pointer;
+      font-size: 0.95rem;
     }
-    .btn:hover{
-      transform: translateY(-2px);
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.24);
-    }
-    .btn.primary{
-      background: var(--gB);
-      border-color: transparent;
-      box-shadow: 0 14px 40px rgba(30,136,229,.28);
-    }
-    .btn.primary:hover{
-      box-shadow: 0 18px 55px rgba(30,136,229,.34);
-    }
-    .btn.reset{
-      background: rgba(255,107,53,.15);
-      border-color: rgba(255,107,53,.3);
-    }
-    .btn.reset:hover{ background: rgba(255,107,53,.25); }
 
-    @media (max-width: 768px){
-      .stage{ min-height: 460px; padding: 26px; }
-      canvas{ width: 320px; height: 320px; }
-      .info-card{ grid-template-columns: 1fr; padding: 18px; }
+    .btn:hover{
+      background: rgba(255,107,53,.25);
+      transform: translateY(-2px);
     }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px){
+      .stage{ min-height: 520px; padding: 26px; }
+      #particleCanvas{ width: 320px; height: 320px; }
+      .full-name{ font-size: 2.8rem; }
+      .contact-link{ min-width: 280px; }
+    }
+
     @media (prefers-reduced-motion: reduce){
       *{animation:none !important; transition:none !important}
     }
@@ -331,65 +368,59 @@
 
   <div class="container">
     <div class="stage">
-      <!-- LOGO -->
+      <!-- LOGO INIZIALE -->
       <div class="logo-wrapper" id="logoWrapper" title="Clicca per trasformare">
         <canvas id="particleCanvas" width="420" height="420"></canvas>
         <div class="hint">👆 Clicca per trasformare</div>
       </div>
 
-      <!-- TESTO FINALE -->
-      <div class="transformers" id="transformers" aria-live="polite">
-        <div class="name andrea" id="andrea"></div>
-        <div class="name gonnella" id="gonnella"></div>
+      <!-- NOME + CONTATTI (nella stessa area) -->
+      <div class="name-display" id="nameDisplay" aria-live="polite">
+        <div class="full-name">
+          <!-- ANDREA con A in rilievo -->
+          <div class="name-part" id="andrea"></div>
+          
+          <!-- GONNELLA con G in rilievo -->
+          <div class="name-part" id="gonnella"></div>
+        </div>
 
         <p class="tagline">
           Formazione finanziata e accesso ai fondi europei.<br>
           Un referente unico, dalla strategia alla rendicontazione.
         </p>
-      </div>
-    </div>
 
-    <!-- CONTATTI -->
-    <div class="info-card" id="infoCard">
-      <div class="contact-item">
-        <div class="contact-icon">👤</div>
-        <div class="contact-content">
-          <strong>Andrea Gonnella</strong>
-          <span>HR Training Manager</span>
+        <!-- Contatti inline -->
+        <div class="contacts-inline">
+          <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
+            <span class="icon">📧</span>
+            <span class="text">
+              <span class="label">Email</span>
+              <span class="value">andrea.gonnella@agform.it</span>
+            </span>
+          </a>
+
+          <a href="https://wa.me/393331234567" class="contact-link">
+            <span class="icon">💬</span>
+            <span class="text">
+              <span class="label">WhatsApp</span>
+              <span class="value">+39 333 123 4567</span>
+            </span>
+          </a>
+
+          <a href="index.html" class="contact-link">
+            <span class="icon">🌐</span>
+            <span class="text">
+              <span class="label">Sito Web</span>
+              <span class="value">Vai alla landing page</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Pulsante reset -->
+        <div class="reset-wrapper">
+          <button class="btn" id="resetBtn">🔄 Rigioca animazione</button>
         </div>
       </div>
-
-      <div class="contact-item">
-        <div class="contact-icon">📩</div>
-        <div class="contact-content">
-          <strong>Email</strong>
-          <a href="mailto:andrea.gonnella@agform.it">andrea.gonnella@agform.it</a>
-        </div>
-      </div>
-
-      <div class="contact-item">
-        <div class="contact-icon">💬</div>
-        <div class="contact-content">
-          <strong>WhatsApp</strong>
-          <a href="https://wa.me/393331234567">+39 333 123 4567</a>
-        </div>
-      </div>
-
-      <div class="contact-item">
-        <div class="contact-icon">🌐</div>
-        <div class="contact-content">
-          <strong>Landing</strong>
-          <a href="index.html">Vai alla landing page</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- AZIONI -->
-    <div class="actions" id="actions">
-      <a class="btn primary" href="https://wa.me/393331234567">📱 Contattami su WhatsApp</a>
-      <a class="btn" href="mailto:andrea.gonnella@agform.it?subject=Richiesta%20consulenza">✉️ Richiedi consulenza</a>
-      <a class="btn" href="index.html">➡️ Vai alla landing</a>
-      <button class="btn reset" id="resetBtn">🔄 Rigioca animazione</button>
     </div>
   </div>
 
@@ -398,11 +429,9 @@
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const logoWrapper = document.getElementById('logoWrapper');
-    const transformers = document.getElementById('transformers');
+    const nameDisplay = document.getElementById('nameDisplay');
     const andreaDiv = document.getElementById('andrea');
     const gonnellaDiv = document.getElementById('gonnella');
-    const infoCard = document.getElementById('infoCard');
-    const actions = document.getElementById('actions');
     const resetBtn = document.getElementById('resetBtn');
 
     // ====== STATO ======
@@ -486,7 +515,7 @@
     function samplePixels(){
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       const pixels = [];
-      const step = 3; // densità particelle
+      const step = 3;
 
       for (let y=0; y<canvas.height; y+=step){
         for (let x=0; x<canvas.width; x+=step){
@@ -505,27 +534,32 @@
       return pixels;
     }
 
-    // ====== CREA LETTERE ======
-    function createLetters(container, text){
+    // ====== CREA LETTERE CON A E G IN RILIEVO ======
+    function createLetters(container, text, highlightFirst){
       container.innerHTML = '';
       [...text].forEach((ch, i) => {
         const s = document.createElement('span');
         s.className = 'letter';
-        s.textContent = ch === ' ' ? '\u00A0' : ch;
-        s.style.animationDelay = (0.08 + i * 0.05) + 's';
+        
+        // Prima lettera (A o G) ha classe speciale
+        if (i === 0 && highlightFirst){
+          s.classList.add(highlightFirst);
+        } else {
+          s.classList.add('normal');
+        }
+        
+        s.textContent = ch;
+        s.style.animationDelay = (0.08 + i * 0.04) + 's';
         container.appendChild(s);
       });
     }
 
-    // ====== POSIZIONI LETTERE (ROBUSTO) ======
+    // ====== POSIZIONI LETTERE ======
     function getLetterTargets(){
-      // rendi misurabile
-      transformers.style.visibility = 'visible';
-      transformers.style.opacity = '1';
-      transformers.style.pointerEvents = 'none';
-
-      // forza layout
-      transformers.getBoundingClientRect();
+      nameDisplay.style.visibility = 'visible';
+      nameDisplay.style.opacity = '1';
+      nameDisplay.style.pointerEvents = 'none';
+      nameDisplay.getBoundingClientRect();
 
       const canvasRect = canvas.getBoundingClientRect();
       const A = [];
@@ -547,9 +581,8 @@
         });
       });
 
-      // torna invisibile, la scena vera parte dopo
-      transformers.style.opacity = '0';
-      transformers.style.pointerEvents = '';
+      nameDisplay.style.opacity = '0';
+      nameDisplay.style.pointerEvents = '';
       return { A, G };
     }
 
@@ -569,12 +602,10 @@
         return;
       }
 
-      // fine: mostra scena testo, card, pulsanti
+      // Fine animazione: mostra testo e contatti
       setTimeout(() => {
-        transformers.classList.add('active');
-        infoCard.classList.add('visible');
-        actions.classList.add('visible');
-
+        logoWrapper.classList.add('hidden');
+        nameDisplay.classList.add('active');
         canvas.style.opacity = '0';
       }, 150);
     }
@@ -586,27 +617,24 @@
 
       logoWrapper.classList.add('transforming');
 
-      // prepara testo
-      createLetters(andreaDiv, 'ANDREA');
-      createLetters(gonnellaDiv, 'GONNELLA');
+      // Crea lettere con A e G in evidenza
+      createLetters(andreaDiv, 'ANDREA', 'big-a');
+      createLetters(gonnellaDiv, 'GONNELLA', 'big-g');
 
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const pixels = samplePixels();
 
-          // se logo non ha pixel (capita se non disegnato ancora), forza fallback e riprova
           if (pixels.length === 0){
             drawFallbackLogo();
           }
 
           const pixels2 = pixels.length ? pixels : samplePixels();
-
           const { A, G } = getLetterTargets();
+
           if (A.length === 0 || G.length === 0){
-            // fallback visivo: mostra direttamente testo senza particelle
-            transformers.classList.add('active');
-            infoCard.classList.add('visible');
-            actions.classList.add('visible');
+            logoWrapper.classList.add('hidden');
+            nameDisplay.classList.add('active');
             canvas.style.opacity = '0';
             return;
           }
@@ -637,18 +665,16 @@
       transformed = false;
       particles = [];
 
-      transformers.classList.remove('active');
-      infoCard.classList.remove('visible');
-      actions.classList.remove('visible');
+      nameDisplay.classList.remove('active');
+      logoWrapper.classList.remove('transforming', 'hidden');
 
       canvas.style.opacity = '1';
       canvas.style.transition = 'none';
-      void canvas.offsetWidth; // reset transition
+      void canvas.offsetWidth;
       canvas.style.transition = 'opacity .8s ease';
 
       andreaDiv.innerHTML = '';
       gonnellaDiv.innerHTML = '';
-      logoWrapper.classList.remove('transforming');
 
       loadAndDrawLogo();
     }
