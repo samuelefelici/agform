@@ -84,7 +84,7 @@
       position:relative;
     }
 
-    /* ========== STAGE PRINCIPALE (PIÙ ALTO) ========== */
+    /* ========== STAGE PRINCIPALE ========== */
     .stage{
       min-height: 750px;
       border-radius: var(--r);
@@ -136,11 +136,15 @@
       visibility: hidden;
     }
 
+    /* Canvas responsive */
     #particleCanvas{
       display:block;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
       transition: opacity .8s ease;
+      max-width: 100%;
+      height: auto;
     }
+
     .hint{
       font-size: .95rem;
       color: var(--mut);
@@ -154,7 +158,7 @@
     }
     .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
-    /* ========== NOME ANDREA GONNELLA CON A e G IN RILIEVO (CENTRATO) ========== */
+    /* ========== NOME ANDREA GONNELLA ========== */
     .name-display{
       position:absolute;
       inset: 0;
@@ -202,7 +206,6 @@
       justify-content: center;
     }
 
-    /* Le lettere A e G hanno il gradiente del logo e sono in rilievo */
     .letter{
       display:inline-block;
       opacity:0;
@@ -215,7 +218,6 @@
       animation: letterReveal 0.85s cubic-bezier(.34,1.56,.64,1) forwards;
     }
 
-    /* A maiuscola con gradiente arancio-rosa */
     .letter.big-a{
       background: var(--gA);
       -webkit-background-clip:text;
@@ -225,7 +227,6 @@
       filter: drop-shadow(0 2px 12px rgba(233,30,99,.4));
     }
 
-    /* G maiuscola con gradiente blu-verde */
     .letter.big-g{
       background: var(--gG);
       -webkit-background-clip:text;
@@ -235,7 +236,6 @@
       filter: drop-shadow(0 2px 12px rgba(38,194,129,.4));
     }
 
-    /* Lettere normali */
     .letter.normal{
       color: var(--txt);
     }
@@ -248,7 +248,6 @@
       }
     }
 
-    /* Tagline */
     .tagline{
       margin-top: 12px;
       margin-bottom: 8px;
@@ -265,7 +264,7 @@
     }
     @keyframes slideUp{ to{opacity:1; transform: translateY(0);} }
 
-    /* ========== CONTATTI NELLA STESSA AREA ========== */
+    /* ========== CONTATTI ========== */
     .contacts-inline{
       margin-top: 20px;
       display: flex;
@@ -370,7 +369,6 @@
         min-height: 680px; 
         padding: 35px 24px; 
       }
-      #particleCanvas{ width: 300px; height: 300px; }
       .full-name{ font-size: 2.5rem; }
       .name-display{
         padding-top: 40px;
@@ -389,6 +387,9 @@
         padding: 30px 20px; 
       }
       .full-name{ font-size: 2.2rem; }
+      .name-display{
+        padding-top: 30px;
+      }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -404,17 +405,14 @@
     <div class="stage">
       <!-- LOGO INIZIALE -->
       <div class="logo-wrapper" id="logoWrapper" title="Clicca per trasformare">
-        <canvas id="particleCanvas" width="420" height="420"></canvas>
+        <canvas id="particleCanvas"></canvas>
         <div class="hint">👆 Clicca per trasformare</div>
       </div>
 
-      <!-- NOME + CONTATTI (nella stessa area) -->
+      <!-- NOME + CONTATTI -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         <div class="full-name">
-          <!-- ANDREA con A in rilievo -->
           <div class="name-part" id="andrea"></div>
-          
-          <!-- GONNELLA con G in rilievo -->
           <div class="name-part" id="gonnella"></div>
         </div>
 
@@ -423,7 +421,6 @@
           Un referente unico, dalla strategia alla rendicontazione.
         </p>
 
-        <!-- Contatti inline -->
         <div class="contacts-inline">
           <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
             <span class="icon">📧</span>
@@ -450,7 +447,6 @@
           </a>
         </div>
 
-        <!-- Pulsante reset -->
         <div class="reset-wrapper">
           <button class="btn" id="resetBtn">🔄 Rigioca animazione</button>
         </div>
@@ -473,6 +469,21 @@
     let raf = null;
     let transformed = false;
     let logoImage = null;
+
+    // ====== DIMENSIONE CANVAS RESPONSIVE ======
+    function setCanvasSize(){
+      const stage = document.querySelector('.stage');
+      const stageWidth = stage.clientWidth - 80; // Padding
+      const isMobile = window.innerWidth <= 768;
+      
+      // Canvas più grande su mobile per coprire tutta l'area
+      const maxSize = isMobile ? Math.min(stageWidth, 500) : 420;
+      
+      canvas.width = maxSize;
+      canvas.height = maxSize;
+      
+      console.log(`📱 Canvas size: ${canvas.width}x${canvas.height} (mobile: ${isMobile})`);
+    }
 
     // ====== PARTICELLA ======
     class Particle{
@@ -512,21 +523,23 @@
       g.addColorStop(1,'#1E88E5');
 
       ctx.fillStyle = g;
-      ctx.font = '900 132px Inter, sans-serif';
+      ctx.font = `900 ${canvas.width * 0.31}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('AG', canvas.width/2, canvas.height/2 - 18);
+      ctx.fillText('AG', canvas.width/2, canvas.height/2 - canvas.height*0.04);
 
       const g2 = ctx.createLinearGradient(0,canvas.height/2,canvas.width,canvas.height);
       g2.addColorStop(0,'#1E88E5');
       g2.addColorStop(1,'#26C281');
 
       ctx.fillStyle = g2;
-      ctx.font = '800 46px Inter, sans-serif';
-      ctx.fillText('FORM', canvas.width/2, canvas.height/2 + 72);
+      ctx.font = `800 ${canvas.width * 0.11}px Inter, sans-serif`;
+      ctx.fillText('FORM', canvas.width/2, canvas.height/2 + canvas.height*0.17);
     }
 
     function loadAndDrawLogo(){
+      setCanvasSize(); // Imposta dimensione prima di disegnare
+      
       logoImage = new Image();
       logoImage.src = 'logo.png';
 
@@ -545,19 +558,13 @@
       };
     }
 
-    // ====== DETERMINA SE UN COLORE È CALDO O FREDDO ======
-    /**
-     * Analizza RGB per determinare se è un colore caldo (rosso/arancio/rosa) 
-     * o freddo (blu/verde/turchese)
-     */
+    // ====== DETERMINA COLORE CALDO/FREDDO ======
     function isWarmColor(r, g, b){
-      // Colori caldi hanno più rosso che blu
-      // Heuristica: se rosso > blu E (rosso > verde O rosso+verde > blu*2)
       const warmScore = r - b + (r - g) * 0.5;
-      return warmScore > 20; // soglia empirica
+      return warmScore > 20;
     }
 
-    // ====== CAMPIONA PIXEL CON CLASSIFICAZIONE COLORE ======
+    // ====== CAMPIONA PIXEL ======
     function samplePixels(){
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       const pixels = [];
@@ -569,29 +576,25 @@
           const a = data[i+3];
           if (a > 60){
             const r = data[i], g = data[i+1], b = data[i+2];
-            
-            // Classifica il pixel in base al colore
             const isWarm = isWarmColor(r, g, b);
             
             pixels.push({
               x, y,
               color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
-              type: isWarm ? 'andrea' : 'gonnella' // CALDO → ANDREA, FREDDO → GONNELLA
+              type: isWarm ? 'andrea' : 'gonnella'
             });
           }
         }
       }
       
-      // Debug: conta quanti caldi vs freddi
       const warm = pixels.filter(p => p.type === 'andrea').length;
       const cold = pixels.filter(p => p.type === 'gonnella').length;
-      console.log(`🔥 Particelle CALDE (→ ANDREA): ${warm}`);
-      console.log(`❄️ Particelle FREDDE (→ GONNELLA): ${cold}`);
+      console.log(`🔥 CALDE → ANDREA: ${warm} | ❄️ FREDDE → GONNELLA: ${cold}`);
       
       return pixels;
     }
 
-    // ====== CREA LETTERE CON A E G IN RILIEVO ======
+    // ====== CREA LETTERE ======
     function createLetters(container, text, highlightFirst){
       container.innerHTML = '';
       [...text].forEach((ch, i) => {
@@ -619,30 +622,32 @@
       const forceLayout = nameDisplay.offsetHeight;
       
       const stageRect = document.querySelector('.stage').getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      
       const A = [];
       const G = [];
 
       andreaDiv.querySelectorAll('.letter').forEach(el => {
         const r = el.getBoundingClientRect();
+        // Coordinate relative al canvas (non allo stage!)
         A.push({
-          x: (r.left + r.width/2) - stageRect.left,
-          y: (r.top + r.height/2) - stageRect.top
+          x: (r.left + r.width/2) - canvasRect.left,
+          y: (r.top + r.height/2) - canvasRect.top
         });
       });
 
       gonnellaDiv.querySelectorAll('.letter').forEach(el => {
         const r = el.getBoundingClientRect();
         G.push({
-          x: (r.left + r.width/2) - stageRect.left,
-          y: (r.top + r.height/2) - stageRect.top
+          x: (r.left + r.width/2) - canvasRect.left,
+          y: (r.top + r.height/2) - canvasRect.top
         });
       });
 
       nameDisplay.style.opacity = '0';
       nameDisplay.style.visibility = 'hidden';
       
-      console.log(`🎯 ANDREA targets Y medio: ${A.reduce((sum,t) => sum + t.y, 0) / A.length}`);
-      console.log(`🎯 GONNELLA targets Y medio: ${G.reduce((sum,t) => sum + t.y, 0) / G.length}`);
+      console.log(`🎯 ANDREA Y: ${A.length > 0 ? A[0].y.toFixed(0) : 'N/A'} | GONNELLA Y: ${G.length > 0 ? G[0].y.toFixed(0) : 'N/A'}`);
       
       return { A, G };
     }
@@ -709,33 +714,27 @@
       const { A, G } = getLetterTargets();
 
       if (A.length === 0 || G.length === 0){
+        console.warn('⚠️ Nessun target trovato, mostro testo direttamente');
         logoWrapper.classList.add('hidden');
         nameDisplay.classList.add('active');
         canvas.style.opacity = '0';
         return;
       }
 
-      const stageRect = document.querySelector('.stage').getBoundingClientRect();
-      const canvasRect = canvas.getBoundingClientRect();
-      const offsetX = canvasRect.left - stageRect.left;
-      const offsetY = canvasRect.top - stageRect.top;
-
       particles = [];
       
-      // Mappo particelle in base al COLORE, non alla posizione
       for (const px of pixels){
-        const targetList = (px.type === 'andrea') ? A : G; // CALDI → ANDREA, FREDDI → GONNELLA
+        const targetList = (px.type === 'andrea') ? A : G;
         const t = targetList[(Math.random() * targetList.length) | 0];
 
         particles.push(new Particle(
           px.x, px.y, px.color,
-          t.x - offsetX,
-          t.y - offsetY,
+          t.x, t.y, // Ora coordinate già relative al canvas
           (Math.random()*26) | 0
         ));
       }
 
-      console.log(`🎨 ${particles.length} particelle create e mappate per colore`);
+      console.log(`🎨 ${particles.length} particelle create`);
       animate();
     }
 
@@ -767,6 +766,13 @@
     // ====== EVENTI ======
     logoWrapper.addEventListener('click', transform);
     resetBtn.addEventListener('click', (e) => { e.preventDefault(); reset(); });
+
+    // Ridimensiona canvas su resize
+    window.addEventListener('resize', () => {
+      if (!transformed) {
+        loadAndDrawLogo();
+      }
+    });
 
     // ====== INIT ======
     loadAndDrawLogo();
