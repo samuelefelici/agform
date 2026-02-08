@@ -163,7 +163,6 @@
       justify-content:center;
       gap: 8px;
       opacity:0;
-      visibility:hidden;
       pointer-events:none;
       transition: opacity .6s ease;
       text-align:center;
@@ -171,7 +170,6 @@
     }
     .name-display.active{
       opacity:1;
-      visibility:visible;
       pointer-events:auto;
     }
 
@@ -504,9 +502,11 @@
         const x = (canvas.width - w) / 2;
         const y = (canvas.height - h) / 2;
         ctx.drawImage(logoImage, x, y, w, h);
+        console.log('✅ Logo caricato');
       };
 
       logoImage.onerror = () => {
+        console.log('⚠️ Logo non trovato, uso fallback');
         drawFallbackLogo();
       };
     }
@@ -531,6 +531,7 @@
           }
         }
       }
+      console.log(`📊 Pixel campionati: ${pixels.length}`);
       return pixels;
     }
 
@@ -552,37 +553,48 @@
         s.style.animationDelay = (0.08 + i * 0.04) + 's';
         container.appendChild(s);
       });
+      console.log(`✏️ Lettere create per "${text}": ${container.querySelectorAll('.letter').length}`);
     }
 
-    // ====== POSIZIONI LETTERE ======
+    // ====== POSIZIONI LETTERE (FIX COMPLETO) ======
     function getLetterTargets(){
-      nameDisplay.style.visibility = 'visible';
+      // TRUCCO: rendi visibile temporaneamente ma fuori schermo per calcolare
+      nameDisplay.style.position = 'absolute';
       nameDisplay.style.opacity = '1';
+      nameDisplay.style.visibility = 'visible';
       nameDisplay.style.pointerEvents = 'none';
-      nameDisplay.getBoundingClientRect();
-
-      const canvasRect = canvas.getBoundingClientRect();
+      
+      // Forza il browser a calcolare il layout
+      const forceLayout = nameDisplay.offsetHeight;
+      
+      const stageRect = document.querySelector('.stage').getBoundingClientRect();
       const A = [];
       const G = [];
 
       andreaDiv.querySelectorAll('.letter').forEach(el => {
         const r = el.getBoundingClientRect();
+        // Coordinate relative allo stage (non al canvas)
         A.push({
-          x: (r.left + r.width/2) - canvasRect.left,
-          y: (r.top + r.height/2) - canvasRect.top
+          x: (r.left + r.width/2) - stageRect.left,
+          y: (r.top + r.height/2) - stageRect.top
         });
       });
 
       gonnellaDiv.querySelectorAll('.letter').forEach(el => {
         const r = el.getBoundingClientRect();
         G.push({
-          x: (r.left + r.width/2) - canvasRect.left,
-          y: (r.top + r.height/2) - canvasRect.top
+          x: (r.left + r.width/2) - stageRect.left,
+          y: (r.top + r.height/2) - stageRect.top
         });
       });
 
+      console.log(`🎯 Target ANDREA: ${A.length}`, A[0]);
+      console.log(`🎯 Target GONNELLA: ${G.length}`, G[0]);
+
+      // Nascondi di nuovo
       nameDisplay.style.opacity = '0';
-      nameDisplay.style.pointerEvents = '';
+      nameDisplay.style.visibility = 'hidden';
+      
       return { A, G };
     }
 
@@ -602,11 +614,14 @@
         return;
       }
 
+      console.log('✨ Animazione particelle completata');
+
       // Fine animazione: mostra testo e contatti
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         nameDisplay.classList.add('active');
         canvas.style.opacity = '0';
+        console.log('👁️ Testo mostrato');
       }, 150);
     }
 
@@ -615,50 +630,80 @@
       if (transformed) return;
       transformed = true;
 
+      console.log('🚀 Inizio trasformazione');
+
       logoWrapper.classList.add('transforming');
 
       // Crea lettere con A e G in evidenza
       createLetters(andreaDiv, 'ANDREA', 'big-a');
       createLetters(gonnellaDiv, 'GONNELLA', 'big-g');
 
+      // Aspetta 2 frame per essere sicuri che il DOM sia aggiornato
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const pixels = samplePixels();
 
           if (pixels.length === 0){
+            console.log('⚠️ Nessun pixel trovato, ridisegno logo');
             drawFallbackLogo();
+            // Riprova dopo aver disegnato
+            setTimeout(() => {
+              const pixels2 = samplePixels();
+              if (pixels2.length === 0) {
+                console.error('❌ Impossibile campionare pixel');
+                // Mostra comunque il testo
+                logoWrapper.classList.add('hidden');
+                nameDisplay.classList.add('active');
+                return;
+              }
+              continueTransform(pixels2);
+            }, 100);
+          } else {
+            continueTransform(pixels);
           }
-
-          const pixels2 = pixels.length ? pixels : samplePixels();
-          const { A, G } = getLetterTargets();
-
-          if (A.length === 0 || G.length === 0){
-            logoWrapper.classList.add('hidden');
-            nameDisplay.classList.add('active');
-            canvas.style.opacity = '0';
-            return;
-          }
-
-          particles = [];
-          for (const px of pixels2){
-            const t = (px.side === 'andrea')
-              ? A[(Math.random() * A.length) | 0]
-              : G[(Math.random() * G.length) | 0];
-
-            particles.push(new Particle(
-              px.x, px.y, px.color,
-              t.x, t.y,
-              (Math.random()*26) | 0
-            ));
-          }
-
-          animate();
         });
       });
     }
 
+    function continueTransform(pixels){
+      const { A, G } = getLetterTargets();
+
+      if (A.length === 0 || G.length === 0){
+        console.error('❌ Nessun target trovato!');
+        // Mostra direttamente senza animazione
+        logoWrapper.classList.add('hidden');
+        nameDisplay.classList.add('active');
+        canvas.style.opacity = '0';
+        return;
+      }
+
+      // Converti le coordinate da stage-relative a canvas-relative
+      const stageRect = document.querySelector('.stage').getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      const offsetX = canvasRect.left - stageRect.left;
+      const offsetY = canvasRect.top - stageRect.top;
+
+      particles = [];
+      for (const px of pixels){
+        const targetList = (px.side === 'andrea') ? A : G;
+        const t = targetList[(Math.random() * targetList.length) | 0];
+
+        particles.push(new Particle(
+          px.x, px.y, px.color,
+          t.x - offsetX,  // Converti da stage a canvas
+          t.y - offsetY,
+          (Math.random()*26) | 0
+        ));
+      }
+
+      console.log(`🎨 ${particles.length} particelle create`);
+      animate();
+    }
+
     // ====== RESET ======
     function reset(){
+      console.log('🔄 Reset');
+      
       if (raf) cancelAnimationFrame(raf);
       raf = null;
 
