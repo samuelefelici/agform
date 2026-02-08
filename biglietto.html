@@ -105,10 +105,6 @@
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
     }
 
-    .logo-wrapper.transforming #particleCanvas{
-      filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
-    }
-
     .hint{
       font-size: .95rem;
       color: var(--mut);
@@ -139,6 +135,7 @@
       gap: 10px;
       opacity:0;
       pointer-events:none;
+      transition: opacity 0.6s ease;
     }
 
     .transformers.active{
@@ -487,10 +484,10 @@
         this.targetX = targetX;
         this.targetY = targetY;
         this.color = color;
-        this.size = 2.5; // Particelle piccole per effetto più raffinato
+        this.size = 2.5;
         this.progress = 0;
         this.delay = delay;
-        this.speed = 0.015 + Math.random() * 0.008; // Velocità variabile
+        this.speed = 0.015 + Math.random() * 0.008;
         this.alpha = 1;
       }
 
@@ -504,7 +501,7 @@
           this.progress += this.speed;
         }
 
-        // Easing function: easeOutQuart per rallentamento finale smooth
+        // Easing: easeOutQuart
         const eased = 1 - Math.pow(1 - this.progress, 4);
 
         this.x = this.startX + (this.targetX - this.startX) * eased;
@@ -524,10 +521,9 @@
     // ========== CARICA E DISEGNA IL LOGO ==========
     function loadAndDrawLogo() {
       logoImage = new Image();
-      logoImage.src = 'logo.png'; // Il tuo logo
+      logoImage.src = 'logo.png';
       
       logoImage.onload = () => {
-        // Centra il logo nel canvas
         const scale = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.7;
         const x = (canvas.width - logoImage.width * scale) / 2;
         const y = (canvas.height - logoImage.height * scale) / 2;
@@ -537,7 +533,6 @@
       };
 
       logoImage.onerror = () => {
-        // Fallback: disegna un logo semplice se l'immagine non carica
         drawFallbackLogo();
       };
     }
@@ -548,7 +543,6 @@
     function drawFallbackLogo() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Disegna un logo stilizzato "AG"
       const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
       gradient.addColorStop(0, '#FF8A3C');
       gradient.addColorStop(0.5, '#E91E63');
@@ -570,20 +564,17 @@
     }
 
     // ========== CAMPIONA PIXEL DAL LOGO ==========
-    /**
-     * Estrae i pixel colorati dal logo
-     */
     function sampleLogoPixels() {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = [];
-      const samplingRate = 3; // Prendi 1 pixel ogni 3
+      const samplingRate = 3;
 
       for (let y = 0; y < canvas.height; y += samplingRate) {
         for (let x = 0; x < canvas.width; x += samplingRate) {
           const index = (y * canvas.width + x) * 4;
           const alpha = imageData.data[index + 3];
 
-          if (alpha > 50) { // Solo pixel visibili
+          if (alpha > 50) {
             const r = imageData.data[index];
             const g = imageData.data[index + 1];
             const b = imageData.data[index + 2];
@@ -599,14 +590,15 @@
       return pixels;
     }
 
-    // ========== CREA LETTERE E OTTIENI POSIZIONI ==========
+    // ========== CREA LETTERE ==========
     /**
-     * Crea le lettere e calcola le loro posizioni
+     * Crea le lettere come elementi DOM
+     * IMPORTANTE: Non cerchiamo di calcolare le posizioni qui,
+     * lo faremo dopo che sono state renderizzate
      */
-    function createLettersAndGetTargets(container, text) {
+    function createLetters(container, text) {
       container.innerHTML = '';
-      const targets = [];
-
+      
       [...text].forEach((char, i) => {
         const span = document.createElement('span');
         span.className = 'letter';
@@ -614,20 +606,35 @@
         span.style.animationDelay = (i * 0.04 + 0.15) + 's';
         container.appendChild(span);
       });
+    }
 
-      // Calcola posizioni dopo un breve delay
-      setTimeout(() => {
-        const letters = container.querySelectorAll('.letter');
-        letters.forEach(letter => {
-          const rect = letter.getBoundingClientRect();
-          const stageRect = document.querySelector('.stage').getBoundingClientRect();
-          
-          const centerX = rect.left + rect.width / 2 - stageRect.left - canvas.offsetLeft + canvas.width / 2;
-          const centerY = rect.top + rect.height / 2 - stageRect.top - canvas.offsetTop + canvas.height / 2;
-          
-          targets.push({ x: centerX, y: centerY });
+    // ========== OTTIENI POSIZIONI TARGET ==========
+    /**
+     * Calcola le posizioni delle lettere dopo che sono state renderizzate
+     */
+    function getLetterPositions() {
+      const targets = [];
+      const canvasRect = canvas.getBoundingClientRect();
+      
+      // Raccogli tutte le lettere (Andrea + Gonnella)
+      const allLetters = [
+        ...andreaDiv.querySelectorAll('.letter'),
+        ...gonnellaDiv.querySelectorAll('.letter')
+      ];
+
+      allLetters.forEach(letter => {
+        const rect = letter.getBoundingClientRect();
+        
+        // Calcola la posizione relativa al canvas
+        const targetX = (rect.left + rect.width / 2) - (canvasRect.left + canvas.width / 2);
+        const targetY = (rect.top + rect.height / 2) - (canvasRect.top + canvas.height / 2);
+        
+        // Aggiungi offset per centrare nel canvas
+        targets.push({ 
+          x: targetX + canvas.width / 2, 
+          y: targetY + canvas.height / 2 
         });
-      }, 100);
+      });
 
       return targets;
     }
@@ -646,71 +653,80 @@
       if (!allComplete) {
         animationFrame = requestAnimationFrame(animateParticles);
       } else {
-        // Animazione completata
+        // Animazione completata: mostra le lettere
         setTimeout(() => {
           transformers.classList.add('active');
           infoCard.classList.add('visible');
           actions.classList.add('visible');
           
-          // Fade out del canvas
+          // Fade out graduale del canvas
           canvas.style.opacity = '0';
-          canvas.style.transition = 'opacity 0.6s ease';
-        }, 300);
+          canvas.style.transition = 'opacity 0.8s ease';
+        }, 200);
       }
     }
 
     // ========== TRASFORMAZIONE PRINCIPALE ==========
+    /**
+     * Funzione principale che orchestra tutta l'animazione
+     * FIX: Ora aspettiamo che le lettere siano renderizzate prima di calcolare le posizioni
+     */
     function transform() {
       if (hasTransformed) return;
       hasTransformed = true;
 
       logoWrapper.classList.add('transforming');
 
-      // Campiona i pixel
+      // 1. Campiona i pixel del logo
       const logoPixels = sampleLogoPixels();
 
-      // Crea le lettere
-      const andreaTargets = [];
-      const gonnellaTargets = [];
-      
-      createLettersAndGetTargets(andreaDiv, 'ANDREA');
-      createLettersAndGetTargets(gonnellaDiv, 'GONNELLA');
+      // 2. Crea le lettere nel DOM (ancora invisibili)
+      createLetters(andreaDiv, 'ANDREA');
+      createLetters(gonnellaDiv, 'GONNELLA');
 
-      // Aspetta che le posizioni siano calcolate
-      setTimeout(() => {
-        // Raccogli tutti i target
-        const allTargets = [
-          ...Array.from(andreaDiv.querySelectorAll('.letter')),
-          ...Array.from(gonnellaDiv.querySelectorAll('.letter'))
-        ].map(letter => {
-          const rect = letter.getBoundingClientRect();
-          const stageRect = document.querySelector('.stage').getBoundingClientRect();
-          return {
-            x: rect.left + rect.width / 2 - stageRect.left - canvas.offsetLeft + canvas.width / 2,
-            y: rect.top + rect.height / 2 - stageRect.top - canvas.offsetTop + canvas.height / 2
-          };
+      // 3. ASPETTA che il browser renderizzi le lettere
+      //    Usiamo requestAnimationFrame per essere sicuri che il layout sia calcolato
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // 4. Ora le lettere sono nel DOM e possiamo calcolare le posizioni
+          const targets = getLetterPositions();
+
+          console.log('Targets trovati:', targets.length); // Debug
+
+          if (targets.length === 0) {
+            console.error('Nessun target trovato! Le lettere potrebbero non essere visibili.');
+            return;
+          }
+
+          // 5. Crea le particelle con le posizioni target corrette
+          logoPixels.forEach((pixel) => {
+            // Scegli un target casuale tra le lettere
+            const target = targets[Math.floor(Math.random() * targets.length)];
+            
+            const particle = new Particle(
+              pixel.x,
+              pixel.y,
+              pixel.color,
+              target.x,
+              target.y,
+              Math.random() * 30 // Delay casuale per effetto più organico
+            );
+            
+            particles.push(particle);
+          });
+
+          console.log('Particelle create:', particles.length); // Debug
+
+          // 6. Avvia l'animazione delle particelle
+          animateParticles();
         });
-
-        // Crea le particelle
-        logoPixels.forEach((pixel, i) => {
-          const target = allTargets[Math.floor(Math.random() * allTargets.length)];
-          const particle = new Particle(
-            pixel.x,
-            pixel.y,
-            pixel.color,
-            target.x,
-            target.y,
-            Math.random() * 30 // Delay casuale
-          );
-          particles.push(particle);
-        });
-
-        // Avvia animazione
-        animateParticles();
-      }, 300);
+      });
     }
 
     // ========== RESET ==========
+    /**
+     * Riporta tutto allo stato iniziale
+     */
     function reset() {
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
@@ -726,6 +742,8 @@
       actions.classList.remove('visible');
 
       canvas.style.opacity = '1';
+      canvas.style.transition = 'none';
+      
       loadAndDrawLogo();
 
       andreaDiv.innerHTML = '';
