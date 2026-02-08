@@ -55,7 +55,7 @@
 
     /* ========== STAGE ========== */
     .stage{
-      min-height: 520px;
+      min-height: 580px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
@@ -132,7 +132,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 10px;
+      gap: 15px;
       opacity:0;
       pointer-events:none;
       transition: opacity 0.6s ease;
@@ -178,7 +178,7 @@
     }
 
     .andrea{
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
       background: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
       -webkit-background-clip:text;
       background-clip:text;
@@ -186,7 +186,7 @@
     }
 
     .gonnella{
-      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-size: clamp(3.5rem, 8vw, 5.5rem);
       background: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
       -webkit-background-clip:text;
       background-clip:text;
@@ -194,25 +194,25 @@
     }
 
     .form-text{
-      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 800;
       background: linear-gradient(135deg, #FF6B9D 0%, #4ECDC4 100%);
       -webkit-background-clip:text;
       background-clip:text;
       color: transparent;
       opacity:0;
-      transform: translateY(20px);
+      transform: scale(0.8);
     }
 
     .transformers.active .form-text{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .5s;
+      animation: formAppear 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation-delay: .4s;
     }
 
-    @keyframes slideUp{
+    @keyframes formAppear{
       to{
         opacity:1;
-        transform: translateY(0);
+        transform: scale(1);
       }
     }
 
@@ -229,6 +229,13 @@
     .transformers.active .tagline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
       animation-delay: .7s;
+    }
+
+    @keyframes slideUp{
+      to{
+        opacity:1;
+        transform: translateY(0);
+      }
     }
 
     /* ========== CARD CONTATTI ========== */
@@ -357,16 +364,16 @@
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px){
       .stage{
-        min-height: 420px;
+        min-height: 460px;
         padding: 28px;
       }
 
       .andrea, .gonnella{
-        font-size: 2.2rem;
+        font-size: 2.8rem;
       }
 
       .form-text{
-        font-size: 1.6rem;
+        font-size: 2rem;
       }
 
       .info-card{
@@ -471,22 +478,23 @@
     let logoImage = null;
 
     // ========== CLASSE PARTICELLA ==========
-    /**
-     * Ogni particella rappresenta un pixel del logo
-     * Si muove dal logo verso la posizione finale nel testo
-     */
     class Particle {
-      constructor(x, y, color, targetX, targetY, delay) {
+      constructor(x, y, color) {
         this.startX = x;
         this.startY = y;
         this.x = x;
         this.y = y;
-        this.targetX = targetX;
-        this.targetY = targetY;
+        
+        // Target casuale per effetto esplosione/dispersione
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 100 + Math.random() * 200;
+        this.targetX = x + Math.cos(angle) * distance;
+        this.targetY = y + Math.sin(angle) * distance;
+        
         this.color = color;
         this.size = 2.5;
         this.progress = 0;
-        this.delay = delay;
+        this.delay = Math.random() * 30;
         this.speed = 0.015 + Math.random() * 0.008;
         this.alpha = 1;
       }
@@ -506,6 +514,9 @@
 
         this.x = this.startX + (this.targetX - this.startX) * eased;
         this.y = this.startY + (this.targetY - this.startY) * eased;
+        
+        // Fade out graduale
+        this.alpha = 1 - eased;
       }
 
       draw() {
@@ -537,9 +548,6 @@
       };
     }
 
-    /**
-     * Logo di fallback se l'immagine non carica
-     */
     function drawFallbackLogo() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
@@ -598,49 +606,9 @@
         const span = document.createElement('span');
         span.className = 'letter';
         span.textContent = char;
-        span.style.animationDelay = (i * 0.04 + 0.15) + 's';
+        span.style.animationDelay = (i * 0.05 + 0.1) + 's';
         container.appendChild(span);
       });
-    }
-
-    // ========== OTTIENI POSIZIONI TARGET ==========
-    /**
-     * FIX PRINCIPALE: Ora rendiamo visibile temporaneamente .transformers
-     * per calcolare le posizioni corrette delle lettere
-     */
-    function getLetterPositions() {
-      const targets = [];
-      
-      // TRUCCO: Rendi visibile temporaneamente il contenitore
-      // (senza animazione) per calcolare le posizioni
-      transformers.style.opacity = '1';
-      transformers.style.visibility = 'hidden'; // Visibile ma nascosto
-      
-      const stageRect = document.querySelector('.stage').getBoundingClientRect();
-      
-      // Raccogli tutte le lettere
-      const allLetters = [
-        ...andreaDiv.querySelectorAll('.letter'),
-        ...gonnellaDiv.querySelectorAll('.letter')
-      ];
-
-      allLetters.forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        
-        // Calcola posizione relativa allo stage
-        const centerX = rect.left + rect.width / 2 - stageRect.left;
-        const centerY = rect.top + rect.height / 2 - stageRect.top;
-        
-        targets.push({ x: centerX, y: centerY });
-      });
-
-      // Nascondi di nuovo il contenitore
-      transformers.style.opacity = '0';
-      transformers.style.visibility = 'visible';
-
-      console.log('Targets trovati:', targets.length, targets); // Debug
-
-      return targets;
     }
 
     // ========== ANIMAZIONE PARTICELLE ==========
@@ -657,16 +625,15 @@
       if (!allComplete) {
         animationFrame = requestAnimationFrame(animateParticles);
       } else {
-        // Animazione completata: mostra le lettere
+        // Particelle finite: mostra il testo
         setTimeout(() => {
+          canvas.style.opacity = '0';
+          canvas.style.transition = 'opacity 0.5s ease';
+          
           transformers.classList.add('active');
           infoCard.classList.add('visible');
           actions.classList.add('visible');
-          
-          // Fade out graduale del canvas
-          canvas.style.opacity = '0';
-          canvas.style.transition = 'opacity 0.8s ease';
-        }, 200);
+        }, 100);
       }
     }
 
@@ -677,51 +644,21 @@
 
       logoWrapper.classList.add('transforming');
 
-      // 1. Campiona i pixel del logo
+      // 1. Campiona i pixel
       const logoPixels = sampleLogoPixels();
 
-      // 2. Crea le lettere nel DOM
+      // 2. Crea le particelle (effetto esplosione semplice)
+      logoPixels.forEach((pixel) => {
+        const particle = new Particle(pixel.x, pixel.y, pixel.color);
+        particles.push(particle);
+      });
+
+      // 3. Crea le lettere (nascoste)
       createLetters(andreaDiv, 'ANDREA');
       createLetters(gonnellaDiv, 'GONNELLA');
 
-      // 3. Aspetta che il browser renderizzi
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          // 4. Calcola le posizioni (ora con il fix)
-          const targets = getLetterPositions();
-
-          if (targets.length === 0) {
-            console.error('Nessun target trovato!');
-            return;
-          }
-
-          // 5. Calcola l'offset per centrare nel canvas
-          const stageRect = document.querySelector('.stage').getBoundingClientRect();
-          const canvasOffsetX = logoWrapper.offsetLeft;
-          const canvasOffsetY = logoWrapper.offsetTop;
-
-          // 6. Crea le particelle
-          logoPixels.forEach((pixel) => {
-            const target = targets[Math.floor(Math.random() * targets.length)];
-            
-            const particle = new Particle(
-              pixel.x,
-              pixel.y,
-              pixel.color,
-              target.x - canvasOffsetX,
-              target.y - canvasOffsetY,
-              Math.random() * 30
-            );
-            
-            particles.push(particle);
-          });
-
-          console.log('Particelle create:', particles.length);
-
-          // 7. Avvia animazione
-          animateParticles();
-        });
-      });
+      // 4. Avvia animazione
+      animateParticles();
     }
 
     // ========== RESET ==========
