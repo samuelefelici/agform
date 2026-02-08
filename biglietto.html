@@ -14,10 +14,13 @@
       --line:rgba(255,255,255,.14);
       --shadow: 0 30px 90px rgba(0,0,0,.55);
       --r: 22px;
+
+      --gA: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
+      --gB: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
     }
-    
+
     *{box-sizing:border-box;margin:0;padding:0}
-    
+
     body{
       font-family: Inter, system-ui, -apple-system, sans-serif;
       min-height:100vh;
@@ -34,7 +37,36 @@
       justify-content:center;
     }
 
-    /* Scanline effect */
+    /* Dissolvenza iniziale */
+    .veil{
+      position:fixed; inset:0;
+      background:
+        radial-gradient(1200px 800px at 50% 40%, rgba(255,255,255,.06), transparent 55%),
+        linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.92));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      animation: veilOut 900ms cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: 850ms;
+    }
+    .veil .dot{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 0 0 0 rgba(255,255,255,.20);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,.18)}
+      60%{transform:scale(1.2); box-shadow: 0 0 0 22px rgba(255,255,255,0)}
+      100%{transform:scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0)}
+    }
+    @keyframes veilOut{
+      to{opacity:0; transform: translateY(-10px); pointer-events:none}
+    }
+
+    /* Scanline */
     .scan{
       position:fixed; inset:0;
       background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
@@ -44,18 +76,16 @@
       pointer-events:none;
       mix-blend-mode: overlay;
     }
-    @keyframes scan{
-      to{transform: translateY(120%)}
-    }
+    @keyframes scan{ to{transform: translateY(120%)} }
 
     .container{
       width:min(1100px, 100%);
       position:relative;
     }
 
-    /* ========== STAGE ========== */
+    /* STAGE */
     .stage{
-      min-height: 580px;
+      min-height: 560px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
@@ -71,60 +101,50 @@
     .stage::before{
       content:"";
       position:absolute; inset:-50%;
-      background: conic-gradient(from 190deg, rgba(255,107,53,.18), rgba(233,30,99,.20), rgba(30,136,229,.20), rgba(38,194,129,.14), rgba(255,107,53,.18));
+      background: conic-gradient(from 190deg,
+        rgba(255,107,53,.18),
+        rgba(233,30,99,.20),
+        rgba(30,136,229,.20),
+        rgba(38,194,129,.14),
+        rgba(255,107,53,.18));
       filter: blur(34px);
       opacity:.55;
       animation: spin 18s linear infinite;
     }
     @keyframes spin{to{transform: rotate(360deg)}}
-
     .stage > *{position:relative; z-index:1}
 
-    /* ========== LOGO WRAPPER ========== */
+    /* Logo wrapper */
     .logo-wrapper{
       cursor: pointer;
-      transition: transform .3s ease;
-      position:relative;
+      transition: transform .25s ease, opacity .6s ease;
       display:flex;
       flex-direction:column;
       align-items:center;
-      gap: 20px;
+      gap: 16px;
+      user-select:none;
     }
-    
-    .logo-wrapper:hover:not(.transforming){
-      transform: scale(1.05);
-    }
-
-    .logo-wrapper.transforming{
-      pointer-events: none;
-    }
-
-    /* Canvas per le particelle */
+    .logo-wrapper:hover{ transform: scale(1.04); }
+    .logo-wrapper.transforming{ pointer-events:none; }
     #particleCanvas{
       display:block;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
+      transition: opacity .8s ease;
     }
-
     .hint{
       font-size: .95rem;
       color: var(--mut);
       opacity: .7;
-      animation: pulse-hint 2s ease-in-out infinite;
+      animation: pulseHint 2s ease-in-out infinite;
       white-space:nowrap;
-      margin-top: 10px;
     }
-    
-    @keyframes pulse-hint{
-      0%, 100%{opacity:.7}
-      50%{opacity:.3}
+    @keyframes pulseHint{
+      0%,100%{opacity:.7}
+      50%{opacity:.35}
     }
+    .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
-    .logo-wrapper.transforming .hint{
-      opacity:0;
-      transition: opacity .3s ease;
-    }
-
-    /* ========== TRANSFORMERS LAYOUT ========== */
+    /* Transformers */
     .transformers{
       position:absolute;
       inset:0;
@@ -132,144 +152,126 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 20px;
+      gap: 14px;
       opacity:0;
+      visibility:hidden;
       pointer-events:none;
-      transition: opacity 0.6s ease;
+      transition: opacity .6s ease;
+      text-align:center;
+      padding: 24px;
     }
-
     .transformers.active{
       opacity:1;
+      visibility:visible;
       pointer-events:auto;
     }
 
-    .name-row{
+    .name{
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      font-size: clamp(3.0rem, 8vw, 5.4rem);
+      line-height: 1.0;
       display:flex;
-      align-items:center;
-      gap: 22px;
-      position:relative;
+      justify-content:center;
+      flex-wrap:wrap;
+      gap: 0;
+    }
+    .andrea{
+      background: var(--gA);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+    }
+    .gonnella{
+      background: var(--gB);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
     }
 
     .letter{
-      font-weight: 900;
-      letter-spacing: -0.03em;
       display:inline-block;
       opacity:0;
-      transform: scale(0.3) translateY(30px);
+      transform: translateY(22px) scale(.92);
       filter: blur(10px);
-      will-change: transform, opacity, filter;
     }
-
     .transformers.active .letter{
-      animation: letterReveal 0.9s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation: letterReveal 0.85s cubic-bezier(.34,1.56,.64,1) forwards;
     }
-
     @keyframes letterReveal{
-      0%{
-        opacity:0;
-        transform: scale(0.3) translateY(30px);
-        filter: blur(10px);
-      }
-      100%{
+      to{
         opacity:1;
-        transform: scale(1) translateY(0);
-        filter: blur(0px);
+        transform: translateY(0) scale(1);
+        filter: blur(0);
       }
-    }
-
-    .andrea{
-      font-size: clamp(3.5rem, 8vw, 5.5rem);
-      background: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-    }
-
-    .gonnella{
-      font-size: clamp(3.5rem, 8vw, 5.5rem);
-      background: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
     }
 
     .tagline{
-      margin-top: 18px;
+      margin-top: 10px;
       color: var(--mut);
-      font-size: 1.1rem;
-      max-width: 600px;
-      text-align:center;
+      font-size: 1.08rem;
+      max-width: 720px;
       opacity:0;
-      transform: translateY(20px);
+      transform: translateY(16px);
     }
-
     .transformers.active .tagline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .5s;
+      animation-delay: .4s;
     }
+    @keyframes slideUp{ to{opacity:1; transform: translateY(0);} }
 
-    @keyframes slideUp{
-      to{
-        opacity:1;
-        transform: translateY(0);
-      }
-    }
-
-    /* ========== CARD CONTATTI ========== */
+    /* Info card */
     .info-card{
       margin-top: 24px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
-      padding: 28px;
+      padding: 26px;
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
       opacity:0;
-      transform: translateY(30px);
+      transform: translateY(26px);
     }
-
     .info-card.visible{
       animation: fadeInUp 1s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: 1.3s;
+      animation-delay: 1.0s;
     }
-
-    @keyframes fadeInUp{
-      to{
-        opacity:1;
-        transform: translateY(0);
-      }
+    .actions{
+      margin-top: 18px;
+      display:flex;
+      gap: 12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      opacity:0;
+      transform: translateY(26px);
     }
+    .actions.visible{
+      animation: fadeInUp 1s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: 1.2s;
+    }
+    @keyframes fadeInUp{ to{opacity:1; transform: translateY(0);} }
 
     .contact-item{
       display:flex;
-      gap: 14px;
+      gap: 12px;
       align-items:flex-start;
-      padding: 16px;
+      padding: 14px;
       border-radius: 16px;
       background: rgba(255,255,255,.04);
       border: 1px solid rgba(255,255,255,.08);
-      transition: all .3s ease;
+      transition: all .25s ease;
     }
-
     .contact-item:hover{
       background: rgba(255,255,255,.08);
       border-color: rgba(255,255,255,.16);
       transform: translateY(-2px);
     }
-
-    .contact-icon{
-      font-size: 1.6rem;
-      flex-shrink:0;
-    }
-
+    .contact-icon{ font-size: 1.55rem; flex-shrink:0; }
     .contact-content strong{
-      display:block;
-      font-size: 1.05rem;
-      margin-bottom: 4px;
+      display:block; font-size: 1.02rem; margin-bottom: 4px;
     }
-
     .contact-content span,
     .contact-content a{
       display:block;
@@ -277,109 +279,68 @@
       font-size: .95rem;
       text-decoration:none;
       line-height:1.5;
+      overflow-wrap:anywhere;
     }
-
-    .contact-content a:hover{
-      color: var(--txt);
-    }
-
-    /* ========== PULSANTI ========== */
-    .actions{
-      margin-top: 24px;
-      display:flex;
-      gap: 14px;
-      justify-content:center;
-      flex-wrap:wrap;
-      opacity:0;
-      transform: translateY(30px);
-    }
-
-    .actions.visible{
-      animation: fadeInUp 1s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: 1.5s;
-    }
+    .contact-content a:hover{ color: var(--txt); }
 
     .btn{
       text-decoration:none;
       color: var(--txt);
-      font-weight: 700;
-      padding: .95rem 1.4rem;
+      font-weight: 800;
+      padding: .95rem 1.35rem;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
       backdrop-filter: blur(12px);
-      transition: all .3s ease;
+      transition: all .25s ease;
       user-select:none;
       cursor:pointer;
     }
-
     .btn:hover{
       transform: translateY(-2px);
       background: rgba(255,255,255,.12);
       border-color: rgba(255,255,255,.24);
     }
-
     .btn.primary{
-      background: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
+      background: var(--gB);
       border-color: transparent;
       box-shadow: 0 14px 40px rgba(30,136,229,.28);
     }
-
     .btn.primary:hover{
       box-shadow: 0 18px 55px rgba(30,136,229,.34);
     }
-
     .btn.reset{
       background: rgba(255,107,53,.15);
       border-color: rgba(255,107,53,.3);
     }
+    .btn.reset:hover{ background: rgba(255,107,53,.25); }
 
-    .btn.reset:hover{
-      background: rgba(255,107,53,.25);
-    }
-
-    /* ========== RESPONSIVE ========== */
     @media (max-width: 768px){
-      .stage{
-        min-height: 460px;
-        padding: 28px;
-      }
-
-      .andrea, .gonnella{
-        font-size: 2.8rem;
-      }
-
-      .info-card{
-        grid-template-columns: 1fr;
-        padding: 20px;
-      }
+      .stage{ min-height: 460px; padding: 26px; }
+      canvas{ width: 320px; height: 320px; }
+      .info-card{ grid-template-columns: 1fr; padding: 18px; }
     }
-
     @media (prefers-reduced-motion: reduce){
-      *{animation: none !important; transition: none !important}
+      *{animation:none !important; transition:none !important}
     }
   </style>
 </head>
 <body>
+  <div class="veil" aria-hidden="true"><div class="dot"></div></div>
   <div class="scan" aria-hidden="true"></div>
 
   <div class="container">
     <div class="stage">
-      <!-- LOGO CON CANVAS -->
-      <div class="logo-wrapper" id="logoWrapper">
-        <canvas id="particleCanvas" width="400" height="400"></canvas>
+      <!-- LOGO -->
+      <div class="logo-wrapper" id="logoWrapper" title="Clicca per trasformare">
+        <canvas id="particleCanvas" width="420" height="420"></canvas>
         <div class="hint">👆 Clicca per trasformare</div>
       </div>
 
-      <!-- TRANSFORMERS FINALE (solo ANDREA e GONNELLA, niente FORM) -->
-      <div class="transformers" id="transformers">
-        <div class="name-row">
-          <div class="andrea" id="andrea"></div>
-        </div>
-        
-        <div class="name-row">
-          <div class="gonnella" id="gonnella"></div>
-        </div>
+      <!-- TESTO FINALE -->
+      <div class="transformers" id="transformers" aria-live="polite">
+        <div class="name andrea" id="andrea"></div>
+        <div class="name gonnella" id="gonnella"></div>
 
         <p class="tagline">
           Formazione finanziata e accesso ai fondi europei.<br>
@@ -388,7 +349,7 @@
       </div>
     </div>
 
-    <!-- CARD CONTATTI -->
+    <!-- CONTATTI -->
     <div class="info-card" id="infoCard">
       <div class="contact-item">
         <div class="contact-icon">👤</div>
@@ -417,8 +378,8 @@
       <div class="contact-item">
         <div class="contact-icon">🌐</div>
         <div class="contact-content">
-          <strong>Website</strong>
-          <a href="index.html">saolino91.github.io/agform/</a>
+          <strong>Landing</strong>
+          <a href="index.html">Vai alla landing page</a>
         </div>
       </div>
     </div>
@@ -427,14 +388,15 @@
     <div class="actions" id="actions">
       <a class="btn primary" href="https://wa.me/393331234567">📱 Contattami su WhatsApp</a>
       <a class="btn" href="mailto:andrea.gonnella@agform.it?subject=Richiesta%20consulenza">✉️ Richiedi consulenza</a>
+      <a class="btn" href="index.html">➡️ Vai alla landing</a>
       <button class="btn reset" id="resetBtn">🔄 Rigioca animazione</button>
     </div>
   </div>
 
   <script>
-    // ========== CONFIGURAZIONE ==========
+    // ====== ELEMENTI ======
     const canvas = document.getElementById('particleCanvas');
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const logoWrapper = document.getElementById('logoWrapper');
     const transformers = document.getElementById('transformers');
     const andreaDiv = document.getElementById('andrea');
@@ -443,70 +405,76 @@
     const actions = document.getElementById('actions');
     const resetBtn = document.getElementById('resetBtn');
 
+    // ====== STATO ======
     let particles = [];
-    let animationFrame = null;
-    let hasTransformed = false;
+    let raf = null;
+    let transformed = false;
     let logoImage = null;
 
-    // ========== CLASSE PARTICELLA ==========
-    /**
-     * Ogni particella si muove dal logo verso una lettera specifica
-     */
-    class Particle {
-      constructor(x, y, color, targetX, targetY, delay) {
-        this.startX = x;
-        this.startY = y;
-        this.x = x;
-        this.y = y;
-        this.targetX = targetX;
-        this.targetY = targetY;
+    // ====== PARTICELLA ======
+    class Particle{
+      constructor(x, y, color, tx, ty, delay){
+        this.sx = x; this.sy = y;
+        this.x = x;  this.y = y;
+        this.tx = tx; this.ty = ty;
         this.color = color;
-        this.size = 2.5;
-        this.progress = 0;
+        this.size = 2.2 + Math.random() * 0.8;
+        this.t = 0;
         this.delay = delay;
-        this.speed = 0.015 + Math.random() * 0.008;
-        this.alpha = 1;
+        this.speed = 0.014 + Math.random() * 0.010;
       }
-
-      update() {
-        if (this.delay > 0) {
-          this.delay -= 1;
-          return;
-        }
-
-        if (this.progress < 1) {
-          this.progress += this.speed;
-        }
-
-        // Easing: easeOutQuart per movimento fluido
-        const eased = 1 - Math.pow(1 - this.progress, 4);
-
-        this.x = this.startX + (this.targetX - this.startX) * eased;
-        this.y = this.startY + (this.targetY - this.startY) * eased;
+      update(){
+        if (this.delay > 0){ this.delay -= 1; return; }
+        if (this.t < 1) this.t = Math.min(1, this.t + this.speed);
+        const eased = 1 - Math.pow(1 - this.t, 4); // easeOutQuart
+        this.x = this.sx + (this.tx - this.sx) * eased;
+        this.y = this.sy + (this.ty - this.sy) * eased;
       }
-
-      draw() {
-        ctx.globalAlpha = this.alpha;
+      draw(){
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
       }
+      done(){ return this.t >= 1; }
     }
 
-    // ========== CARICA E DISEGNA IL LOGO ==========
-    function loadAndDrawLogo() {
+    // ====== DISEGNA LOGO ======
+    function drawFallbackLogo(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
+      g.addColorStop(0,'#FF8A3C');
+      g.addColorStop(0.5,'#E91E63');
+      g.addColorStop(1,'#1E88E5');
+
+      ctx.fillStyle = g;
+      ctx.font = '900 132px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('AG', canvas.width/2, canvas.height/2 - 18);
+
+      const g2 = ctx.createLinearGradient(0,canvas.height/2,canvas.width,canvas.height);
+      g2.addColorStop(0,'#1E88E5');
+      g2.addColorStop(1,'#26C281');
+
+      ctx.fillStyle = g2;
+      ctx.font = '800 46px Inter, sans-serif';
+      ctx.fillText('FORM', canvas.width/2, canvas.height/2 + 72);
+    }
+
+    function loadAndDrawLogo(){
       logoImage = new Image();
       logoImage.src = 'logo.png';
-      
+
       logoImage.onload = () => {
-        const scale = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.7;
-        const x = (canvas.width - logoImage.width * scale) / 2;
-        const y = (canvas.height - logoImage.height * scale) / 2;
-        
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(logoImage, x, y, logoImage.width * scale, logoImage.height * scale);
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        const s = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.72;
+        const w = logoImage.width * s;
+        const h = logoImage.height * s;
+        const x = (canvas.width - w) / 2;
+        const y = (canvas.height - h) / 2;
+        ctx.drawImage(logoImage, x, y, w, h);
       };
 
       logoImage.onerror = () => {
@@ -514,229 +482,182 @@
       };
     }
 
-    function drawFallbackLogo() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#FF8A3C');
-      gradient.addColorStop(0.5, '#E91E63');
-      gradient.addColorStop(1, '#1E88E5');
-      
-      ctx.fillStyle = gradient;
-      ctx.font = 'bold 120px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('AG', canvas.width / 2, canvas.height / 2 - 20);
-      
-      const gradient2 = ctx.createLinearGradient(0, canvas.height/2, canvas.width, canvas.height);
-      gradient2.addColorStop(0, '#FF6B9D');
-      gradient2.addColorStop(1, '#4ECDC4');
-      
-      ctx.fillStyle = gradient2;
-      ctx.font = 'bold 40px Inter, sans-serif';
-      ctx.fillText('form', canvas.width / 2, canvas.height / 2 + 60);
-    }
-
-    // ========== CAMPIONA PIXEL DAL LOGO ==========
-    function sampleLogoPixels() {
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    // ====== CAMPIONA PIXEL ======
+    function samplePixels(){
+      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       const pixels = [];
-      const samplingRate = 3;
+      const step = 3; // densità particelle
 
-      for (let y = 0; y < canvas.height; y += samplingRate) {
-        for (let x = 0; x < canvas.width; x += samplingRate) {
-          const index = (y * canvas.width + x) * 4;
-          const alpha = imageData.data[index + 3];
-
-          if (alpha > 50) {
-            const r = imageData.data[index];
-            const g = imageData.data[index + 1];
-            const b = imageData.data[index + 2];
-            
-            // Determina se il pixel è a sinistra (A) o destra (G)
-            const isLeftSide = x < canvas.width / 2;
-            
+      for (let y=0; y<canvas.height; y+=step){
+        for (let x=0; x<canvas.width; x+=step){
+          const i = (y*canvas.width + x) * 4;
+          const a = data[i+3];
+          if (a > 60){
+            const r = data[i], g = data[i+1], b = data[i+2];
             pixels.push({
-              x: x,
-              y: y,
-              color: `rgba(${r},${g},${b},${alpha/255})`,
-              side: isLeftSide ? 'andrea' : 'gonnella' // Etichetta il pixel
+              x, y,
+              color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
+              side: x < canvas.width/2 ? 'andrea' : 'gonnella'
             });
           }
         }
       }
-
       return pixels;
     }
 
-    // ========== CREA LETTERE ==========
-    function createLetters(container, text) {
+    // ====== CREA LETTERE ======
+    function createLetters(container, text){
       container.innerHTML = '';
-      
-      [...text].forEach((char, i) => {
-        const span = document.createElement('span');
-        span.className = 'letter';
-        span.textContent = char;
-        span.style.animationDelay = (i * 0.05 + 0.1) + 's';
-        container.appendChild(span);
+      [...text].forEach((ch, i) => {
+        const s = document.createElement('span');
+        s.className = 'letter';
+        s.textContent = ch === ' ' ? '\u00A0' : ch;
+        s.style.animationDelay = (0.08 + i * 0.05) + 's';
+        container.appendChild(s);
       });
     }
 
-    // ========== OTTIENI POSIZIONI LETTERE ==========
-    /**
-     * Calcola le posizioni delle lettere ANDREA e GONNELLA
-     * separatamente per mappare A -> ANDREA e G -> GONNELLA
-     */
-    function getLetterPositions() {
-      // Rendi temporaneamente visibile per calcolare
-      const originalOpacity = transformers.style.opacity;
+    // ====== POSIZIONI LETTERE (ROBUSTO) ======
+    function getLetterTargets(){
+      // rendi misurabile
+      transformers.style.visibility = 'visible';
       transformers.style.opacity = '1';
       transformers.style.pointerEvents = 'none';
-      
-      const stageRect = document.querySelector('.stage').getBoundingClientRect();
+
+      // forza layout
+      transformers.getBoundingClientRect();
+
       const canvasRect = canvas.getBoundingClientRect();
-      
-      const andreaTargets = [];
-      const gonnellaTargets = [];
-      
-      // Posizioni lettere ANDREA
-      andreaDiv.querySelectorAll('.letter').forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        const centerX = (rect.left + rect.width / 2) - canvasRect.left;
-        const centerY = (rect.top + rect.height / 2) - canvasRect.top;
-        andreaTargets.push({ x: centerX, y: centerY });
+      const A = [];
+      const G = [];
+
+      andreaDiv.querySelectorAll('.letter').forEach(el => {
+        const r = el.getBoundingClientRect();
+        A.push({
+          x: (r.left + r.width/2) - canvasRect.left,
+          y: (r.top + r.height/2) - canvasRect.top
+        });
       });
-      
-      // Posizioni lettere GONNELLA
-      gonnellaDiv.querySelectorAll('.letter').forEach(letter => {
-        const rect = letter.getBoundingClientRect();
-        const centerX = (rect.left + rect.width / 2) - canvasRect.left;
-        const centerY = (rect.top + rect.height / 2) - canvasRect.top;
-        gonnellaTargets.push({ x: centerX, y: centerY });
+
+      gonnellaDiv.querySelectorAll('.letter').forEach(el => {
+        const r = el.getBoundingClientRect();
+        G.push({
+          x: (r.left + r.width/2) - canvasRect.left,
+          y: (r.top + r.height/2) - canvasRect.top
+        });
       });
-      
-      // Riporta opacità originale
-      transformers.style.opacity = originalOpacity;
-      
-      return { andreaTargets, gonnellaTargets };
+
+      // torna invisibile, la scena vera parte dopo
+      transformers.style.opacity = '0';
+      transformers.style.pointerEvents = '';
+      return { A, G };
     }
 
-    // ========== ANIMAZIONE PARTICELLE ==========
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ====== ANIMAZIONE ======
+    function animate(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      let allComplete = true;
-      particles.forEach(p => {
+      let done = true;
+      for (const p of particles){
         p.update();
         p.draw();
-        if (p.progress < 1) allComplete = false;
-      });
-
-      if (!allComplete) {
-        animationFrame = requestAnimationFrame(animateParticles);
-      } else {
-        // Animazione completata: mostra le lettere
-        setTimeout(() => {
-          transformers.classList.add('active');
-          infoCard.classList.add('visible');
-          actions.classList.add('visible');
-          
-          // Fade out canvas
-          canvas.style.opacity = '0';
-          canvas.style.transition = 'opacity 0.8s ease';
-        }, 200);
+        if (!p.done()) done = false;
       }
+
+      if (!done){
+        raf = requestAnimationFrame(animate);
+        return;
+      }
+
+      // fine: mostra scena testo, card, pulsanti
+      setTimeout(() => {
+        transformers.classList.add('active');
+        infoCard.classList.add('visible');
+        actions.classList.add('visible');
+
+        canvas.style.opacity = '0';
+      }, 150);
     }
 
-    // ========== TRASFORMAZIONE PRINCIPALE ==========
-    function transform() {
-      if (hasTransformed) return;
-      hasTransformed = true;
+    // ====== TRANSFORM ======
+    function transform(){
+      if (transformed) return;
+      transformed = true;
 
       logoWrapper.classList.add('transforming');
 
-      // 1. Campiona i pixel del logo (con etichetta andrea/gonnella)
-      const logoPixels = sampleLogoPixels();
-
-      // 2. Crea le lettere ANDREA e GONNELLA
+      // prepara testo
       createLetters(andreaDiv, 'ANDREA');
       createLetters(gonnellaDiv, 'GONNELLA');
 
-      // 3. Aspetta che il browser renderizzi
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          // 4. Ottieni le posizioni delle lettere
-          const { andreaTargets, gonnellaTargets } = getLetterPositions();
+          const pixels = samplePixels();
 
-          console.log('Andrea targets:', andreaTargets.length);
-          console.log('Gonnella targets:', gonnellaTargets.length);
+          // se logo non ha pixel (capita se non disegnato ancora), forza fallback e riprova
+          if (pixels.length === 0){
+            drawFallbackLogo();
+          }
 
-          if (andreaTargets.length === 0 || gonnellaTargets.length === 0) {
-            console.error('Errore: nessun target trovato!');
+          const pixels2 = pixels.length ? pixels : samplePixels();
+
+          const { A, G } = getLetterTargets();
+          if (A.length === 0 || G.length === 0){
+            // fallback visivo: mostra direttamente testo senza particelle
+            transformers.classList.add('active');
+            infoCard.classList.add('visible');
+            actions.classList.add('visible');
+            canvas.style.opacity = '0';
             return;
           }
 
-          // 5. Crea le particelle mappando A -> ANDREA e G -> GONNELLA
-          logoPixels.forEach((pixel) => {
-            let target;
-            
-            if (pixel.side === 'andrea') {
-              // Pixel della A vanno verso ANDREA
-              target = andreaTargets[Math.floor(Math.random() * andreaTargets.length)];
-            } else {
-              // Pixel della G vanno verso GONNELLA
-              target = gonnellaTargets[Math.floor(Math.random() * gonnellaTargets.length)];
-            }
-            
-            const particle = new Particle(
-              pixel.x,
-              pixel.y,
-              pixel.color,
-              target.x,
-              target.y,
-              Math.random() * 30 // Delay casuale
-            );
-            
-            particles.push(particle);
-          });
+          particles = [];
+          for (const px of pixels2){
+            const t = (px.side === 'andrea')
+              ? A[(Math.random() * A.length) | 0]
+              : G[(Math.random() * G.length) | 0];
 
-          console.log('Particelle create:', particles.length);
+            particles.push(new Particle(
+              px.x, px.y, px.color,
+              t.x, t.y,
+              (Math.random()*26) | 0
+            ));
+          }
 
-          // 6. Avvia animazione
-          animateParticles();
+          animate();
         });
       });
     }
 
-    // ========== RESET ==========
-    function reset() {
-      if (animationFrame) {
-        cancelAnimationFrame(animationFrame);
-        animationFrame = null;
-      }
+    // ====== RESET ======
+    function reset(){
+      if (raf) cancelAnimationFrame(raf);
+      raf = null;
 
-      hasTransformed = false;
+      transformed = false;
       particles = [];
 
-      logoWrapper.classList.remove('transforming');
       transformers.classList.remove('active');
       infoCard.classList.remove('visible');
       actions.classList.remove('visible');
 
       canvas.style.opacity = '1';
       canvas.style.transition = 'none';
-      
-      loadAndDrawLogo();
+      void canvas.offsetWidth; // reset transition
+      canvas.style.transition = 'opacity .8s ease';
 
       andreaDiv.innerHTML = '';
       gonnellaDiv.innerHTML = '';
+      logoWrapper.classList.remove('transforming');
+
+      loadAndDrawLogo();
     }
 
-    // ========== EVENTI ==========
+    // ====== EVENTI ======
     logoWrapper.addEventListener('click', transform);
-    resetBtn.addEventListener('click', reset);
+    resetBtn.addEventListener('click', (e) => { e.preventDefault(); reset(); });
 
-    // ========== INIT ==========
+    // ====== INIT ======
     loadAndDrawLogo();
   </script>
 </body>
