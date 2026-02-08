@@ -3,366 +3,374 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AG Form | Biglietto da visita</title>
+  <title>AG Form | Biglietto</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg1:#0b1020;
-      --bg2:#0f1b3a;
-      --card: rgba(255,255,255,.08);
-      --card2: rgba(255,255,255,.12);
-      --text:#eaf0ff;
-      --muted: rgba(234,240,255,.75);
-      --line: rgba(255,255,255,.16);
-      --g1: linear-gradient(135deg, #FF6B35 0%, #E91E63 45%, #1E88E5 100%);
+      --bg:#070A12;
+      --bg2:#0B1430;
+      --txt:#EAF0FF;
+      --mut:rgba(234,240,255,.72);
+      --line:rgba(255,255,255,.14);
+      --card:rgba(255,255,255,.06);
+      --card2:rgba(255,255,255,.10);
+      --g: linear-gradient(135deg, #FF6B35 0%, #E91E63 45%, #1E88E5 100%);
       --g2: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
-      --shadow: 0 25px 70px rgba(0,0,0,.45);
-      --radius: 22px;
+      --shadow: 0 30px 90px rgba(0,0,0,.55);
+      --r: 22px;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       font-family: Inter, system-ui, -apple-system, Segoe UI, sans-serif;
-      min-height: 100vh;
-      color: var(--text);
-      overflow-x:hidden;
+      min-height:100vh;
+      color:var(--txt);
       background:
-        radial-gradient(900px 600px at 20% 10%, rgba(233,30,99,.25), transparent 60%),
-        radial-gradient(900px 600px at 80% 20%, rgba(30,136,229,.25), transparent 60%),
-        radial-gradient(900px 600px at 55% 85%, rgba(38,194,129,.18), transparent 60%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
+        radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
+        radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
+        radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow:hidden;
+      padding: 18px;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding: 28px 16px;
     }
 
-    /* subtle animated noise grid */
-    .grid{
+    /* --- OPENING REVEAL --- */
+    .veil{
       position:fixed; inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
-      background-size: 38px 38px;
-      mask-image: radial-gradient(circle at 50% 30%, black 0%, transparent 70%);
-      opacity:.35;
-      pointer-events:none;
-      animation: drift 12s linear infinite;
+      background: radial-gradient(1200px 800px at 50% 40%, rgba(255,255,255,.06), transparent 55%),
+                  linear-gradient(180deg, rgba(0,0,0,.9), rgba(0,0,0,.92));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      animation: veilOut 900ms cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: 850ms;
     }
-    @keyframes drift{
-      from{transform:translate3d(0,0,0)}
-      to{transform:translate3d(-38px,-38px,0)}
+    .veil .dot{
+      width: 10px; height: 10px;
+      border-radius: 999px;
+      background: white;
+      box-shadow: 0 0 0 0 rgba(255,255,255,.20);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%{transform:scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,.18)}
+      60%{transform:scale(1.2); box-shadow: 0 0 0 22px rgba(255,255,255,0)}
+      100%{transform:scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0)}
+    }
+    @keyframes veilOut{
+      to{opacity:0; transform: translateY(-10px); pointer-events:none}
+    }
+
+    /* subtle moving scanline */
+    .scan{
+      position:fixed; inset:0;
+      background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
+      opacity:.08;
+      transform: translateY(-120%);
+      animation: scan 6s linear infinite;
+      pointer-events:none;
+      mix-blend-mode: overlay;
+    }
+    @keyframes scan{
+      to{transform: translateY(120%)}
     }
 
     .wrap{
-      width: min(980px, 100%);
+      width:min(920px, 100%);
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
-      align-items: stretch;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items:stretch;
     }
 
-    /* Left: hero */
-    .hero{
-      border-radius: var(--radius);
-      padding: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
+    /* left panel */
+    .panel{
       position:relative;
+      border-radius: var(--r);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+      box-shadow: var(--shadow);
       overflow:hidden;
+      padding: 22px;
+      transform: translateY(18px);
+      opacity: 0;
+      animation: rise 900ms cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: 900ms;
     }
-    .hero::before{
+    @keyframes rise{
+      to{transform: translateY(0); opacity:1}
+    }
+
+    .panel::before{
       content:"";
-      position:absolute; inset:-40%;
-      background: conic-gradient(from 180deg, rgba(255,107,53,.18), rgba(233,30,99,.18), rgba(30,136,229,.18), rgba(38,194,129,.14), rgba(255,107,53,.18));
-      filter: blur(30px);
+      position:absolute; inset:-50%;
+      background: conic-gradient(from 190deg, rgba(255,107,53,.18), rgba(233,30,99,.20), rgba(30,136,229,.20), rgba(38,194,129,.14), rgba(255,107,53,.18));
+      filter: blur(34px);
       opacity:.55;
       animation: spin 18s linear infinite;
     }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    .hero > *{position:relative; z-index:1}
+    @keyframes spin{to{transform: rotate(360deg)}}
+    .panel > *{position:relative; z-index:1}
 
-    .topbar{
+    .top{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 14px;
     }
     .brand{
       display:flex;
       align-items:center;
       gap: 10px;
+      min-width:0;
     }
     .brand img{
       height: 42px;
       width:auto;
-      filter: drop-shadow(0 8px 18px rgba(0,0,0,.35));
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.35));
     }
-    .chip{
+    .tag{
       font-size:.85rem;
-      padding:.4rem .8rem;
-      border-radius: 999px;
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.16);
-      color: var(--muted);
-      backdrop-filter: blur(10px);
+      padding:.42rem .85rem;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.22);
+      color: var(--mut);
+      backdrop-filter: blur(12px);
       white-space:nowrap;
     }
+    .link{
+      text-decoration:none;
+      color: var(--txt);
+      opacity:.85;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      padding:.55rem .9rem;
+      border-radius:999px;
+      transition: transform .2s ease, opacity .2s ease, background .2s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .link:hover{transform: translateY(-2px); opacity:1; background: rgba(255,255,255,.10)}
 
-    /* Morph title */
-    .morph{
-      margin-top: 10px;
-      padding: 18px 18px 14px;
+    /* headline block */
+    .hero{
+      margin-top: 8px;
+      padding: 18px;
       border-radius: 18px;
       border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.18);
+      background: rgba(0,0,0,.22);
       backdrop-filter: blur(14px);
     }
 
-    .wordline{
+    .line{
       display:flex;
       align-items:baseline;
-      gap: 14px;
+      gap: 12px;
       flex-wrap:wrap;
     }
 
     .big{
-      font-weight: 800;
-      letter-spacing: -0.04em;
+      font-weight: 850;
+      letter-spacing: -0.05em;
       font-size: clamp(2.2rem, 4.2vw, 3.2rem);
       line-height: 1.05;
     }
-
-    .gradient{
-      background: var(--g1);
+    .grad{
+      background: var(--g);
       -webkit-background-clip:text;
       background-clip:text;
       color: transparent;
-      text-shadow: 0 10px 40px rgba(0,0,0,.25);
     }
 
+    /* LETTER BREAK + MORPH */
     .swap{
       position:relative;
       display:inline-block;
-      min-height: 1.2em;
+      min-height: 1.15em;
+      cursor: default;
     }
-    .swap .a, .swap .b{
+    .layer{
       display:inline-flex;
-      gap: .03em;
       position:absolute;
       left:0; top:0;
+      gap: .02em;
       white-space:nowrap;
-      will-change: transform, filter, opacity;
+      will-change: transform, opacity, filter;
     }
-    .swap .b{opacity:0}
-    .swap .letter{
+    .b{opacity:0}
+    .ch{
       display:inline-block;
-      transform: translateY(0);
-      filter: blur(0);
+      transform: translateY(0) scale(1);
       opacity:1;
-      transition: transform 700ms cubic-bezier(.2,.9,.2,1), opacity 700ms, filter 700ms;
+      filter: blur(0);
+      transition:
+        transform 760ms cubic-bezier(.2,.9,.2,1),
+        opacity 760ms,
+        filter 760ms;
     }
 
-    /* State toggled */
-    .swap.is-on .a .letter{
+    /* "explode" style */
+    .swap.is-on .a .ch{
       opacity:0;
-      transform: translateY(-14px) rotate(-2deg);
-      filter: blur(8px);
-    }
-    .swap.is-on .b{
-      opacity:1;
-    }
-    .swap.is-on .b .letter{
-      opacity:1;
-      transform: translateY(0);
-      filter: blur(0);
-    }
-    .swap .b .letter{
-      opacity:0;
-      transform: translateY(16px) rotate(1deg);
       filter: blur(10px);
+      transform: translate(var(--dx), var(--dy)) rotate(var(--dr)) scale(.9);
+    }
+    .swap.is-on .b{opacity:1}
+    .swap.is-on .b .ch{
+      opacity:1;
+      filter: blur(0);
+      transform: translateY(0) scale(1);
+    }
+    .b .ch{
+      opacity:0;
+      filter: blur(12px);
+      transform: translateY(18px) scale(.98);
     }
 
     .sub{
-      margin-top: 14px;
-      color: var(--muted);
-      font-size: 1.02rem;
-      line-height: 1.6;
-      max-width: 52ch;
+      margin-top: 12px;
+      color: var(--mut);
+      font-size: 1.03rem;
+      line-height:1.65;
+      max-width: 56ch;
     }
 
-    .actions{
-      margin-top: 18px;
+    .cta{
+      margin-top: 16px;
       display:flex;
       gap: 12px;
       flex-wrap:wrap;
     }
     .btn{
       text-decoration:none;
-      color: var(--text);
-      font-weight: 700;
+      color: var(--txt);
+      font-weight: 800;
       padding: .95rem 1.15rem;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,.16);
       background: rgba(255,255,255,.08);
       backdrop-filter: blur(12px);
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
       user-select:none;
     }
     .btn:hover{transform: translateY(-2px); background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.24);}
     .btn.primary{
       background: var(--g2);
       border-color: transparent;
-      box-shadow: 0 14px 35px rgba(30,136,229,.25);
+      box-shadow: 0 14px 40px rgba(30,136,229,.28);
     }
-    .btn.primary:hover{transform: translateY(-2px); box-shadow: 0 18px 45px rgba(30,136,229,.32);}
+    .btn.primary:hover{box-shadow: 0 18px 55px rgba(30,136,229,.34);}
 
-    .mini{
-      margin-top: 14px;
-      display:flex;
-      gap: 14px;
-      flex-wrap:wrap;
-      color: var(--muted);
-      font-size: .95rem;
+    .micro{
+      margin-top: 10px;
+      color: rgba(234,240,255,.60);
+      font-size: .9rem;
     }
-    .mini a{color: var(--text); opacity:.9; text-decoration:none; border-bottom: 1px dashed rgba(255,255,255,.22)}
-    .mini a:hover{opacity:1}
 
-    /* Right: card */
+    /* right card */
     .card{
-      border-radius: var(--radius);
-      padding: 28px;
-      background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      border-radius: var(--r);
       border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
+      overflow:hidden;
+      padding: 22px;
+      transform: translateY(18px);
+      opacity: 0;
+      animation: rise 900ms cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: 1040ms;
       display:flex;
       flex-direction:column;
       justify-content:space-between;
+      gap: 14px;
       position:relative;
-      overflow:hidden;
     }
     .card::after{
       content:"";
       position:absolute;
       width: 260px; height: 260px;
-      right: -90px; bottom: -110px;
-      background: var(--g1);
+      right: -110px; bottom: -120px;
+      background: var(--g);
       border-radius: 50%;
       filter: blur(28px);
-      opacity:.25;
+      opacity:.22;
     }
     .card > *{position:relative; z-index:1}
 
     .title{
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 10px;
+      font-weight: 900;
+      letter-spacing:-0.02em;
+      font-size: 1.15rem;
+      opacity:.95;
     }
     .row{
-      padding: 14px 0;
+      padding: 12px 0;
       border-top: 1px solid rgba(255,255,255,.12);
       display:flex;
-      align-items:flex-start;
       gap: 12px;
+      align-items:flex-start;
     }
-    .row:first-of-type{border-top: 1px solid rgba(255,255,255,.12)}
-    .k{
-      width: 30px;
-      text-align:center;
-      opacity:.9;
-      font-size: 1.05rem;
-      flex-shrink:0;
-    }
-    .v{
-      display:flex;
-      flex-direction:column;
-      gap: 4px;
-      min-width:0;
-    }
-    .v strong{
-      font-size: 1.02rem;
-      letter-spacing: -.01em;
-    }
-    .v span{
-      color: var(--muted);
-      font-size: .95rem;
-      line-height:1.4;
-      overflow-wrap:anywhere;
-    }
-    .v a{
-      color: var(--text);
-      text-decoration:none;
-      opacity:.92;
-      border-bottom: 1px dashed rgba(255,255,255,.22);
-      width: fit-content;
-    }
+    .k{width: 30px; text-align:center; opacity:.9; flex-shrink:0}
+    .v{min-width:0}
+    .v strong{display:block; font-size: 1.02rem; letter-spacing:-.01em}
+    .v span, .v a{display:block; color: var(--mut); font-size: .95rem; line-height:1.45}
+    .v a{color: var(--txt); opacity:.9; text-decoration:none; border-bottom: 1px dashed rgba(255,255,255,.22); width: fit-content;}
     .v a:hover{opacity:1}
 
-    .hint{
-      margin-top: 14px;
-      color: rgba(234,240,255,.65);
-      font-size: .88rem;
-      line-height: 1.5;
-    }
-
-    /* Responsive */
     @media (max-width: 880px){
       .wrap{grid-template-columns: 1fr;}
     }
-
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .grid, .hero::before{animation:none}
-      .swap .letter{transition:none}
-      .btn{transition:none}
+      .veil, .scan, .panel, .card{animation:none !important; opacity:1; transform:none}
+      .swap .ch{transition:none}
     }
   </style>
 </head>
 <body>
-  <div class="grid" aria-hidden="true"></div>
+  <div class="veil" aria-hidden="true"><div class="dot"></div></div>
+  <div class="scan" aria-hidden="true"></div>
 
   <main class="wrap">
     <!-- LEFT -->
-    <section class="hero">
-      <div class="topbar">
+    <section class="panel">
+      <div class="top">
         <div class="brand">
           <img src="logo.png" alt="AG Form">
-          <span class="chip">Biglietto da visita</span>
+          <span class="tag">Biglietto da visita</span>
         </div>
-        <a class="btn" href="index.html" title="Torna alla home">← Home</a>
+        <!-- porta alla landing -->
+        <a class="link" href="index.html">Vai alla landing →</a>
       </div>
 
-      <div class="morph" role="group" aria-label="Identità">
-        <div class="wordline">
-          <div class="big gradient">AG</div>
+      <div class="hero">
+        <div class="line">
+          <div class="big grad">AG</div>
 
-          <div class="big swap" id="swapName" aria-live="polite">
-            <span class="a" aria-hidden="true"></span>
-            <span class="b" aria-hidden="true"></span>
+          <div class="big swap" id="swap">
+            <span class="layer a" aria-hidden="true"></span>
+            <span class="layer b" aria-hidden="true"></span>
           </div>
 
-          <div class="big gradient">FORM</div>
+          <div class="big grad">FORM</div>
         </div>
 
         <p class="sub">
-          Formazione finanziata e accesso ai fondi europei. Ti porto dal bando al risultato, senza farti perdere tempo in burocrazia.
+          Formazione finanziata e accesso ai fondi europei. Un referente unico, dalla strategia alla rendicontazione.
         </p>
 
-        <div class="actions">
-          <!-- Cambia numero/email -->
+        <div class="cta">
+          <!-- Cambia questi -->
           <a class="btn primary" href="https://wa.me/393331234567">WhatsApp</a>
           <a class="btn" href="mailto:andrea.gonnella@agform.it">Email</a>
-          <a class="btn" href="#qrcode" id="toggleBtn">Trasforma</a>
+          <a class="btn" href="#" id="replay">Rigioca animazione</a>
         </div>
 
-        <div class="mini" id="qrcode">
-          <span>Tip: clicca “Trasforma” oppure attendi 2 secondi.</span>
-        </div>
+        <div class="micro">All’apertura: “Form” si scompone e diventa “Andrea Gonnella”.</div>
       </div>
     </section>
 
@@ -406,62 +414,71 @@
         <div class="row">
           <div class="k">🌐</div>
           <div class="v">
-            <strong>Sito</strong>
-            <a href="index.html">Homepage AG Form</a>
+            <strong>Landing</strong>
+            <a href="index.html">saolino91.github.io/agform/</a>
           </div>
         </div>
-
-        <p class="hint">
-          Questa pagina è pensata per essere condivisa come link. È leggera e funziona al 100% su GitHub Pages.
-        </p>
       </div>
 
-      <div class="actions" style="margin-top:18px">
-        <a class="btn" href="index.html">Torna al sito</a>
-        <a class="btn primary" href="mailto:andrea.gonnella@agform.it?subject=Richiesta%20consulenza">Prenota consulenza</a>
+      <div class="cta">
+        <a class="btn" href="index.html">Torna alla landing</a>
+        <a class="btn primary" href="mailto:andrea.gonnella@agform.it?subject=Richiesta%20consulenza">Consulenza</a>
       </div>
     </aside>
   </main>
 
   <script>
-    // Utility: split text into spans with staggered delays
-    function fillLetters(container, text, baseDelay = 0) {
-      container.innerHTML = "";
+    function fillLayer(layer, text, isExplodeLayer) {
+      layer.innerHTML = "";
       [...text].forEach((ch, i) => {
         const s = document.createElement("span");
-        s.className = "letter";
-        s.textContent = ch === " " ? "\u00A0" : ch;
-        s.style.transitionDelay = (baseDelay + i * 22) + "ms";
-        container.appendChild(s);
+        s.className = "ch";
+        s.textContent = (ch === " ") ? "\u00A0" : ch;
+
+        // stagger
+        s.style.transitionDelay = (i * 28) + "ms";
+
+        // random explode vectors (only for layer A)
+        if (isExplodeLayer) {
+          const dx = (Math.random() * 34 - 17).toFixed(1) + "px";
+          const dy = (Math.random() * 22 - 11).toFixed(1) + "px";
+          const dr = (Math.random() * 10 - 5).toFixed(1) + "deg";
+          s.style.setProperty("--dx", dx);
+          s.style.setProperty("--dy", dy);
+          s.style.setProperty("--dr", dr);
+        }
+
+        layer.appendChild(s);
       });
     }
 
-    const swap = document.getElementById("swapName");
+    const swap = document.getElementById("swap");
     const a = swap.querySelector(".a");
     const b = swap.querySelector(".b");
 
-    // Stato 0: mostra "Form" (come brand)
-    // Stato 1: mostra "Andrea Gonnella"
-    fillLetters(a, "Form", 0);
-    fillLetters(b, "Andrea Gonnella", 80);
+    // Stato: Form -> Andrea Gonnella
+    fillLayer(a, "Form", true);
+    fillLayer(b, "Andrea Gonnella", false);
 
-    function toggle() {
-      swap.classList.toggle("is-on");
+    function play() {
+      swap.classList.remove("is-on"); // reset
+      // piccolo delay per far ripartire transizioni
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          swap.classList.add("is-on");
+        });
+      });
     }
 
-    document.getElementById("toggleBtn").addEventListener("click", (e) => {
-      e.preventDefault();
-      toggle();
+    // autoplay quando la pagina entra
+    window.addEventListener("load", () => {
+      setTimeout(play, 900);
     });
 
-    // Auto: dopo 2s si trasforma, poi torna dopo 6s (effetto "wow" ma non invasivo)
-    setTimeout(() => {
-      swap.classList.add("is-on");
-      setTimeout(() => swap.classList.remove("is-on"), 6000);
-    }, 2000);
-
-    // Click sulla card morph per ripetere
-    swap.addEventListener("click", toggle);
+    document.getElementById("replay").addEventListener("click", (e) => {
+      e.preventDefault();
+      play();
+    });
   </script>
 </body>
 </html>
