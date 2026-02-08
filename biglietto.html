@@ -86,13 +86,13 @@
 
     /* ========== STAGE PRINCIPALE (PIÙ ALTO) ========== */
     .stage{
-      min-height: 750px; /* Aumentato da 560px */
+      min-height: 750px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
       overflow:hidden;
-      padding: 50px 40px; /* Più padding verticale */
+      padding: 50px 40px;
       position:relative;
       display:flex;
       align-items:center;
@@ -161,8 +161,8 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:flex-start; /* Cambio da center a flex-start */
-      padding-top: 60px; /* Padding top per centrare meglio */
+      justify-content:flex-start;
+      padding-top: 60px;
       gap: 12px;
       opacity:0;
       visibility: hidden;
@@ -170,7 +170,7 @@
       text-align:center;
       padding-left: 30px;
       padding-right: 30px;
-      overflow-y: auto; /* Permetti scroll se necessario */
+      overflow-y: auto;
     }
     .name-display.active{
       opacity:1 !important;
@@ -186,7 +186,7 @@
 
     .full-name{
       font-weight: 900;
-      font-size: clamp(3.2rem, 7vw, 5.8rem); /* Ridotto leggermente */
+      font-size: clamp(3.2rem, 7vw, 5.8rem);
       line-height: 1.15;
       letter-spacing: -0.03em;
       display: flex;
@@ -545,7 +545,19 @@
       };
     }
 
-    // ====== CAMPIONA PIXEL ======
+    // ====== DETERMINA SE UN COLORE È CALDO O FREDDO ======
+    /**
+     * Analizza RGB per determinare se è un colore caldo (rosso/arancio/rosa) 
+     * o freddo (blu/verde/turchese)
+     */
+    function isWarmColor(r, g, b){
+      // Colori caldi hanno più rosso che blu
+      // Heuristica: se rosso > blu E (rosso > verde O rosso+verde > blu*2)
+      const warmScore = r - b + (r - g) * 0.5;
+      return warmScore > 20; // soglia empirica
+    }
+
+    // ====== CAMPIONA PIXEL CON CLASSIFICAZIONE COLORE ======
     function samplePixels(){
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       const pixels = [];
@@ -557,14 +569,25 @@
           const a = data[i+3];
           if (a > 60){
             const r = data[i], g = data[i+1], b = data[i+2];
+            
+            // Classifica il pixel in base al colore
+            const isWarm = isWarmColor(r, g, b);
+            
             pixels.push({
               x, y,
               color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
-              side: x < canvas.width/2 ? 'andrea' : 'gonnella'
+              type: isWarm ? 'andrea' : 'gonnella' // CALDO → ANDREA, FREDDO → GONNELLA
             });
           }
         }
       }
+      
+      // Debug: conta quanti caldi vs freddi
+      const warm = pixels.filter(p => p.type === 'andrea').length;
+      const cold = pixels.filter(p => p.type === 'gonnella').length;
+      console.log(`🔥 Particelle CALDE (→ ANDREA): ${warm}`);
+      console.log(`❄️ Particelle FREDDE (→ GONNELLA): ${cold}`);
+      
       return pixels;
     }
 
@@ -617,6 +640,9 @@
 
       nameDisplay.style.opacity = '0';
       nameDisplay.style.visibility = 'hidden';
+      
+      console.log(`🎯 ANDREA targets Y medio: ${A.reduce((sum,t) => sum + t.y, 0) / A.length}`);
+      console.log(`🎯 GONNELLA targets Y medio: ${G.reduce((sum,t) => sum + t.y, 0) / G.length}`);
       
       return { A, G };
     }
@@ -695,8 +721,10 @@
       const offsetY = canvasRect.top - stageRect.top;
 
       particles = [];
+      
+      // Mappo particelle in base al COLORE, non alla posizione
       for (const px of pixels){
-        const targetList = (px.side === 'andrea') ? A : G;
+        const targetList = (px.type === 'andrea') ? A : G; // CALDI → ANDREA, FREDDI → GONNELLA
         const t = targetList[(Math.random() * targetList.length) | 0];
 
         particles.push(new Particle(
@@ -707,6 +735,7 @@
         ));
       }
 
+      console.log(`🎨 ${particles.length} particelle create e mappate per colore`);
       animate();
     }
 
