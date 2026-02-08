@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AG Form | Biglietto Transformers v1</title>
+  <title>AG Form | Andrea Gonnella</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
@@ -12,8 +12,6 @@
       --txt:#EAF0FF;
       --mut:rgba(234,240,255,.72);
       --line:rgba(255,255,255,.14);
-      --g: linear-gradient(135deg, #FF6B35 0%, #E91E63 45%, #1E88E5 100%);
-      --g2: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
       --shadow: 0 30px 90px rgba(0,0,0,.55);
       --r: 22px;
     }
@@ -36,6 +34,7 @@
       justify-content:center;
     }
 
+    /* Scanline effect */
     .scan{
       position:fixed; inset:0;
       background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
@@ -54,9 +53,9 @@
       position:relative;
     }
 
-    /* ========== STAGE PRINCIPALE ========== */
+    /* ========== STAGE ========== */
     .stage{
-      min-height: 480px;
+      min-height: 520px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
@@ -81,14 +80,18 @@
 
     .stage > *{position:relative; z-index:1}
 
-    /* ========== LOGO INIZIALE ========== */
+    /* ========== LOGO WRAPPER ========== */
     .logo-wrapper{
       cursor: pointer;
       transition: transform .3s ease;
       position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap: 20px;
     }
     
-    .logo-wrapper:hover{
+    .logo-wrapper:hover:not(.transforming){
       transform: scale(1.05);
     }
 
@@ -96,21 +99,23 @@
       pointer-events: none;
     }
 
-    .logo-canvas{
+    /* Canvas per le particelle */
+    #particleCanvas{
       display:block;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
     }
 
+    .logo-wrapper.transforming #particleCanvas{
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
+    }
+
     .hint{
-      position:absolute;
-      bottom: -50px;
-      left:50%;
-      transform: translateX(-50%);
       font-size: .95rem;
       color: var(--mut);
       opacity: .7;
       animation: pulse-hint 2s ease-in-out infinite;
       white-space:nowrap;
+      margin-top: 10px;
     }
     
     @keyframes pulse-hint{
@@ -153,15 +158,16 @@
       letter-spacing: -0.03em;
       display:inline-block;
       opacity:0;
-      will-change: transform, opacity;
+      transform: scale(0.3) translateY(30px);
+      filter: blur(10px);
+      will-change: transform, opacity, filter;
     }
 
     .transformers.active .letter{
-      animation: letterAppear 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation: letterReveal 0.9s cubic-bezier(.34,1.56,.64,1) forwards;
     }
 
-    /* Animazione fluida per ogni lettera */
-    @keyframes letterAppear{
+    @keyframes letterReveal{
       0%{
         opacity:0;
         transform: scale(0.3) translateY(30px);
@@ -176,7 +182,7 @@
 
     .andrea{
       font-size: clamp(2.8rem, 6vw, 4.5rem);
-      background: linear-gradient(135deg, #FF6B35 0%, #E91E63 100%);
+      background: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
       -webkit-background-clip:text;
       background-clip:text;
       color: transparent;
@@ -193,7 +199,10 @@
     .form-text{
       font-size: clamp(1.8rem, 4vw, 3rem);
       font-weight: 800;
-      color: var(--txt);
+      background: linear-gradient(135deg, #FF6B9D 0%, #4ECDC4 100%);
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
       opacity:0;
       transform: translateY(20px);
     }
@@ -330,7 +339,7 @@
     }
 
     .btn.primary{
-      background: var(--g2);
+      background: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
       border-color: transparent;
       box-shadow: 0 14px 40px rgba(30,136,229,.28);
     }
@@ -351,7 +360,7 @@
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px){
       .stage{
-        min-height: 380px;
+        min-height: 420px;
         padding: 28px;
       }
 
@@ -368,6 +377,10 @@
         padding: 20px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation: none !important; transition: none !important}
+    }
   </style>
 </head>
 <body>
@@ -375,9 +388,9 @@
 
   <div class="container">
     <div class="stage">
-      <!-- LOGO INIZIALE CON CANVAS -->
+      <!-- LOGO CON CANVAS -->
       <div class="logo-wrapper" id="logoWrapper">
-        <canvas id="logoCanvas" class="logo-canvas" width="300" height="180"></canvas>
+        <canvas id="particleCanvas" width="400" height="400"></canvas>
         <div class="hint">👆 Clicca per trasformare</div>
       </div>
 
@@ -445,9 +458,9 @@
 
   <script>
     // ========== CONFIGURAZIONE ==========
-    const logoWrapper = document.getElementById('logoWrapper');
-    const canvas = document.getElementById('logoCanvas');
+    const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d');
+    const logoWrapper = document.getElementById('logoWrapper');
     const transformers = document.getElementById('transformers');
     const andreaDiv = document.getElementById('andrea');
     const gonnellaDiv = document.getElementById('gonnella');
@@ -455,154 +468,129 @@
     const actions = document.getElementById('actions');
     const resetBtn = document.getElementById('resetBtn');
 
-    let hasTransformed = false;
-    let particles = []; // Array che conterrà le particelle
+    let particles = [];
     let animationFrame = null;
+    let hasTransformed = false;
+    let logoImage = null;
 
     // ========== CLASSE PARTICELLA ==========
     /**
      * Ogni particella rappresenta un pixel del logo
-     * che si muove verso la sua posizione finale nelle lettere
+     * Si muove dal logo verso la posizione finale nel testo
      */
     class Particle {
       constructor(x, y, color, targetX, targetY, delay) {
-        // Posizione iniziale (dal logo)
         this.startX = x;
         this.startY = y;
-        
-        // Posizione attuale
         this.x = x;
         this.y = y;
-        
-        // Posizione finale (nelle lettere)
         this.targetX = targetX;
         this.targetY = targetY;
-        
-        // Colore della particella
         this.color = color;
-        
-        // Dimensione della particella
-        this.size = 3;
-        
-        // Progresso dell'animazione (da 0 a 1)
+        this.size = 2.5; // Particelle piccole per effetto più raffinato
         this.progress = 0;
-        
-        // Ritardo prima di iniziare l'animazione
         this.delay = delay;
-        
-        // Velocità di animazione
-        this.speed = 0.02 + Math.random() * 0.01;
-        
-        // Opacità
+        this.speed = 0.015 + Math.random() * 0.008; // Velocità variabile
         this.alpha = 1;
       }
 
-      /**
-       * Aggiorna la posizione della particella
-       * Usa una funzione di easing per un movimento fluido
-       */
       update() {
-        // Se c'è ancora ritardo, non fare nulla
         if (this.delay > 0) {
           this.delay -= 1;
           return;
         }
 
-        // Incrementa il progresso
         if (this.progress < 1) {
           this.progress += this.speed;
         }
 
-        // Funzione di easing "easeOutCubic" per un movimento naturale
-        // Parte veloce e rallenta alla fine
-        const eased = 1 - Math.pow(1 - this.progress, 3);
+        // Easing function: easeOutQuart per rallentamento finale smooth
+        const eased = 1 - Math.pow(1 - this.progress, 4);
 
-        // Calcola la nuova posizione interpolando tra start e target
         this.x = this.startX + (this.targetX - this.startX) * eased;
         this.y = this.startY + (this.targetY - this.startY) * eased;
       }
 
-      /**
-       * Disegna la particella sul canvas
-       */
-      draw(context) {
-        context.globalAlpha = this.alpha;
-        context.fillStyle = this.color;
-        context.beginPath();
-        context.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        context.fill();
-        context.globalAlpha = 1;
+      draw() {
+        ctx.globalAlpha = this.alpha;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
       }
     }
 
-    // ========== DISEGNA LOGO PLACEHOLDER ==========
-    /**
-     * Disegna un logo placeholder (rettangolo con testo "AG")
-     * Se hai un'immagine vera, caricala qui
-     */
-    function drawLogo() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ========== CARICA E DISEGNA IL LOGO ==========
+    function loadAndDrawLogo() {
+      logoImage = new Image();
+      logoImage.src = 'logo.png'; // Il tuo logo
       
-      // Gradiente per il logo
-      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-      gradient.addColorStop(0, '#FF6B35');
-      gradient.addColorStop(0.5, '#E91E63');
-      gradient.addColorStop(1, '#1E88E5');
-      
-      // Disegna rettangolo arrotondato
-      ctx.fillStyle = gradient;
-      roundRect(ctx, 50, 40, 200, 100, 20);
-      
-      // Disegna testo "AG"
-      ctx.fillStyle = '#fff';
-      ctx.font = 'bold 60px Inter, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText('AG', 150, 90);
+      logoImage.onload = () => {
+        // Centra il logo nel canvas
+        const scale = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.7;
+        const x = (canvas.width - logoImage.width * scale) / 2;
+        const y = (canvas.height - logoImage.height * scale) / 2;
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(logoImage, x, y, logoImage.width * scale, logoImage.height * scale);
+      };
+
+      logoImage.onerror = () => {
+        // Fallback: disegna un logo semplice se l'immagine non carica
+        drawFallbackLogo();
+      };
     }
 
     /**
-     * Funzione helper per disegnare rettangoli arrotondati
+     * Logo di fallback se l'immagine non carica
      */
-    function roundRect(ctx, x, y, width, height, radius) {
-      ctx.beginPath();
-      ctx.moveTo(x + radius, y);
-      ctx.lineTo(x + width - radius, y);
-      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-      ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-      ctx.lineTo(x + radius, y + height);
-      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-      ctx.lineTo(x, y + radius);
-      ctx.quadraticCurveTo(x, y, x + radius, y);
-      ctx.closePath();
-      ctx.fill();
+    function drawFallbackLogo() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Disegna un logo stilizzato "AG"
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, '#FF8A3C');
+      gradient.addColorStop(0.5, '#E91E63');
+      gradient.addColorStop(1, '#1E88E5');
+      
+      ctx.fillStyle = gradient;
+      ctx.font = 'bold 120px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('AG', canvas.width / 2, canvas.height / 2 - 20);
+      
+      const gradient2 = ctx.createLinearGradient(0, canvas.height/2, canvas.width, canvas.height);
+      gradient2.addColorStop(0, '#FF6B9D');
+      gradient2.addColorStop(1, '#4ECDC4');
+      
+      ctx.fillStyle = gradient2;
+      ctx.font = 'bold 40px Inter, sans-serif';
+      ctx.fillText('form', canvas.width / 2, canvas.height / 2 + 60);
     }
 
     // ========== CAMPIONA PIXEL DAL LOGO ==========
     /**
-     * Estrae i pixel dal logo per creare le particelle
-     * Campiona ogni N pixel per non averne troppi
+     * Estrae i pixel colorati dal logo
      */
     function sampleLogoPixels() {
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const pixels = [];
-      const samplingRate = 4; // Prendi 1 pixel ogni 4 per performance migliori
+      const samplingRate = 3; // Prendi 1 pixel ogni 3
 
       for (let y = 0; y < canvas.height; y += samplingRate) {
         for (let x = 0; x < canvas.width; x += samplingRate) {
           const index = (y * canvas.width + x) * 4;
           const alpha = imageData.data[index + 3];
 
-          // Se il pixel non è trasparente, salvalo
-          if (alpha > 128) {
+          if (alpha > 50) { // Solo pixel visibili
             const r = imageData.data[index];
             const g = imageData.data[index + 1];
             const b = imageData.data[index + 2];
             pixels.push({
               x: x,
               y: y,
-              color: `rgb(${r},${g},${b})`
+              color: `rgba(${r},${g},${b},${alpha/255})`
             });
           }
         }
@@ -611,10 +599,9 @@
       return pixels;
     }
 
-    // ========== CREA LETTERE E OTTIENI POSIZIONI TARGET ==========
+    // ========== CREA LETTERE E OTTIENI POSIZIONI ==========
     /**
-     * Crea le lettere con <span> e ottiene le coordinate
-     * di ogni lettera per sapere dove far andare le particelle
+     * Crea le lettere e calcola le loro posizioni
      */
     function createLettersAndGetTargets(container, text) {
       container.innerHTML = '';
@@ -624,125 +611,123 @@
         const span = document.createElement('span');
         span.className = 'letter';
         span.textContent = char;
-        span.style.animationDelay = (i * 0.05 + 0.1) + 's';
+        span.style.animationDelay = (i * 0.04 + 0.15) + 's';
         container.appendChild(span);
+      });
 
-        // Ottieni la posizione del centro della lettera
-        // (usiamo un timeout per dare tempo al browser di calcolare le posizioni)
-        setTimeout(() => {
-          const rect = span.getBoundingClientRect();
+      // Calcola posizioni dopo un breve delay
+      setTimeout(() => {
+        const letters = container.querySelectorAll('.letter');
+        letters.forEach(letter => {
+          const rect = letter.getBoundingClientRect();
           const stageRect = document.querySelector('.stage').getBoundingClientRect();
           
-          // Coordinate relative al canvas
-          const centerX = rect.left + rect.width / 2 - stageRect.left + logoWrapper.offsetLeft - canvas.width / 2;
-          const centerY = rect.top + rect.height / 2 - stageRect.top + logoWrapper.offsetTop - canvas.height / 2;
+          const centerX = rect.left + rect.width / 2 - stageRect.left - canvas.offsetLeft + canvas.width / 2;
+          const centerY = rect.top + rect.height / 2 - stageRect.top - canvas.offsetTop + canvas.height / 2;
           
           targets.push({ x: centerX, y: centerY });
-        }, 50);
-      });
+        });
+      }, 100);
 
       return targets;
     }
 
     // ========== ANIMAZIONE PARTICELLE ==========
-    /**
-     * Loop di animazione che aggiorna e disegna tutte le particelle
-     */
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Aggiorna e disegna ogni particella
       let allComplete = true;
       particles.forEach(p => {
         p.update();
-        p.draw(ctx);
+        p.draw();
         if (p.progress < 1) allComplete = false;
       });
 
-      // Se non tutte le particelle hanno finito, continua l'animazione
       if (!allComplete) {
         animationFrame = requestAnimationFrame(animateParticles);
       } else {
-        // Animazione completata: nascondi il canvas e mostra le lettere
-        canvas.style.opacity = '0';
-        canvas.style.transition = 'opacity 0.5s ease';
-        transformers.classList.add('active');
-        infoCard.classList.add('visible');
-        actions.classList.add('visible');
+        // Animazione completata
+        setTimeout(() => {
+          transformers.classList.add('active');
+          infoCard.classList.add('visible');
+          actions.classList.add('visible');
+          
+          // Fade out del canvas
+          canvas.style.opacity = '0';
+          canvas.style.transition = 'opacity 0.6s ease';
+        }, 300);
       }
     }
 
     // ========== TRASFORMAZIONE PRINCIPALE ==========
-    /**
-     * Funzione principale che orchestra tutta l'animazione
-     */
     function transform() {
       if (hasTransformed) return;
       hasTransformed = true;
 
       logoWrapper.classList.add('transforming');
 
-      // 1. Campiona i pixel del logo
+      // Campiona i pixel
       const logoPixels = sampleLogoPixels();
 
-      // 2. Crea le lettere (nascoste) e ottieni le loro posizioni
-      const andreaTargets = createLettersAndGetTargets(andreaDiv, 'ANDREA');
-      const gonnellaTargets = createLettersAndGetTargets(gonnellaDiv, 'GONNELLA');
+      // Crea le lettere
+      const andreaTargets = [];
+      const gonnellaTargets = [];
+      
+      createLettersAndGetTargets(andreaDiv, 'ANDREA');
+      createLettersAndGetTargets(gonnellaDiv, 'GONNELLA');
 
-      // 3. Aspetta che le posizioni siano calcolate
+      // Aspetta che le posizioni siano calcolate
       setTimeout(() => {
-        const allTargets = [...andreaTargets, ...gonnellaTargets];
-        
-        // 4. Crea le particelle
-        // Distribuisci i pixel del logo verso le lettere
+        // Raccogli tutti i target
+        const allTargets = [
+          ...Array.from(andreaDiv.querySelectorAll('.letter')),
+          ...Array.from(gonnellaDiv.querySelectorAll('.letter'))
+        ].map(letter => {
+          const rect = letter.getBoundingClientRect();
+          const stageRect = document.querySelector('.stage').getBoundingClientRect();
+          return {
+            x: rect.left + rect.width / 2 - stageRect.left - canvas.offsetLeft + canvas.width / 2,
+            y: rect.top + rect.height / 2 - stageRect.top - canvas.offsetTop + canvas.height / 2
+          };
+        });
+
+        // Crea le particelle
         logoPixels.forEach((pixel, i) => {
-          // Scegli un target casuale tra le lettere
           const target = allTargets[Math.floor(Math.random() * allTargets.length)];
-          
-          // Crea la particella con un delay casuale per effetto più organico
           const particle = new Particle(
             pixel.x,
             pixel.y,
             pixel.color,
-            target.x + canvas.width / 2,
-            target.y + canvas.height / 2,
-            Math.random() * 20 // delay casuale
+            target.x,
+            target.y,
+            Math.random() * 30 // Delay casuale
           );
-          
           particles.push(particle);
         });
 
-        // 5. Avvia l'animazione
+        // Avvia animazione
         animateParticles();
-      }, 200);
+      }, 300);
     }
 
     // ========== RESET ==========
-    /**
-     * Riporta tutto allo stato iniziale
-     */
     function reset() {
-      // Ferma l'animazione
       if (animationFrame) {
         cancelAnimationFrame(animationFrame);
         animationFrame = null;
       }
 
-      // Reset flags e array
       hasTransformed = false;
       particles = [];
 
-      // Reset classi
       logoWrapper.classList.remove('transforming');
       transformers.classList.remove('active');
       infoCard.classList.remove('visible');
       actions.classList.remove('visible');
 
-      // Reset canvas
       canvas.style.opacity = '1';
-      drawLogo();
+      loadAndDrawLogo();
 
-      // Pulisci le lettere
       andreaDiv.innerHTML = '';
       gonnellaDiv.innerHTML = '';
     }
@@ -751,8 +736,8 @@
     logoWrapper.addEventListener('click', transform);
     resetBtn.addEventListener('click', reset);
 
-    // ========== INIZIALIZZAZIONE ==========
-    drawLogo();
+    // ========== INIT ==========
+    loadAndDrawLogo();
   </script>
 </body>
 </html>
