@@ -133,6 +133,7 @@
       position: absolute;
       inset: 0;
       justify-content: center;
+      z-index: 10; /* Sopra il testo durante l'animazione */
     }
     .logo-wrapper:hover:not(.transforming){ transform: scale(1.04); }
     .logo-wrapper.transforming{ pointer-events:none; }
@@ -140,6 +141,7 @@
       opacity: 0;
       pointer-events: none;
       visibility: hidden;
+      z-index: -1; /* IMPORTANTE: sotto tutto quando nascosto */
     }
 
     #particleCanvas{
@@ -180,12 +182,14 @@
       padding-left: 30px;
       padding-right: 30px;
       overflow-y: auto;
+      z-index: 5; /* Sotto il logo inizialmente */
     }
     .name-display.active{
       opacity:1 !important;
       visibility:visible !important;
       pointer-events:auto;
       animation: fadeIn 0.8s ease forwards;
+      z-index: 20; /* IMPORTANTE: sopra tutto quando attivo */
     }
 
     @keyframes fadeIn{
@@ -302,6 +306,7 @@
       transition: all .25s ease;
       width: 100%;
       justify-content: flex-start;
+      cursor: pointer; /* Assicura cursor pointer */
     }
 
     .contact-link:hover{
@@ -748,6 +753,7 @@
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         canvas.style.opacity = '0';
+        canvas.style.display = 'none'; // IMPORTANTE: rimuovi dal layout
         
         nameDisplay.style.opacity = '';
         nameDisplay.style.visibility = '';
@@ -780,6 +786,7 @@
               const pixels2 = samplePixels();
               if (pixels2.length === 0) {
                 logoWrapper.classList.add('hidden');
+                canvas.style.display = 'none';
                 nameDisplay.classList.add('active');
                 lucide.createIcons();
                 return;
@@ -799,8 +806,8 @@
       if (A.length === 0 || G.length === 0){
         console.warn('⚠️ Nessun target trovato');
         logoWrapper.classList.add('hidden');
+        canvas.style.display = 'none';
         nameDisplay.classList.add('active');
-        canvas.style.opacity = '0';
         lucide.createIcons();
         return;
       }
@@ -834,6 +841,7 @@
       nameDisplay.style.visibility = '';
       
       logoWrapper.classList.remove('transforming', 'hidden');
+      canvas.style.display = 'block'; // Rimostra canvas
 
       canvas.style.opacity = '1';
       canvas.style.transition = 'none';
