@@ -92,13 +92,14 @@
 
     /* ========== STAGE PRINCIPALE ========== */
     .stage{
-      min-height: 750px;
+      /* FIX 1 DESKTOP: Altezza aumentata da 750px a 820px */
+      min-height: 820px;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
-      overflow:hidden; /* FIX 1: nasconde particelle fuori area */
-      padding: 50px 40px;
+      overflow:hidden;
+      padding: 50px 40px; /* Più padding verticale per dare respiro */
       position:relative;
       display:flex;
       align-items:center;
@@ -153,12 +154,11 @@
       height: auto;
     }
 
-    /* FIX 3: Hint più discreto e formale */
     .hint{
-      font-size: 0.85rem; /* Più piccolo */
+      font-size: 0.85rem;
       color: var(--mut);
-      opacity: 0.45; /* Più trasparente */
-      animation: pulseHint 3s ease-in-out infinite; /* Più lento */
+      opacity: 0.45;
+      animation: pulseHint 3s ease-in-out infinite;
       white-space:nowrap;
       font-weight: 500;
       letter-spacing: 0.5px;
@@ -186,6 +186,7 @@
       text-align:center;
       padding-left: 30px;
       padding-right: 30px;
+      padding-bottom: 30px; /* FIX 1: Più spazio sotto */
       overflow-y: auto;
       z-index: 5;
     }
@@ -371,9 +372,8 @@
       color: var(--txt);
     }
 
-    /* FIX 2: Nasconde completamente reset-wrapper */
     .reset-wrapper{
-      display: none !important; /* Rimosso completamente */
+      display: none !important;
     }
 
     /* ========== RESPONSIVE ========== */
@@ -391,7 +391,10 @@
         border: none;
       }
       
-      .full-name{ font-size: 2.5rem; }
+      /* FIX 2 MOBILE: Font più grande da 2.5rem a 3.2rem */
+      .full-name{ 
+        font-size: 3.2rem; 
+      }
       
       .name-display{
         padding-top: 30px;
@@ -418,7 +421,10 @@
         border-radius: 16px;
       }
       
-      .full-name{ font-size: 2.2rem; }
+      /* FIX 2 MOBILE: Font più grande anche su schermi piccoli da 2.2rem a 2.8rem */
+      .full-name{ 
+        font-size: 2.8rem; 
+      }
       
       .name-display{
         padding-top: 20px;
@@ -439,7 +445,6 @@
       <!-- LOGO INIZIALE -->
       <div class="logo-wrapper" id="logoWrapper" title="Interagisci per visualizzare i contatti">
         <canvas id="particleCanvas"></canvas>
-        <!-- FIX 3: Testo più formale e discreto -->
         <div class="hint">Seleziona per continuare</div>
       </div>
 
@@ -495,8 +500,6 @@
           </a>
 
         </div>
-
-        <!-- FIX 2: Reset wrapper rimosso -->
       </div>
     </div>
   </div>
@@ -529,7 +532,6 @@
         canvas.width = Math.floor(stageRect.width - 40);
         canvas.height = Math.floor(stageRect.height - 50);
       } else {
-        // FIX 1: Canvas più grande su desktop per coprire tutta l'area
         const size = Math.min(stageRect.width - 80, stageRect.height - 100);
         canvas.width = size;
         canvas.height = size;
