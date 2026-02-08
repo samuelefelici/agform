@@ -32,7 +32,7 @@
         radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow-x:hidden;
-      padding: 18px;
+      padding: 12px; /* Ridotto da 18px */
       display:flex;
       align-items:center;
       justify-content:center;
@@ -136,7 +136,7 @@
       visibility: hidden;
     }
 
-    /* Canvas responsive */
+    /* Canvas responsive - occupa TUTTO lo stage */
     #particleCanvas{
       display:block;
       filter: drop-shadow(0 20px 40px rgba(0,0,0,.5));
@@ -365,30 +365,50 @@
 
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px){
+      body{
+        padding: 8px; /* Ancora meno padding */
+        align-items: flex-start; /* Allinea in alto invece che centro */
+        padding-top: 20px; /* Spazio minimo sopra */
+      }
+      
       .stage{ 
-        min-height: 680px; 
-        padding: 35px 24px; 
+        min-height: 90vh; /* Occupa quasi tutto lo schermo */
+        max-height: 95vh;
+        padding: 25px 20px; 
+        border: none; /* Rimuovi bordo su mobile se vuoi */
       }
+      
       .full-name{ font-size: 2.5rem; }
+      
       .name-display{
-        padding-top: 40px;
+        padding-top: 30px; /* Meno spazio sopra */
       }
+      
       .contact-link{ 
         padding: 10px 16px;
       }
+      
       .contact-link .value{
         font-size: 0.88rem;
       }
     }
 
     @media (max-width: 480px){
-      .stage{ 
-        min-height: 620px; 
-        padding: 30px 20px; 
+      body{
+        padding: 6px;
+        padding-top: 15px;
       }
+      
+      .stage{ 
+        min-height: 92vh;
+        padding: 20px 16px; 
+        border-radius: 16px; /* Bordo più stretto */
+      }
+      
       .full-name{ font-size: 2.2rem; }
+      
       .name-display{
-        padding-top: 30px;
+        padding-top: 20px;
       }
     }
 
@@ -470,19 +490,24 @@
     let transformed = false;
     let logoImage = null;
 
-    // ====== DIMENSIONE CANVAS RESPONSIVE ======
+    // ====== DIMENSIONE CANVAS RESPONSIVE (COPRE TUTTO LO STAGE) ======
     function setCanvasSize(){
       const stage = document.querySelector('.stage');
-      const stageWidth = stage.clientWidth - 80; // Padding
+      const stageRect = stage.getBoundingClientRect();
       const isMobile = window.innerWidth <= 768;
       
-      // Canvas più grande su mobile per coprire tutta l'area
-      const maxSize = isMobile ? Math.min(stageWidth, 500) : 420;
+      if (isMobile) {
+        // Su mobile: canvas ALTO quanto lo stage per contenere tutto
+        canvas.width = Math.floor(stageRect.width - 40); // -40 per padding
+        canvas.height = Math.floor(stageRect.height - 50); // -50 per padding
+      } else {
+        // Desktop: canvas quadrato centrato
+        const size = 420;
+        canvas.width = size;
+        canvas.height = size;
+      }
       
-      canvas.width = maxSize;
-      canvas.height = maxSize;
-      
-      console.log(`📱 Canvas size: ${canvas.width}x${canvas.height} (mobile: ${isMobile})`);
+      console.log(`📱 Canvas: ${canvas.width}x${canvas.height} (mobile: ${isMobile})`);
     }
 
     // ====== PARTICELLA ======
@@ -513,43 +538,55 @@
       done(){ return this.t >= 1; }
     }
 
-    // ====== DISEGNA LOGO ======
+    // ====== DISEGNA LOGO (SCALABILE) ======
     function drawFallbackLogo(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
+      // Logo centrato nel canvas (ovunque sia la sua dimensione)
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      
       const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
       g.addColorStop(0,'#FF8A3C');
       g.addColorStop(0.5,'#E91E63');
       g.addColorStop(1,'#1E88E5');
 
       ctx.fillStyle = g;
-      ctx.font = `900 ${canvas.width * 0.31}px Inter, sans-serif`;
+      const fontSize = Math.min(canvas.width, canvas.height) * 0.31;
+      ctx.font = `900 ${fontSize}px Inter, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('AG', canvas.width/2, canvas.height/2 - canvas.height*0.04);
+      ctx.fillText('AG', centerX, centerY - fontSize * 0.15);
 
-      const g2 = ctx.createLinearGradient(0,canvas.height/2,canvas.width,canvas.height);
+      const g2 = ctx.createLinearGradient(0,centerY,canvas.width,canvas.height);
       g2.addColorStop(0,'#1E88E5');
       g2.addColorStop(1,'#26C281');
 
       ctx.fillStyle = g2;
-      ctx.font = `800 ${canvas.width * 0.11}px Inter, sans-serif`;
-      ctx.fillText('FORM', canvas.width/2, canvas.height/2 + canvas.height*0.17);
+      ctx.font = `800 ${fontSize * 0.35}px Inter, sans-serif`;
+      ctx.fillText('FORM', centerX, centerY + fontSize * 0.55);
     }
 
     function loadAndDrawLogo(){
-      setCanvasSize(); // Imposta dimensione prima di disegnare
+      setCanvasSize();
       
       logoImage = new Image();
       logoImage.src = 'logo.png';
 
       logoImage.onload = () => {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        const s = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.72;
-        const w = logoImage.width * s;
-        const h = logoImage.height * s;
+        
+        // Scala e centra il logo
+        const scale = Math.min(
+          canvas.width / logoImage.width, 
+          canvas.height / logoImage.height
+        ) * 0.65; // Ridotto a 0.65 per lasciare più spazio
+        
+        const w = logoImage.width * scale;
+        const h = logoImage.height * scale;
         const x = (canvas.width - w) / 2;
         const y = (canvas.height - h) / 2;
+        
         ctx.drawImage(logoImage, x, y, w, h);
       };
 
@@ -621,7 +658,6 @@
       
       const forceLayout = nameDisplay.offsetHeight;
       
-      const stageRect = document.querySelector('.stage').getBoundingClientRect();
       const canvasRect = canvas.getBoundingClientRect();
       
       const A = [];
@@ -629,7 +665,6 @@
 
       andreaDiv.querySelectorAll('.letter').forEach(el => {
         const r = el.getBoundingClientRect();
-        // Coordinate relative al canvas (non allo stage!)
         A.push({
           x: (r.left + r.width/2) - canvasRect.left,
           y: (r.top + r.height/2) - canvasRect.top
@@ -647,7 +682,9 @@
       nameDisplay.style.opacity = '0';
       nameDisplay.style.visibility = 'hidden';
       
-      console.log(`🎯 ANDREA Y: ${A.length > 0 ? A[0].y.toFixed(0) : 'N/A'} | GONNELLA Y: ${G.length > 0 ? G[0].y.toFixed(0) : 'N/A'}`);
+      const andreaY = A.length > 0 ? A[0].y.toFixed(0) : 'N/A';
+      const gonnellaY = G.length > 0 ? G[0].y.toFixed(0) : 'N/A';
+      console.log(`🎯 ANDREA Y: ${andreaY} | GONNELLA Y: ${gonnellaY} | Canvas H: ${canvas.height}`);
       
       return { A, G };
     }
@@ -729,7 +766,7 @@
 
         particles.push(new Particle(
           px.x, px.y, px.color,
-          t.x, t.y, // Ora coordinate già relative al canvas
+          t.x, t.y,
           (Math.random()*26) | 0
         ));
       }
@@ -767,7 +804,6 @@
     logoWrapper.addEventListener('click', transform);
     resetBtn.addEventListener('click', (e) => { e.preventDefault(); reset(); });
 
-    // Ridimensiona canvas su resize
     window.addEventListener('resize', () => {
       if (!transformed) {
         loadAndDrawLogo();
