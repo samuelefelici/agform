@@ -132,7 +132,7 @@
       flex-direction:column;
       align-items:center;
       justify-content:center;
-      gap: 15px;
+      gap: 20px;
       opacity:0;
       pointer-events:none;
       transition: opacity 0.6s ease;
@@ -193,29 +193,6 @@
       color: transparent;
     }
 
-    .form-text{
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      background: linear-gradient(135deg, #FF6B9D 0%, #4ECDC4 100%);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color: transparent;
-      opacity:0;
-      transform: scale(0.8);
-    }
-
-    .transformers.active .form-text{
-      animation: formAppear 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
-      animation-delay: .4s;
-    }
-
-    @keyframes formAppear{
-      to{
-        opacity:1;
-        transform: scale(1);
-      }
-    }
-
     .tagline{
       margin-top: 18px;
       color: var(--mut);
@@ -228,7 +205,7 @@
 
     .transformers.active .tagline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .7s;
+      animation-delay: .5s;
     }
 
     @keyframes slideUp{
@@ -372,10 +349,6 @@
         font-size: 2.8rem;
       }
 
-      .form-text{
-        font-size: 2rem;
-      }
-
       .info-card{
         grid-template-columns: 1fr;
         padding: 20px;
@@ -398,13 +371,11 @@
         <div class="hint">👆 Clicca per trasformare</div>
       </div>
 
-      <!-- TRANSFORMERS FINALE -->
+      <!-- TRANSFORMERS FINALE (solo ANDREA e GONNELLA, niente FORM) -->
       <div class="transformers" id="transformers">
         <div class="name-row">
           <div class="andrea" id="andrea"></div>
         </div>
-        
-        <div class="form-text">FORM</div>
         
         <div class="name-row">
           <div class="gonnella" id="gonnella"></div>
@@ -478,23 +449,21 @@
     let logoImage = null;
 
     // ========== CLASSE PARTICELLA ==========
+    /**
+     * Ogni particella si muove dal logo verso una lettera specifica
+     */
     class Particle {
-      constructor(x, y, color) {
+      constructor(x, y, color, targetX, targetY, delay) {
         this.startX = x;
         this.startY = y;
         this.x = x;
         this.y = y;
-        
-        // Target casuale per effetto esplosione/dispersione
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 100 + Math.random() * 200;
-        this.targetX = x + Math.cos(angle) * distance;
-        this.targetY = y + Math.sin(angle) * distance;
-        
+        this.targetX = targetX;
+        this.targetY = targetY;
         this.color = color;
         this.size = 2.5;
         this.progress = 0;
-        this.delay = Math.random() * 30;
+        this.delay = delay;
         this.speed = 0.015 + Math.random() * 0.008;
         this.alpha = 1;
       }
@@ -509,14 +478,11 @@
           this.progress += this.speed;
         }
 
-        // Easing: easeOutQuart
+        // Easing: easeOutQuart per movimento fluido
         const eased = 1 - Math.pow(1 - this.progress, 4);
 
         this.x = this.startX + (this.targetX - this.startX) * eased;
         this.y = this.startY + (this.targetY - this.startY) * eased;
-        
-        // Fade out graduale
-        this.alpha = 1 - eased;
       }
 
       draw() {
@@ -586,10 +552,15 @@
             const r = imageData.data[index];
             const g = imageData.data[index + 1];
             const b = imageData.data[index + 2];
+            
+            // Determina se il pixel è a sinistra (A) o destra (G)
+            const isLeftSide = x < canvas.width / 2;
+            
             pixels.push({
               x: x,
               y: y,
-              color: `rgba(${r},${g},${b},${alpha/255})`
+              color: `rgba(${r},${g},${b},${alpha/255})`,
+              side: isLeftSide ? 'andrea' : 'gonnella' // Etichetta il pixel
             });
           }
         }
@@ -611,6 +582,45 @@
       });
     }
 
+    // ========== OTTIENI POSIZIONI LETTERE ==========
+    /**
+     * Calcola le posizioni delle lettere ANDREA e GONNELLA
+     * separatamente per mappare A -> ANDREA e G -> GONNELLA
+     */
+    function getLetterPositions() {
+      // Rendi temporaneamente visibile per calcolare
+      const originalOpacity = transformers.style.opacity;
+      transformers.style.opacity = '1';
+      transformers.style.pointerEvents = 'none';
+      
+      const stageRect = document.querySelector('.stage').getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+      
+      const andreaTargets = [];
+      const gonnellaTargets = [];
+      
+      // Posizioni lettere ANDREA
+      andreaDiv.querySelectorAll('.letter').forEach(letter => {
+        const rect = letter.getBoundingClientRect();
+        const centerX = (rect.left + rect.width / 2) - canvasRect.left;
+        const centerY = (rect.top + rect.height / 2) - canvasRect.top;
+        andreaTargets.push({ x: centerX, y: centerY });
+      });
+      
+      // Posizioni lettere GONNELLA
+      gonnellaDiv.querySelectorAll('.letter').forEach(letter => {
+        const rect = letter.getBoundingClientRect();
+        const centerX = (rect.left + rect.width / 2) - canvasRect.left;
+        const centerY = (rect.top + rect.height / 2) - canvasRect.top;
+        gonnellaTargets.push({ x: centerX, y: centerY });
+      });
+      
+      // Riporta opacità originale
+      transformers.style.opacity = originalOpacity;
+      
+      return { andreaTargets, gonnellaTargets };
+    }
+
     // ========== ANIMAZIONE PARTICELLE ==========
     function animateParticles() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -625,15 +635,16 @@
       if (!allComplete) {
         animationFrame = requestAnimationFrame(animateParticles);
       } else {
-        // Particelle finite: mostra il testo
+        // Animazione completata: mostra le lettere
         setTimeout(() => {
-          canvas.style.opacity = '0';
-          canvas.style.transition = 'opacity 0.5s ease';
-          
           transformers.classList.add('active');
           infoCard.classList.add('visible');
           actions.classList.add('visible');
-        }, 100);
+          
+          // Fade out canvas
+          canvas.style.opacity = '0';
+          canvas.style.transition = 'opacity 0.8s ease';
+        }, 200);
       }
     }
 
@@ -644,21 +655,57 @@
 
       logoWrapper.classList.add('transforming');
 
-      // 1. Campiona i pixel
+      // 1. Campiona i pixel del logo (con etichetta andrea/gonnella)
       const logoPixels = sampleLogoPixels();
 
-      // 2. Crea le particelle (effetto esplosione semplice)
-      logoPixels.forEach((pixel) => {
-        const particle = new Particle(pixel.x, pixel.y, pixel.color);
-        particles.push(particle);
-      });
-
-      // 3. Crea le lettere (nascoste)
+      // 2. Crea le lettere ANDREA e GONNELLA
       createLetters(andreaDiv, 'ANDREA');
       createLetters(gonnellaDiv, 'GONNELLA');
 
-      // 4. Avvia animazione
-      animateParticles();
+      // 3. Aspetta che il browser renderizzi
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // 4. Ottieni le posizioni delle lettere
+          const { andreaTargets, gonnellaTargets } = getLetterPositions();
+
+          console.log('Andrea targets:', andreaTargets.length);
+          console.log('Gonnella targets:', gonnellaTargets.length);
+
+          if (andreaTargets.length === 0 || gonnellaTargets.length === 0) {
+            console.error('Errore: nessun target trovato!');
+            return;
+          }
+
+          // 5. Crea le particelle mappando A -> ANDREA e G -> GONNELLA
+          logoPixels.forEach((pixel) => {
+            let target;
+            
+            if (pixel.side === 'andrea') {
+              // Pixel della A vanno verso ANDREA
+              target = andreaTargets[Math.floor(Math.random() * andreaTargets.length)];
+            } else {
+              // Pixel della G vanno verso GONNELLA
+              target = gonnellaTargets[Math.floor(Math.random() * gonnellaTargets.length)];
+            }
+            
+            const particle = new Particle(
+              pixel.x,
+              pixel.y,
+              pixel.color,
+              target.x,
+              target.y,
+              Math.random() * 30 // Delay casuale
+            );
+            
+            particles.push(particle);
+          });
+
+          console.log('Particelle create:', particles.length);
+
+          // 6. Avvia animazione
+          animateParticles();
+        });
+      });
     }
 
     // ========== RESET ==========
