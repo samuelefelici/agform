@@ -198,7 +198,7 @@
       font-weight: 900;
       font-size: clamp(3.2rem, 7vw, 5.8rem);
       line-height: 1.1;
-      letter-spacing: -0.02em; /* Leggermente più aperto per Montserrat */
+      letter-spacing: -0.02em;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -281,7 +281,7 @@
       opacity: 0;
       transform: translateY(20px);
       width: 100%;
-      max-width: 420px;
+      max-width: 450px;
     }
 
     .name-display.active .contacts-inline{
@@ -323,6 +323,7 @@
 
     .contact-link:hover .icon{
       opacity: 1;
+      transform: scale(1.1);
     }
 
     .contact-link .text{
@@ -471,8 +472,10 @@
           Un referente unico, dalla strategia alla rendicontazione.
         </p>
 
-        <!-- Contatti con icone Lucide -->
+        <!-- Contatti con icone Lucide e link funzionanti -->
         <div class="contacts-inline">
+          
+          <!-- EMAIL: apre client email -->
           <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
             <i data-lucide="mail" class="icon"></i>
             <span class="text">
@@ -481,7 +484,17 @@
             </span>
           </a>
 
-          <a href="https://wa.me/393331234567" class="contact-link">
+          <!-- TELEFONO: apre dialer -->
+          <a href="tel:+393331234567" class="contact-link">
+            <i data-lucide="phone" class="icon"></i>
+            <span class="text">
+              <span class="label">Telefono</span>
+              <span class="value">+39 333 123 4567</span>
+            </span>
+          </a>
+
+          <!-- WHATSAPP: apre WhatsApp -->
+          <a href="https://wa.me/393331234567" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="message-circle" class="icon"></i>
             <span class="text">
               <span class="label">WhatsApp</span>
@@ -489,13 +502,15 @@
             </span>
           </a>
 
-          <a href="index.html" class="contact-link">
+          <!-- SITO WEB: va alla landing -->
+          <a href="https://saolino91.github.io/agform" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="globe" class="icon"></i>
             <span class="text">
               <span class="label">Sito Web</span>
-              <span class="value">Vai alla landing page</span>
+              <span class="value">saolino91.github.io/agform</span>
             </span>
           </a>
+
         </div>
 
         <div class="reset-wrapper">
@@ -657,10 +672,6 @@
         }
       }
       
-      const warm = pixels.filter(p => p.type === 'andrea').length;
-      const cold = pixels.filter(p => p.type === 'gonnella').length;
-      console.log(`🔥 CALDE → ANDREA: ${warm} | ❄️ FREDDE → GONNELLA: ${cold}`);
-      
       return pixels;
     }
 
@@ -807,7 +818,6 @@
         ));
       }
 
-      console.log(`🎨 ${particles.length} particelle create`);
       animate();
     }
 
