@@ -144,11 +144,32 @@
       pointer-events: auto;
     }
     .logo-wrapper:hover:not(.transforming){ transform: scale(1.04); }
-    .logo-wrapper.transforming{ pointer-events:none; }
+    .logo-wrapper.transforming{ 
+      pointer-events:none;
+      /* FIX 2: Animazione esplosione */
+      animation: explode 0.6s cubic-bezier(.17,.67,.83,.67) forwards;
+    }
     .logo-wrapper.hidden{
       opacity: 0;
       pointer-events: none;
       visibility: hidden;
+    }
+
+    @keyframes explode{
+      0%{
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50%{
+        transform: scale(1.3) rotate(5deg);
+        opacity: 0.8;
+        filter: brightness(1.5) blur(2px);
+      }
+      100%{
+        transform: scale(0.3) rotate(180deg);
+        opacity: 0;
+        filter: brightness(2) blur(10px);
+      }
     }
 
     #particleCanvas{
@@ -198,39 +219,59 @@
       opacity:1 !important;
       visibility:visible !important;
       pointer-events:auto !important;
-      animation: fadeIn 0.8s ease forwards;
+      animation: slideInFromRight 0.8s cubic-bezier(.17,.67,.83,.67) forwards;
       z-index: 50 !important;
     }
 
-    @keyframes fadeIn{
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes slideInFromRight{
+      from { 
+        opacity: 0; 
+        transform: translateX(100px) scale(0.9);
+        filter: blur(10px);
+      }
+      to { 
+        opacity: 1; 
+        transform: translateX(0) scale(1);
+        filter: blur(0);
+      }
     }
 
-    /* FIX 1: Logo più grande senza bordo */
+    /* FIX 1: Logo a sinistra di Andrea Gonnella */
     .profile-header{
       display: flex;
-      flex-direction: column;
+      flex-direction: row; /* Orizzontale */
       align-items: center;
-      gap: 16px;
+      gap: 24px;
       margin-bottom: 18px;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateX(-50px);
     }
     .name-display.active .profile-header{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .15s;
+      animation: slideInLeft .6s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation-delay: .1s;
+    }
+
+    @keyframes slideInLeft{
+      to{
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .logo-large{
-      width: 120px; /* Più grande */
+      width: 110px; /* Logo grande a sinistra */
       height: auto;
       filter: drop-shadow(0 10px 30px rgba(0,0,0,.4));
+      flex-shrink: 0;
     }
 
-    /* FIX 2: Nome più grande con effetti 3D */
+    .name-info{
+      text-align: left; /* Testo allineato a sinistra */
+    }
+
+    /* Nome più grande con effetti 3D */
     .main-name{
-      font-size: clamp(2.5rem, 5.5vw, 3.8rem); /* Molto più grande */
+      font-size: clamp(2.5rem, 5.5vw, 3.8rem);
       font-weight: 900;
       margin: 0 0 8px 0;
       letter-spacing: -0.03em;
@@ -261,16 +302,17 @@
       backdrop-filter: blur(10px);
     }
 
-    /* FIX 3: Menu compatto con tabs */
+    /* Menu a tabs compatto */
     .expertise-tabs{
       width: 100%;
       max-width: 680px;
       margin-bottom: 18px;
       opacity: 0;
+      transform: translateY(30px);
     }
     .name-display.active .expertise-tabs{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .3s;
+      animation: slideUp .6s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation-delay: .25s;
     }
 
     .tabs-nav{
@@ -362,7 +404,7 @@
       gap: 10px;
       align-items: center;
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(30px);
       width: 100%;
       max-width: 480px;
       position: relative;
@@ -370,8 +412,8 @@
     }
 
     .name-display.active .contacts-inline{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .5s;
+      animation: slideUp .6s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation-delay: .4s;
     }
 
     .contact-link{
@@ -475,6 +517,16 @@
         padding: 20px 16px;
       }
 
+      /* Mobile: logo sopra il nome */
+      .profile-header{
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .name-info{
+        text-align: center;
+      }
+
       .logo-large{
         width: 90px;
       }
@@ -572,16 +624,16 @@
       <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- FIX 1 & 2: Logo grande + Nome con effetti 3D -->
+        <!-- FIX 1: Logo a sinistra + Nome -->
         <div class="profile-header">
           <img src="logo.png" alt="AG Form Logo" class="logo-large">
-          <div>
+          <div class="name-info">
             <h1 class="main-name">Andrea Gonnella</h1>
             <span class="role-badge">HR Training Manager</span>
           </div>
         </div>
 
-        <!-- FIX 3: Menu a tabs compatto -->
+        <!-- Menu a tabs compatto -->
         <div class="expertise-tabs">
           <div class="tabs-nav">
             <button class="tab-btn active" data-tab="formazione">Formazione</button>
@@ -680,11 +732,9 @@
       btn.addEventListener('click', () => {
         const tabId = btn.dataset.tab;
         
-        // Remove active
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
-        // Add active
         btn.classList.add('active');
         document.getElementById(tabId).classList.add('active');
       });
@@ -698,6 +748,7 @@
 
     // ====== STATO ======
     let particles = [];
+    let shards = [];
     let raf = null;
     let transformed = false;
     let logoImage = null;
@@ -719,50 +770,52 @@
       }
     }
 
-    // ====== PARTICELLA MIGLIORATA ======
-    class Particle{
-      constructor(x, y, color, tx, ty, delay){
-        this.sx = x; this.sy = y;
-        this.x = x;  this.y = y;
-        this.tx = tx; this.ty = ty;
-        this.color = color;
-        this.size = 2.5 + Math.random() * 1.2; // Particelle più grandi
-        this.t = 0;
-        this.delay = delay;
-        this.speed = 0.012 + Math.random() * 0.008; // Velocità variabile
-        this.rotation = Math.random() * Math.PI * 2;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+    // FIX 2: FRAMMENTO STILE TRANSFORMERS
+    class Shard{
+      constructor(x, y, w, h, imageData, vx, vy){
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.imageData = imageData;
+        this.vx = vx; // velocità X
+        this.vy = vy; // velocità Y
+        this.rotation = 0;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
+        this.alpha = 1;
+        this.life = 1;
       }
+      
       update(){
-        if (this.delay > 0){ this.delay -= 1; return; }
-        if (this.t < 1) this.t = Math.min(1, this.t + this.speed);
-        
-        // Easing elastico
-        const eased = this.t < 0.5 
-          ? 2 * this.t * this.t 
-          : 1 - Math.pow(-2 * this.t + 2, 2) / 2;
-        
-        this.x = this.sx + (this.tx - this.sx) * eased;
-        this.y = this.sy + (this.ty - this.sy) * eased;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.vy += 0.5; // gravità
+        this.vx *= 0.98; // attrito
         this.rotation += this.rotationSpeed;
+        this.life -= 0.015;
+        this.alpha = Math.max(0, this.life);
       }
+      
       draw(){
+        if (this.alpha <= 0) return;
+        
         ctx.save();
-        ctx.translate(this.x, this.y);
+        ctx.globalAlpha = this.alpha;
+        ctx.translate(this.x + this.w/2, this.y + this.h/2);
         ctx.rotate(this.rotation);
         
-        // Glow effect
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = this.color;
+        // Crea un canvas temporaneo per il frammento
+        const tempCanvas = document.createElement('canvas');
+        tempCanvas.width = this.w;
+        tempCanvas.height = this.h;
+        const tempCtx = tempCanvas.getContext('2d');
+        tempCtx.putImageData(this.imageData, 0, 0);
         
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-        ctx.fill();
-        
+        ctx.drawImage(tempCanvas, -this.w/2, -this.h/2);
         ctx.restore();
       }
-      done(){ return this.t >= 1; }
+      
+      isDead(){ return this.life <= 0; }
     }
 
     // ====== DISEGNA LOGO ======
@@ -820,66 +873,62 @@
       };
     }
 
-    // ====== DETERMINA COLORE CALDO/FREDDO ======
-    function isWarmColor(r, g, b){
-      const warmScore = r - b + (r - g) * 0.5;
-      return warmScore > 20;
-    }
-
-    // ====== CAMPIONA PIXEL ======
-    function samplePixels(){
-      const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
-      const pixels = [];
-      const step = 2; // Step più piccolo = più particelle
-
-      for (let y=0; y<canvas.height; y+=step){
-        for (let x=0; x<canvas.width; x+=step){
-          const i = (y*canvas.width + x) * 4;
-          const a = data[i+3];
-          if (a > 60){
-            const r = data[i], g = data[i+1], b = data[i+2];
+    // FIX 2: CREA FRAMMENTI ESPLOSIVI
+    function createShards(){
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const gridSize = 30; // dimensione frammenti
+      
+      for (let y = 0; y < canvas.height; y += gridSize){
+        for (let x = 0; x < canvas.width; x += gridSize){
+          const w = Math.min(gridSize, canvas.width - x);
+          const h = Math.min(gridSize, canvas.height - y);
+          
+          // Estrai frammento
+          const fragmentData = ctx.getImageData(x, y, w, h);
+          
+          // Controlla se il frammento ha pixel visibili
+          let hasPixels = false;
+          for (let i = 3; i < fragmentData.data.length; i += 4){
+            if (fragmentData.data[i] > 20){
+              hasPixels = true;
+              break;
+            }
+          }
+          
+          if (hasPixels){
+            // Velocità esplosiva dal centro
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const dx = (x + w/2) - centerX;
+            const dy = (y + h/2) - centerY;
+            const distance = Math.sqrt(dx*dx + dy*dy);
+            const force = 8 + Math.random() * 6;
             
-            pixels.push({
-              x, y,
-              color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
-            });
+            const vx = (dx / distance) * force;
+            const vy = (dy / distance) * force - Math.random() * 3;
+            
+            shards.push(new Shard(x, y, w, h, fragmentData, vx, vy));
           }
         }
       }
-      
-      return pixels;
     }
 
-    // FIX 4: DISSOLVENZA MIGLIORATA - verso logo in alto
-    function getLogoTarget(){
-      const logoEl = document.querySelector('.logo-large');
-      if (!logoEl) return null;
-
-      const canvasRect = canvas.getBoundingClientRect();
-      const logoRect = logoEl.getBoundingClientRect();
-
-      return {
-        x: (logoRect.left + logoRect.width/2) - canvasRect.left,
-        y: (logoRect.top + logoRect.height/2) - canvasRect.top
-      };
-    }
-
-    // ====== ANIMAZIONE ======
+    // ====== ANIMAZIONE ESPLOSIONE ======
     function animate(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      let done = true;
-      for (const p of particles){
-        p.update();
-        p.draw();
-        if (!p.done()) done = false;
-      }
+      shards = shards.filter(shard => {
+        shard.update();
+        shard.draw();
+        return !shard.isDead();
+      });
 
-      if (!done){
+      if (shards.length > 0){
         raf = requestAnimationFrame(animate);
         return;
       }
 
+      // Tutti i frammenti sono scomparsi
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         logoWrapper.style.display = 'none';
@@ -893,7 +942,7 @@
         setTimeout(() => {
           lucide.createIcons();
         }, 100);
-      }, 150);
+      }, 100);
     }
 
     // ====== TRANSFORM ======
@@ -902,67 +951,12 @@
       transformed = true;
 
       logoWrapper.classList.add('transforming');
-
-      // Mostra temporaneamente per calcolare posizione
-      nameDisplay.style.visibility = 'visible';
-      nameDisplay.style.opacity = '0.01';
-      nameDisplay.style.pointerEvents = 'none';
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const pixels = samplePixels();
-          const logoTarget = getLogoTarget();
-
-          // Nascondi di nuovo
-          nameDisplay.style.opacity = '0';
-          nameDisplay.style.visibility = 'hidden';
-
-          if (pixels.length === 0){
-            drawFallbackLogo();
-            setTimeout(() => {
-              const pixels2 = samplePixels();
-              if (pixels2.length === 0) {
-                logoWrapper.classList.add('hidden');
-                logoWrapper.style.display = 'none';
-                canvas.style.display = 'none';
-                nameDisplay.classList.add('active');
-                lucide.createIcons();
-                return;
-              }
-              startParticles(pixels2, logoTarget);
-            }, 100);
-          } else {
-            startParticles(pixels, logoTarget);
-          }
-        });
-      });
-    }
-
-    function startParticles(pixels, target){
-      if (!target) {
-        target = {
-          x: canvas.width / 2,
-          y: canvas.height * 0.3 // Verso l'alto
-        };
-      }
-
-      particles = [];
       
-      // Raggruppa particelle per creare effetto esplosione coordinata
-      const groups = 8;
-      for (let i = 0; i < pixels.length; i++){
-        const px = pixels[i];
-        const groupDelay = (i % groups) * 3;
-        
-        particles.push(new Particle(
-          px.x, px.y, px.color,
-          target.x + (Math.random() - 0.5) * 80,
-          target.y + (Math.random() - 0.5) * 80,
-          groupDelay
-        ));
-      }
-
-      animate();
+      // Aspetta che l'animazione CSS inizi, poi crea frammenti
+      setTimeout(() => {
+        createShards();
+        animate();
+      }, 300); // Sincronizza con animazione CSS
     }
 
     // ====== EVENTI ======
