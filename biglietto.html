@@ -181,22 +181,25 @@
       height: auto;
     }
 
+    /* FIX 1: Hint con colore e ombra forti */
     .hint{
       font-size: 0.85rem;
-      color: var(--mut);
-      opacity: 0.45;
+      color: #FFFFFF; /* Bianco puro invece di var(--mut) */
+      opacity: 0.9; /* Più opaco */
       animation: pulseHint 3s ease-in-out infinite;
       white-space:nowrap;
-      font-weight: 500;
+      font-weight: 600; /* Più grassetto */
       letter-spacing: 0.5px;
       text-transform: uppercase;
       position: absolute;
       bottom: 60px;
-      z-index: 30; /* FIX 1: Z-index più alto */
+      z-index: 9999; /* Z-index altissimo */
+      text-shadow: 0 2px 8px rgba(0,0,0,0.8); /* Ombra forte */
+      pointer-events: none; /* Non interferisce con i click */
     }
     @keyframes pulseHint{
-      0%,100%{opacity:.45}
-      50%{opacity:.25}
+      0%,100%{opacity:.9}
+      50%{opacity:.6}
     }
     .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
@@ -283,18 +286,31 @@
       filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
     }
 
+    /* FIX 3: HR Training Manager visivamente diverso dai pulsanti */
     .role-badge{
       display: inline-block;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.2);
-      padding: 6px 16px;
-      border-radius: 20px;
+      background: transparent; /* NO background */
+      border: none; /* NO bordo */
+      padding: 0; /* NO padding */
+      border-radius: 0;
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 600; /* Meno grassetto dei pulsanti */
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 2px; /* Spaziatura maggiore */
       color: var(--mut);
-      backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    /* Linea sotto HR Training Manager */
+    .role-badge::after{
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--mut), transparent);
+      opacity: 0.4;
     }
 
     /* Menu a tabs compatto */
@@ -500,27 +516,33 @@
       }
       
       .stage{ 
-        padding: 18px 16px; /* FIX 2: Padding ridotto per dare spazio */
+        padding: 18px 16px;
         border: none;
         border-radius: 0;
       }
 
-      /* FIX 1: Hint visibile su mobile */
+      /* FIX 1: Hint fortemente visibile */
       .hint{
-        bottom: 35px; /* Più in alto */
-        font-size: 0.75rem; /* Leggermente più grande */
-        z-index: 30;
+        bottom: 40px; /* Più in alto */
+        font-size: 0.8rem; /* Più grande */
+        z-index: 9999;
+        color: #FFFFFF;
+        opacity: 1; /* Completamente opaco */
+        font-weight: 700; /* Molto grassetto */
+        text-shadow: 
+          0 0 10px rgba(255,255,255,0.5),
+          0 2px 10px rgba(0,0,0,0.9);
       }
 
       .name-display{
         padding: 0;
-        gap: 20px; /* FIX 2: Gap aumentato da 16px a 20px */
+        gap: 20px;
       }
 
       /* MOBILE: Logo SOPRA nome (verticale) */
       .profile-header{
         flex-direction: column;
-        gap: 16px; /* FIX 2: Gap aumentato da 12px a 16px */
+        gap: 16px;
         align-items: center;
         margin-bottom: 0;
       }
@@ -530,23 +552,34 @@
         width: 100%;
       }
 
-      /* FIX 4: Logo più grande */
+      /* FIX 2: Logo MOLTO più grande */
       .logo-large{
-        width: 105px; /* Era 90px → +17% */
+        width: 125px; /* Era 105px → +19% */
       }
 
       .main-name{
         font-size: 3.2rem;
         line-height: 0.95;
-        margin-bottom: 12px; /* FIX 2: Margine aumentato da 8px a 12px */
+        margin-bottom: 14px; /* FIX 4: Aumentato da 12px */
         width: 100%;
         letter-spacing: -0.04em;
       }
 
-      /* FIX 3: HR Training Manager più grande */
+      /* FIX 3: HR Training Manager diverso + FIX 4: Spazio maggiore */
       .role-badge{
-        font-size: 0.88rem; /* Era 0.78rem → +13% */
-        padding: 8px 16px; /* Padding aumentato */
+        font-size: 0.92rem; /* Più grande */
+        font-weight: 500; /* Meno grassetto */
+        letter-spacing: 2.5px; /* Più spaziato */
+        padding: 0;
+        background: transparent;
+        border: none;
+        margin-bottom: 28px; /* FIX 4: Spazio GRANDE sotto (era 0) */
+      }
+
+      .role-badge::after{
+        bottom: -6px;
+        height: 1.5px;
+        opacity: 0.5;
       }
 
       /* Tabs */
@@ -556,23 +589,25 @@
       }
 
       .tabs-nav{
-        gap: 7px; /* FIX 2: Gap aumentato da 6px a 7px */
-        margin-bottom: 12px; /* FIX 2: Margine aumentato da 10px a 12px */
+        gap: 7px;
+        margin-bottom: 12px;
       }
 
-      /* FIX 3: Pulsanti più grandi */
       .tab-btn{
-        font-size: 0.78rem; /* Era 0.72rem → +8% */
-        padding: 8px 15px; /* Era 7px 13px → +14% */
+        font-size: 0.78rem;
+        padding: 8px 15px;
+        font-weight: 700; /* Più grassetto dei badge */
+        background: rgba(255,255,255,.08); /* Background più visibile */
+        border: 1px solid rgba(255,255,255,.15);
       }
 
       .tab-content{
-        padding: 15px 16px; /* FIX 2: Padding aumentato */
+        padding: 15px 16px;
         min-height: auto;
       }
 
       .expertise-list{
-        gap: 7px; /* FIX 2: Gap aumentato da 6px a 7px */
+        gap: 7px;
       }
 
       .expertise-list li{
@@ -582,12 +617,12 @@
 
       /* Contatti */
       .contacts-inline{
-        gap: 9px; /* FIX 2: Gap aumentato da 8px a 9px */
+        gap: 9px;
         margin-top: 0;
       }
       
       .contact-link{ 
-        padding: 11px 16px; /* FIX 2: Padding aumentato */
+        padding: 11px 16px;
       }
 
       .contact-link .icon{
@@ -615,52 +650,65 @@
         border-radius: 0;
       }
 
-      /* FIX 1: Hint visibile */
+      /* FIX 1: Hint MOLTO visibile */
       .hint{
-        bottom: 30px;
-        font-size: 0.7rem;
-        z-index: 30;
+        bottom: 35px;
+        font-size: 0.75rem;
+        z-index: 9999;
+        color: #FFFFFF;
+        opacity: 1;
+        font-weight: 700;
+        text-shadow: 
+          0 0 12px rgba(255,255,255,0.6),
+          0 2px 12px rgba(0,0,0,1);
       }
 
       .name-display{
         padding: 0;
-        gap: 18px; /* FIX 2: Gap aumentato da 14px a 18px */
+        gap: 18px;
       }
 
       .profile-header{
-        gap: 14px; /* FIX 2: Gap aumentato da 10px a 14px */
+        gap: 14px;
       }
 
-      /* FIX 4: Logo più grande */
+      /* FIX 2: Logo MOLTO più grande */
       .logo-large{
-        width: 92px; /* Era 80px → +15% */
+        width: 110px; /* Era 92px → +20% */
       }
 
       .main-name{
         font-size: 2.7rem;
-        margin-bottom: 10px; /* FIX 2: Margine aumentato */
+        margin-bottom: 12px; /* FIX 4: Aumentato */
         letter-spacing: -0.04em;
       }
 
-      /* FIX 3: HR Training Manager più grande */
+      /* FIX 3 + 4: Badge diverso e spazio */
       .role-badge{
-        font-size: 0.82rem; /* Era 0.72rem → +14% */
-        padding: 7px 14px;
+        font-size: 0.86rem;
+        font-weight: 500;
+        letter-spacing: 2.5px;
+        margin-bottom: 24px; /* FIX 4: Spazio grande */
+      }
+
+      .role-badge::after{
+        bottom: -5px;
+        height: 1.5px;
       }
 
       .tabs-nav{
         gap: 6px;
-        margin-bottom: 10px; /* FIX 2: Margine aumentato */
+        margin-bottom: 10px;
       }
 
-      /* FIX 3: Pulsanti più grandi */
       .tab-btn{
-        font-size: 0.74rem; /* Era 0.68rem → +9% */
-        padding: 7px 13px; /* Era 6px 11px → +18% */
+        font-size: 0.74rem;
+        padding: 7px 13px;
+        font-weight: 700;
       }
 
       .tab-content{
-        padding: 13px 14px; /* FIX 2: Padding aumentato */
+        padding: 13px 14px;
       }
 
       .expertise-list{
@@ -674,11 +722,11 @@
       }
 
       .contacts-inline{
-        gap: 8px; /* FIX 2: Gap aumentato */
+        gap: 8px;
       }
 
       .contact-link{
-        padding: 10px 14px; /* FIX 2: Padding aumentato */
+        padding: 10px 14px;
       }
 
       .contact-link .label{
