@@ -416,7 +416,7 @@
       font-size: 1.2em;
     }
 
-    /* Contatti compatti */
+    /* FIX 2: Contatti DESKTOP - stessa larghezza della casella descrizioni */
     .contacts-inline{
       display: flex;
       flex-direction: column;
@@ -425,7 +425,7 @@
       opacity: 0;
       transform: translateY(10px);
       width: 100%;
-      max-width: 480px;
+      max-width: 680px; /* Stesso max-width di .expertise-tabs */
       position: relative;
       z-index: 100;
     }
@@ -505,7 +505,7 @@
       color: var(--txt);
     }
 
-    /* FIX 2: Pulsante copia per Partita IVA */
+    /* Pulsante copia per Partita IVA */
     .copy-btn{
       flex-shrink: 0;
       width: 32px;
@@ -579,7 +579,7 @@
       }
       
       .stage{ 
-        padding: 12px 12px; /* FIX 3: Ridotto padding */
+        padding: 0; /* FIX 3: NO padding per massimizzare spazio */
         border: none;
         border-radius: 0;
       }
@@ -602,15 +602,24 @@
         border: 1px solid rgba(255,255,255,0.2);
       }
 
+      /* FIX 3: Spaziatura ottimizzata mobile */
       .name-display{
-        padding: 0;
-        gap: 12px; /* FIX 3: Ridotto da 20px a 12px */
+        padding: 8px 12px; /* Padding minimo ai lati */
+        gap: 8px; /* Gap ridotto tra elementi */
+        justify-content: flex-start; /* Allinea dall'alto */
+        padding-top: 15px; /* Poco spazio dal top */
+      }
+
+      /* FIX 1: Logo wrapper più in alto quando clicchi */
+      .logo-wrapper{
+        justify-content: flex-start; /* Logo in alto */
+        padding-top: 20vh; /* 20% dall'alto invece del centro */
       }
 
       /* MOBILE: Logo SOPRA nome (verticale) */
       .profile-header{
         flex-direction: column;
-        gap: 10px; /* FIX 3: Ridotto da 16px */
+        gap: 8px; /* FIX 3: Gap ridotto */
         align-items: center;
         margin-bottom: 0;
       }
@@ -620,34 +629,34 @@
         width: 100%;
       }
 
-      /* FIX 3: Logo ridotto */
+      /* Logo ridotto */
       .logo-large{
-        width: 90px; /* Ridotto da 125px */
+        width: 85px; /* FIX 3: Ridotto ulteriormente */
       }
 
-      /* FIX 3: Nome ridotto */
+      /* Nome ridotto */
       .main-name{
-        font-size: 2.4rem; /* Ridotto da 3.2rem */
+        font-size: 2.2rem; /* FIX 3: Ridotto */
         line-height: 0.95;
-        margin-bottom: 8px; /* Ridotto da 14px */
+        margin-bottom: 6px; /* FIX 3: Ridotto */
         width: 100%;
         letter-spacing: -0.04em;
       }
 
-      /* FIX 3: Badge ridotto con spazio ridotto */
+      /* Badge ridotto con spazio ridotto */
       .role-badge{
-        font-size: 0.8rem; /* Ridotto da 0.92rem */
+        font-size: 0.78rem; /* FIX 3: Ridotto */
         font-weight: 500;
         letter-spacing: 2px;
         padding: 0;
         background: transparent;
         border: none;
-        margin-bottom: 14px; /* Ridotto da 28px */
+        margin-bottom: 10px; /* FIX 3: Ridotto da 14px */
       }
 
       .role-badge::after{
-        bottom: -4px;
-        height: 1.5px;
+        bottom: -3px;
+        height: 1px;
         opacity: 0.5;
       }
 
@@ -658,163 +667,55 @@
       }
 
       .tabs-nav{
-        gap: 5px; /* Ridotto da 7px */
-        margin-bottom: 8px; /* Ridotto da 12px */
+        gap: 5px;
+        margin-bottom: 6px; /* FIX 3: Ridotto */
       }
 
-      /* FIX 3: Pulsanti ridotti */
+      /* Pulsanti ridotti */
       .tab-btn{
-        font-size: 0.7rem; /* Ridotto da 0.78rem */
-        padding: 6px 12px; /* Ridotto da 8px 15px */
+        font-size: 0.68rem; /* FIX 3: Ridotto */
+        padding: 6px 11px; /* FIX 3: Ridotto */
         font-weight: 700;
         background: rgba(255,255,255,.08);
         border: 1px solid rgba(255,255,255,.15);
       }
 
       .tab-content{
-        padding: 12px 14px; /* Ridotto da 15px 16px */
+        padding: 10px 12px; /* FIX 3: Ridotto */
         min-height: auto;
       }
 
       .expertise-list{
-        gap: 5px; /* Ridotto da 7px */
+        gap: 4px; /* FIX 3: Ridotto */
       }
 
       .expertise-list li{
-        font-size: 0.76rem; /* Ridotto da 0.82rem */
-        line-height: 1.4;
+        font-size: 0.74rem; /* FIX 3: Ridotto */
+        line-height: 1.35;
       }
 
-      /* FIX 3: Contatti ridotti */
+      /* Contatti ridotti */
       .contacts-inline{
-        gap: 6px; /* Ridotto da 9px */
+        gap: 5px; /* FIX 3: Ridotto */
         margin-top: 0;
+        max-width: 100%; /* Mobile: larghezza piena */
       }
       
       .contact-link{ 
-        padding: 8px 12px; /* Ridotto da 11px 16px */
+        padding: 7px 10px; /* FIX 3: Ridotto */
       }
 
       .contact-link .icon{
-        width: 16px; /* Ridotto da 18px */
+        width: 16px;
         height: 16px;
       }
 
       .contact-link .label{
-        font-size: 0.68rem; /* Ridotto da 0.72rem */
+        font-size: 0.66rem; /* FIX 3: Ridotto */
       }
       
       .contact-link .value{
-        font-size: 0.78rem; /* Ridotto da 0.85rem */
-      }
-
-      .copy-btn{
-        width: 28px;
-        height: 28px;
-      }
-
-      .copy-btn .icon{
-        width: 14px;
-        height: 14px;
-      }
-    }
-
-    @media (max-width: 480px){
-      .container{
-        height: 100vh;
-        width: 100vw;
-      }
-
-      .stage{ 
-        padding: 10px 10px; /* FIX 3: Padding minimo */
-        border-radius: 0;
-      }
-
-      /* Hint MOLTO visibile */
-      .hint{
-        bottom: 45px !important;
-        font-size: 0.75rem !important;
-        padding: 8px 16px !important;
-      }
-
-      .name-display{
-        padding: 0;
-        gap: 10px; /* FIX 3: Ridotto */
-      }
-
-      .profile-header{
-        gap: 8px; /* FIX 3: Ridotto */
-      }
-
-      /* FIX 3: Logo ancora più piccolo */
-      .logo-large{
-        width: 75px; /* Ridotto da 110px */
-      }
-
-      /* FIX 3: Nome più piccolo */
-      .main-name{
-        font-size: 2rem; /* Ridotto da 2.7rem */
-        margin-bottom: 6px;
-        letter-spacing: -0.04em;
-      }
-
-      /* Badge più piccolo */
-      .role-badge{
-        font-size: 0.72rem; /* Ridotto */
-        font-weight: 500;
-        letter-spacing: 2px;
-        margin-bottom: 12px; /* Ridotto */
-      }
-
-      .role-badge::after{
-        bottom: -3px;
-        height: 1px;
-      }
-
-      .tabs-nav{
-        gap: 4px;
-        margin-bottom: 6px;
-      }
-
-      .tab-btn{
-        font-size: 0.65rem; /* Ridotto */
-        padding: 5px 10px; /* Ridotto */
-        font-weight: 700;
-      }
-
-      .tab-content{
-        padding: 10px 12px; /* Ridotto */
-      }
-
-      .expertise-list{
-        gap: 4px;
-      }
-
-      .expertise-list li{
-        font-size: 0.72rem; /* Ridotto */
-        line-height: 1.35;
-        padding-left: 16px;
-      }
-
-      .contacts-inline{
-        gap: 5px; /* Ridotto */
-      }
-
-      .contact-link{
-        padding: 7px 10px; /* Ridotto */
-      }
-
-      .contact-link .icon{
-        width: 15px;
-        height: 15px;
-      }
-
-      .contact-link .label{
-        font-size: 0.64rem; /* Ridotto */
-      }
-
-      .contact-link .value{
-        font-size: 0.72rem; /* Ridotto */
+        font-size: 0.76rem; /* FIX 3: Ridotto */
       }
 
       .copy-btn{
@@ -825,6 +726,122 @@
       .copy-btn .icon{
         width: 13px;
         height: 13px;
+      }
+    }
+
+    @media (max-width: 480px){
+      .container{
+        height: 100vh;
+        width: 100vw;
+      }
+
+      .stage{ 
+        padding: 0;
+        border-radius: 0;
+      }
+
+      /* Hint MOLTO visibile */
+      .hint{
+        bottom: 45px !important;
+        font-size: 0.75rem !important;
+        padding: 8px 16px !important;
+      }
+
+      /* FIX 3: Spaziatura ancora più ottimizzata */
+      .name-display{
+        padding: 6px 10px;
+        gap: 6px;
+        padding-top: 12px; /* Ancora meno spazio dal top */
+      }
+
+      /* FIX 1: Logo ancora più in alto */
+      .logo-wrapper{
+        padding-top: 15vh; /* 15% dall'alto */
+      }
+
+      .profile-header{
+        gap: 6px;
+      }
+
+      /* Logo ancora più piccolo */
+      .logo-large{
+        width: 70px;
+      }
+
+      /* Nome più piccolo */
+      .main-name{
+        font-size: 1.9rem;
+        margin-bottom: 5px;
+        letter-spacing: -0.04em;
+      }
+
+      /* Badge più piccolo */
+      .role-badge{
+        font-size: 0.7rem;
+        font-weight: 500;
+        letter-spacing: 1.8px;
+        margin-bottom: 8px;
+      }
+
+      .role-badge::after{
+        bottom: -2px;
+        height: 1px;
+      }
+
+      .tabs-nav{
+        gap: 4px;
+        margin-bottom: 5px;
+      }
+
+      .tab-btn{
+        font-size: 0.63rem;
+        padding: 5px 9px;
+        font-weight: 700;
+      }
+
+      .tab-content{
+        padding: 9px 10px;
+      }
+
+      .expertise-list{
+        gap: 3px;
+      }
+
+      .expertise-list li{
+        font-size: 0.7rem;
+        line-height: 1.3;
+        padding-left: 16px;
+      }
+
+      .contacts-inline{
+        gap: 4px;
+      }
+
+      .contact-link{
+        padding: 6px 9px;
+      }
+
+      .contact-link .icon{
+        width: 14px;
+        height: 14px;
+      }
+
+      .contact-link .label{
+        font-size: 0.62rem;
+      }
+
+      .contact-link .value{
+        font-size: 0.7rem;
+      }
+
+      .copy-btn{
+        width: 24px;
+        height: 24px;
+      }
+
+      .copy-btn .icon{
+        width: 12px;
+        height: 12px;
       }
     }
 
@@ -944,7 +961,7 @@
             </span>
           </a>
 
-          <!-- FIX 2: Partita IVA con pulsante copia -->
+          <!-- Partita IVA con pulsante copia -->
           <div class="contact-link">
             <i data-lucide="file-text" class="icon"></i>
             <span class="text">
