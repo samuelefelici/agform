@@ -238,7 +238,7 @@
       }
     }
 
-    /* Logo a sinistra di Andrea Gonnella */
+    /* Logo a sinistra di Andrea Gonnella (DESKTOP) */
     .profile-header{
       display: flex;
       flex-direction: row;
@@ -487,21 +487,21 @@
       } 
     }
 
-    /* ========== RESPONSIVE MOBILE SATURATO ========== */
+    /* ========== RESPONSIVE MOBILE OTTIMIZZATO ========== */
     @media (max-width: 768px){
       body{
-        padding: 0; /* RIMOSSO padding body */
+        padding: 0;
       }
 
       .container{
-        height: 100vh; /* RIEMPI TUTTO LO SCHERMO */
+        height: 100vh;
         width: 100vw;
       }
       
       .stage{ 
-        padding: 12px 14px; /* Padding minimo */
+        padding: 20px 16px; /* Padding equilibrato */
         border: none;
-        border-radius: 0; /* NO bordi arrotondati */
+        border-radius: 0;
       }
 
       .hint{
@@ -511,75 +511,77 @@
       }
 
       .name-display{
-        padding: 10px 12px; /* Padding minimo */
-        justify-content: space-evenly; /* DISTRIBUZIONE UNIFORME */
+        padding: 0; /* NO padding interno */
+        gap: 16px; /* Gap uniforme tra tutti gli elementi */
       }
 
-      /* Logo e nome grandi */
+      /* MOBILE: Logo SOPRA nome (verticale) */
       .profile-header{
-        flex-direction: row;
-        gap: 20px;
+        flex-direction: column; /* Verticale */
+        gap: 12px;
         align-items: center;
-        margin-bottom: 0; /* NO margine */
+        margin-bottom: 0;
       }
 
       .name-info{
-        text-align: left;
+        text-align: center; /* Centrato */
+        width: 100%; /* Larghezza completa */
       }
 
       .logo-large{
-        width: 100px; /* Logo più grande */
+        width: 90px; /* Logo grande sopra */
       }
 
       .main-name{
-        font-size: 2.5rem; /* Nome più grande */
-        line-height: 1.05;
-        margin-bottom: 6px;
+        font-size: 2.8rem; /* Nome MOLTO grande, tutta la larghezza */
+        line-height: 1;
+        margin-bottom: 8px;
+        width: 100%;
       }
 
       .role-badge{
-        font-size: 0.75rem;
-        padding: 6px 12px;
+        font-size: 0.78rem;
+        padding: 7px 14px;
       }
 
-      /* Tabs compatti */
+      /* Tabs */
       .expertise-tabs{
-        margin-bottom: 0; /* NO margine */
+        margin-bottom: 0;
         width: 100%;
       }
 
       .tabs-nav{
         gap: 6px;
-        margin-bottom: 8px;
+        margin-bottom: 10px;
       }
 
       .tab-btn{
-        font-size: 0.7rem;
-        padding: 7px 12px;
+        font-size: 0.72rem;
+        padding: 7px 13px;
       }
 
       .tab-content{
-        padding: 12px 14px;
-        min-height: auto; /* Altezza automatica */
+        padding: 14px 16px;
+        min-height: auto;
       }
 
       .expertise-list{
-        gap: 5px;
+        gap: 6px;
       }
 
       .expertise-list li{
-        font-size: 0.8rem;
-        line-height: 1.4;
+        font-size: 0.82rem;
+        line-height: 1.45;
       }
 
-      /* Contatti compatti */
+      /* Contatti */
       .contacts-inline{
-        gap: 6px;
-        margin-top: 0; /* NO margine */
+        gap: 8px;
+        margin-top: 0;
       }
       
       .contact-link{ 
-        padding: 9px 14px;
+        padding: 10px 16px;
       }
 
       .contact-link .icon{
@@ -588,22 +590,22 @@
       }
 
       .contact-link .label{
-        font-size: 0.7rem;
+        font-size: 0.72rem;
       }
       
       .contact-link .value{
-        font-size: 0.82rem;
+        font-size: 0.85rem;
       }
     }
 
     @media (max-width: 480px){
       .container{
-        height: 100vh; /* RIEMPI TUTTO */
+        height: 100vh;
         width: 100vw;
       }
 
       .stage{ 
-        padding: 10px 12px;
+        padding: 16px 14px;
         border-radius: 0;
       }
 
@@ -613,67 +615,66 @@
       }
 
       .name-display{
-        padding: 8px 10px;
-        justify-content: space-evenly;
+        padding: 0;
+        gap: 14px; /* Gap leggermente ridotto */
       }
 
       .profile-header{
-        gap: 16px;
-        margin-bottom: 0;
+        gap: 10px;
       }
 
       .logo-large{
-        width: 85px;
+        width: 80px;
       }
 
       .main-name{
-        font-size: 2rem;
-        margin-bottom: 5px;
+        font-size: 2.4rem;
+        margin-bottom: 7px;
       }
 
       .role-badge{
-        font-size: 0.68rem;
-        padding: 5px 10px;
+        font-size: 0.72rem;
+        padding: 6px 12px;
       }
 
       .tabs-nav{
         gap: 5px;
-        margin-bottom: 7px;
+        margin-bottom: 8px;
       }
 
       .tab-btn{
-        font-size: 0.65rem;
-        padding: 6px 10px;
+        font-size: 0.68rem;
+        padding: 6px 11px;
       }
 
       .tab-content{
-        padding: 10px 12px;
+        padding: 12px 14px;
       }
 
       .expertise-list{
-        gap: 4px;
+        gap: 5px;
       }
 
       .expertise-list li{
-        font-size: 0.75rem;
-        line-height: 1.35;
+        font-size: 0.78rem;
+        line-height: 1.4;
         padding-left: 18px;
       }
 
       .contacts-inline{
-        gap: 5px;
+        gap: 7px;
       }
 
       .contact-link{
-        padding: 8px 12px;
+        padding: 9px 14px;
       }
 
       .contact-link .label{
-        font-size: 0.65rem;
+        font-size: 0.68rem;
       }
 
       .contact-link .value{
-        font-size: 0.77rem;
+        font-size: 0.8rem;
       }
     }
 
@@ -697,7 +698,7 @@
       <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- Logo a sinistra + Nome -->
+        <!-- Logo sopra nome su mobile, a sinistra su desktop -->
         <div class="profile-header">
           <img src="logo.png" alt="AG Form Logo" class="logo-large">
           <div class="name-info">
