@@ -192,6 +192,7 @@
       text-transform: uppercase;
       position: absolute;
       bottom: 60px;
+      z-index: 30; /* FIX 1: Z-index più alto */
     }
     @keyframes pulseHint{
       0%,100%{opacity:.45}
@@ -499,26 +500,27 @@
       }
       
       .stage{ 
-        padding: 20px 16px;
+        padding: 18px 16px; /* FIX 2: Padding ridotto per dare spazio */
         border: none;
         border-radius: 0;
       }
 
+      /* FIX 1: Hint visibile su mobile */
       .hint{
-        bottom: 30px;
-        font-size: 0.7rem;
-        z-index: 20;
+        bottom: 35px; /* Più in alto */
+        font-size: 0.75rem; /* Leggermente più grande */
+        z-index: 30;
       }
 
       .name-display{
         padding: 0;
-        gap: 16px;
+        gap: 20px; /* FIX 2: Gap aumentato da 16px a 20px */
       }
 
       /* MOBILE: Logo SOPRA nome (verticale) */
       .profile-header{
         flex-direction: column;
-        gap: 12px;
+        gap: 16px; /* FIX 2: Gap aumentato da 12px a 16px */
         align-items: center;
         margin-bottom: 0;
       }
@@ -528,22 +530,23 @@
         width: 100%;
       }
 
+      /* FIX 4: Logo più grande */
       .logo-large{
-        width: 90px;
+        width: 105px; /* Era 90px → +17% */
       }
 
-      /* ANDREA GONNELLA PIÙ GRANDE */
       .main-name{
-        font-size: 3.2rem; /* Era 2.8rem → +14% più grande */
+        font-size: 3.2rem;
         line-height: 0.95;
-        margin-bottom: 8px;
+        margin-bottom: 12px; /* FIX 2: Margine aumentato da 8px a 12px */
         width: 100%;
-        letter-spacing: -0.04em; /* Lettere più vicine per salvare spazio */
+        letter-spacing: -0.04em;
       }
 
+      /* FIX 3: HR Training Manager più grande */
       .role-badge{
-        font-size: 0.78rem;
-        padding: 7px 14px;
+        font-size: 0.88rem; /* Era 0.78rem → +13% */
+        padding: 8px 16px; /* Padding aumentato */
       }
 
       /* Tabs */
@@ -553,22 +556,23 @@
       }
 
       .tabs-nav{
-        gap: 6px;
-        margin-bottom: 10px;
+        gap: 7px; /* FIX 2: Gap aumentato da 6px a 7px */
+        margin-bottom: 12px; /* FIX 2: Margine aumentato da 10px a 12px */
       }
 
+      /* FIX 3: Pulsanti più grandi */
       .tab-btn{
-        font-size: 0.72rem;
-        padding: 7px 13px;
+        font-size: 0.78rem; /* Era 0.72rem → +8% */
+        padding: 8px 15px; /* Era 7px 13px → +14% */
       }
 
       .tab-content{
-        padding: 14px 16px;
+        padding: 15px 16px; /* FIX 2: Padding aumentato */
         min-height: auto;
       }
 
       .expertise-list{
-        gap: 6px;
+        gap: 7px; /* FIX 2: Gap aumentato da 6px a 7px */
       }
 
       .expertise-list li{
@@ -578,12 +582,12 @@
 
       /* Contatti */
       .contacts-inline{
-        gap: 8px;
+        gap: 9px; /* FIX 2: Gap aumentato da 8px a 9px */
         margin-top: 0;
       }
       
       .contact-link{ 
-        padding: 10px 16px;
+        padding: 11px 16px; /* FIX 2: Padding aumentato */
       }
 
       .contact-link .icon{
@@ -611,52 +615,56 @@
         border-radius: 0;
       }
 
+      /* FIX 1: Hint visibile */
       .hint{
-        bottom: 25px;
-        font-size: 0.65rem;
+        bottom: 30px;
+        font-size: 0.7rem;
+        z-index: 30;
       }
 
       .name-display{
         padding: 0;
-        gap: 14px;
+        gap: 18px; /* FIX 2: Gap aumentato da 14px a 18px */
       }
 
       .profile-header{
-        gap: 10px;
+        gap: 14px; /* FIX 2: Gap aumentato da 10px a 14px */
       }
 
+      /* FIX 4: Logo più grande */
       .logo-large{
-        width: 80px;
+        width: 92px; /* Era 80px → +15% */
       }
 
-      /* ANDREA GONNELLA ANCORA PIÙ GRANDE su tiny */
       .main-name{
-        font-size: 2.7rem; /* Era 2.4rem → +12.5% più grande */
-        margin-bottom: 7px;
+        font-size: 2.7rem;
+        margin-bottom: 10px; /* FIX 2: Margine aumentato */
         letter-spacing: -0.04em;
       }
 
+      /* FIX 3: HR Training Manager più grande */
       .role-badge{
-        font-size: 0.72rem;
-        padding: 6px 12px;
+        font-size: 0.82rem; /* Era 0.72rem → +14% */
+        padding: 7px 14px;
       }
 
       .tabs-nav{
-        gap: 5px;
-        margin-bottom: 8px;
+        gap: 6px;
+        margin-bottom: 10px; /* FIX 2: Margine aumentato */
       }
 
+      /* FIX 3: Pulsanti più grandi */
       .tab-btn{
-        font-size: 0.68rem;
-        padding: 6px 11px;
+        font-size: 0.74rem; /* Era 0.68rem → +9% */
+        padding: 7px 13px; /* Era 6px 11px → +18% */
       }
 
       .tab-content{
-        padding: 12px 14px;
+        padding: 13px 14px; /* FIX 2: Padding aumentato */
       }
 
       .expertise-list{
-        gap: 5px;
+        gap: 6px;
       }
 
       .expertise-list li{
@@ -666,11 +674,11 @@
       }
 
       .contacts-inline{
-        gap: 7px;
+        gap: 8px; /* FIX 2: Gap aumentato */
       }
 
       .contact-link{
-        padding: 9px 14px;
+        padding: 10px 14px; /* FIX 2: Padding aumentato */
       }
 
       .contact-link .label{
