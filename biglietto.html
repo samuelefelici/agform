@@ -146,8 +146,7 @@
     .logo-wrapper:hover:not(.transforming){ transform: scale(1.04); }
     .logo-wrapper.transforming{ 
       pointer-events:none;
-      /* FIX 2: Animazione esplosione */
-      animation: explode 0.6s cubic-bezier(.17,.67,.83,.67) forwards;
+      animation: fadeToWhite 0.5s ease-out forwards;
     }
     .logo-wrapper.hidden{
       opacity: 0;
@@ -155,20 +154,22 @@
       visibility: hidden;
     }
 
-    @keyframes explode{
+    /* Dissolvenza pulita e elegante verso bianco */
+    @keyframes fadeToWhite{
       0%{
-        transform: scale(1) rotate(0deg);
+        transform: scale(1);
         opacity: 1;
+        filter: brightness(1) blur(0px);
       }
-      50%{
-        transform: scale(1.3) rotate(5deg);
+      60%{
+        transform: scale(1.05);
         opacity: 0.8;
-        filter: brightness(1.5) blur(2px);
+        filter: brightness(1.8) blur(3px);
       }
       100%{
-        transform: scale(0.3) rotate(180deg);
+        transform: scale(1.1);
         opacity: 0;
-        filter: brightness(2) blur(10px);
+        filter: brightness(3) blur(8px);
       }
     }
 
@@ -219,57 +220,50 @@
       opacity:1 !important;
       visibility:visible !important;
       pointer-events:auto !important;
-      animation: slideInFromRight 0.8s cubic-bezier(.17,.67,.83,.67) forwards;
+      animation: fadeInFromWhite 0.6s ease-out forwards;
       z-index: 50 !important;
     }
 
-    @keyframes slideInFromRight{
+    /* Appare dal bianco */
+    @keyframes fadeInFromWhite{
       from { 
         opacity: 0; 
-        transform: translateX(100px) scale(0.9);
-        filter: blur(10px);
+        filter: brightness(2) blur(5px);
+        transform: scale(1.05);
       }
       to { 
         opacity: 1; 
-        transform: translateX(0) scale(1);
-        filter: blur(0);
+        filter: brightness(1) blur(0);
+        transform: scale(1);
       }
     }
 
-    /* FIX 1: Logo a sinistra di Andrea Gonnella */
+    /* Logo a sinistra di Andrea Gonnella */
     .profile-header{
       display: flex;
-      flex-direction: row; /* Orizzontale */
+      flex-direction: row;
       align-items: center;
       gap: 24px;
       margin-bottom: 18px;
       opacity: 0;
-      transform: translateX(-50px);
+      transform: translateY(10px);
     }
     .name-display.active .profile-header{
-      animation: slideInLeft .6s cubic-bezier(.34,1.56,.64,1) forwards;
+      animation: slideUp .5s ease-out forwards;
       animation-delay: .1s;
     }
 
-    @keyframes slideInLeft{
-      to{
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
     .logo-large{
-      width: 110px; /* Logo grande a sinistra */
+      width: 110px;
       height: auto;
       filter: drop-shadow(0 10px 30px rgba(0,0,0,.4));
       flex-shrink: 0;
     }
 
     .name-info{
-      text-align: left; /* Testo allineato a sinistra */
+      text-align: left;
     }
 
-    /* Nome più grande con effetti 3D */
     .main-name{
       font-size: clamp(2.5rem, 5.5vw, 3.8rem);
       font-weight: 900;
@@ -308,11 +302,11 @@
       max-width: 680px;
       margin-bottom: 18px;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(10px);
     }
     .name-display.active .expertise-tabs{
-      animation: slideUp .6s cubic-bezier(.34,1.56,.64,1) forwards;
-      animation-delay: .25s;
+      animation: slideUp .5s ease-out forwards;
+      animation-delay: .2s;
     }
 
     .tabs-nav{
@@ -361,11 +355,11 @@
 
     .tab-content.active{
       display: block;
-      animation: fadeInContent .4s ease;
+      animation: fadeInContent .3s ease;
     }
 
     @keyframes fadeInContent{
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -404,7 +398,7 @@
       gap: 10px;
       align-items: center;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translateY(10px);
       width: 100%;
       max-width: 480px;
       position: relative;
@@ -412,8 +406,8 @@
     }
 
     .name-display.active .contacts-inline{
-      animation: slideUp .6s cubic-bezier(.34,1.56,.64,1) forwards;
-      animation-delay: .4s;
+      animation: slideUp .5s ease-out forwards;
+      animation-delay: .3s;
     }
 
     .contact-link{
@@ -517,7 +511,6 @@
         padding: 20px 16px;
       }
 
-      /* Mobile: logo sopra il nome */
       .profile-header{
         flex-direction: column;
         text-align: center;
@@ -624,7 +617,7 @@
       <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- FIX 1: Logo a sinistra + Nome -->
+        <!-- Logo a sinistra + Nome -->
         <div class="profile-header">
           <img src="logo.png" alt="AG Form Logo" class="logo-large">
           <div class="name-info">
@@ -747,9 +740,6 @@
     const nameDisplay = document.getElementById('nameDisplay');
 
     // ====== STATO ======
-    let particles = [];
-    let shards = [];
-    let raf = null;
     let transformed = false;
     let logoImage = null;
 
@@ -768,54 +758,6 @@
         canvas.width = size;
         canvas.height = size;
       }
-    }
-
-    // FIX 2: FRAMMENTO STILE TRANSFORMERS
-    class Shard{
-      constructor(x, y, w, h, imageData, vx, vy){
-        this.x = x;
-        this.y = y;
-        this.w = w;
-        this.h = h;
-        this.imageData = imageData;
-        this.vx = vx; // velocità X
-        this.vy = vy; // velocità Y
-        this.rotation = 0;
-        this.rotationSpeed = (Math.random() - 0.5) * 0.3;
-        this.alpha = 1;
-        this.life = 1;
-      }
-      
-      update(){
-        this.x += this.vx;
-        this.y += this.vy;
-        this.vy += 0.5; // gravità
-        this.vx *= 0.98; // attrito
-        this.rotation += this.rotationSpeed;
-        this.life -= 0.015;
-        this.alpha = Math.max(0, this.life);
-      }
-      
-      draw(){
-        if (this.alpha <= 0) return;
-        
-        ctx.save();
-        ctx.globalAlpha = this.alpha;
-        ctx.translate(this.x + this.w/2, this.y + this.h/2);
-        ctx.rotate(this.rotation);
-        
-        // Crea un canvas temporaneo per il frammento
-        const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = this.w;
-        tempCanvas.height = this.h;
-        const tempCtx = tempCanvas.getContext('2d');
-        tempCtx.putImageData(this.imageData, 0, 0);
-        
-        ctx.drawImage(tempCanvas, -this.w/2, -this.h/2);
-        ctx.restore();
-      }
-      
-      isDead(){ return this.life <= 0; }
     }
 
     // ====== DISEGNA LOGO ======
@@ -873,62 +815,14 @@
       };
     }
 
-    // FIX 2: CREA FRAMMENTI ESPLOSIVI
-    function createShards(){
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const gridSize = 30; // dimensione frammenti
+    // ====== TRANSFORM SEMPLICE ======
+    function transform(){
+      if (transformed) return;
+      transformed = true;
+
+      logoWrapper.classList.add('transforming');
       
-      for (let y = 0; y < canvas.height; y += gridSize){
-        for (let x = 0; x < canvas.width; x += gridSize){
-          const w = Math.min(gridSize, canvas.width - x);
-          const h = Math.min(gridSize, canvas.height - y);
-          
-          // Estrai frammento
-          const fragmentData = ctx.getImageData(x, y, w, h);
-          
-          // Controlla se il frammento ha pixel visibili
-          let hasPixels = false;
-          for (let i = 3; i < fragmentData.data.length; i += 4){
-            if (fragmentData.data[i] > 20){
-              hasPixels = true;
-              break;
-            }
-          }
-          
-          if (hasPixels){
-            // Velocità esplosiva dal centro
-            const centerX = canvas.width / 2;
-            const centerY = canvas.height / 2;
-            const dx = (x + w/2) - centerX;
-            const dy = (y + h/2) - centerY;
-            const distance = Math.sqrt(dx*dx + dy*dy);
-            const force = 8 + Math.random() * 6;
-            
-            const vx = (dx / distance) * force;
-            const vy = (dy / distance) * force - Math.random() * 3;
-            
-            shards.push(new Shard(x, y, w, h, fragmentData, vx, vy));
-          }
-        }
-      }
-    }
-
-    // ====== ANIMAZIONE ESPLOSIONE ======
-    function animate(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      shards = shards.filter(shard => {
-        shard.update();
-        shard.draw();
-        return !shard.isDead();
-      });
-
-      if (shards.length > 0){
-        raf = requestAnimationFrame(animate);
-        return;
-      }
-
-      // Tutti i frammenti sono scomparsi
+      // Dopo 500ms (durata animazione fadeToWhite)
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         logoWrapper.style.display = 'none';
@@ -942,21 +836,7 @@
         setTimeout(() => {
           lucide.createIcons();
         }, 100);
-      }, 100);
-    }
-
-    // ====== TRANSFORM ======
-    function transform(){
-      if (transformed) return;
-      transformed = true;
-
-      logoWrapper.classList.add('transforming');
-      
-      // Aspetta che l'animazione CSS inizi, poi crea frammenti
-      setTimeout(() => {
-        createShards();
-        animate();
-      }, 300); // Sincronizza con animazione CSS
+      }, 500);
     }
 
     // ====== EVENTI ======
