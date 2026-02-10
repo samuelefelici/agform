@@ -158,7 +158,6 @@
       height: auto;
     }
 
-    /* FIX 4: "PREMI PER CONTINUARE" */
     .hint{
       font-size: 0.85rem;
       color: var(--mut);
@@ -177,7 +176,7 @@
     }
     .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
-    /* ========== NOME ANDREA GONNELLA (MONTSERRAT) ========== */
+    /* ========== NUOVA STRUTTURA COMBINATA ========== */
     .name-display{
       position:absolute;
       inset: 0;
@@ -185,8 +184,8 @@
       flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      padding-top: 60px;
-      gap: 12px;
+      padding-top: 50px;
+      gap: 0;
       opacity:0;
       visibility: hidden;
       pointer-events:none;
@@ -210,93 +209,170 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    .full-name{
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 900;
-      font-size: clamp(3.2rem, 7vw, 5.8rem);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+    /* Header con Avatar e Info */
+    .profile-header{
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
+      gap: 24px;
+      margin-bottom: 25px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .name-display.active .profile-header{
+      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: .15s;
     }
 
-    .name-part{
+    .avatar-circle{
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--gA);
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: 0 10px 30px rgba(255,138,60,.3);
     }
 
-    .letter{
-      display:inline-block;
-      opacity:0;
-      transform: translateY(22px) scale(.92);
-      filter: blur(10px);
-      will-change: opacity, transform, filter;
-    }
-    
-    .name-display.active .letter{
-      animation: letterReveal 0.85s cubic-bezier(.34,1.56,.64,1) forwards;
+    .name-info{
+      text-align: left;
     }
 
-    /* FIX 1: A e G bianche invece che colorate */
-    .letter.big-a,
-    .letter.big-g{
-      color: var(--txt); /* Bianche */
-      font-size: 1.25em;
-      filter: drop-shadow(0 2px 12px rgba(255,255,255,.2));
+    .main-name{
+      font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+      font-weight: 900;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
     }
 
-    .letter.normal{
-      color: var(--txt);
-    }
-
-    @keyframes letterReveal{
-      to{
-        opacity:1;
-        transform: translateY(0) scale(1);
-        filter: blur(0);
-      }
-    }
-
-    /* FIX 2: HR TRAINING MANAGER */
-    .job-title{
-      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-      font-weight: 600;
-      color: var(--mut);
+    .role-badge{
+      display: inline-block;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.2);
+      padding: 7px 18px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      opacity: 0;
-      transform: translateY(16px);
-      margin-bottom: 8px;
-    }
-
-    .name-display.active .job-title{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .35s;
-    }
-
-    /* FIX 3: Tagline più lunga */
-    .tagline{
-      margin-top: 12px;
-      margin-bottom: 8px;
+      letter-spacing: 1.2px;
       color: var(--mut);
-      font-size: 0.95rem; /* Leggermente ridotto per contenere il testo */
-      font-weight: 500;
-      max-width: 750px; /* Aumentato per contenere testo lungo */
-      line-height: 1.7;
-      opacity:0;
-      transform: translateY(16px);
+      backdrop-filter: blur(10px);
     }
-    .name-display.active .tagline{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .5s;
-    }
-    @keyframes slideUp{ to{opacity:1; transform: translateY(0);} }
 
-    /* ========== CONTATTI CON ICONE SVG ========== */
+    /* Pillole competenze chiave */
+    .key-skills{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 25px;
+      opacity: 0;
+      max-width: 700px;
+    }
+    .name-display.active .key-skills{
+      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: .3s;
+    }
+
+    .skill-pill{
+      background: linear-gradient(135deg, rgba(255,138,60,.12), rgba(30,136,229,.12));
+      border: 1px solid rgba(255,255,255,.15);
+      padding: 9px 20px;
+      border-radius: 25px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--txt);
+      backdrop-filter: blur(10px);
+      transition: all .3s ease;
+    }
+
+    .skill-pill:hover{
+      background: linear-gradient(135deg, rgba(255,138,60,.2), rgba(30,136,229,.2));
+      border-color: rgba(255,255,255,.25);
+      transform: translateY(-2px);
+    }
+
+    /* Sezione espandibile */
+    .bio-section{
+      max-width: 720px;
+      margin-bottom: 25px;
+      opacity: 0;
+      width: 100%;
+    }
+    .name-display.active .bio-section{
+      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
+      animation-delay: .45s;
+    }
+
+    .bio-toggle{
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--txt);
+      padding: 14px 24px;
+      background: rgba(255,255,255,.06);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.12);
+      list-style: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all .3s;
+    }
+
+    .bio-toggle:hover{
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.18);
+    }
+
+    .bio-toggle::-webkit-details-marker{display: none;}
+
+    .toggle-icon{
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      transition: transform .3s;
+    }
+
+    .bio-section[open] .toggle-icon{
+      transform: rotate(180deg);
+    }
+
+    .bio-content{
+      padding: 20px 24px 10px 24px;
+    }
+
+    .bio-list{
+      list-style: none;
+      text-align: left;
+      display: grid;
+      gap: 12px;
+    }
+
+    .bio-list li{
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: var(--mut);
+      padding-left: 24px;
+      position: relative;
+    }
+
+    .bio-list li::before{
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--gA);
+      font-weight: 700;
+    }
+
+    /* Contatti */
     .contacts-inline{
       margin-top: 20px;
       display: flex;
@@ -306,14 +382,14 @@
       opacity: 0;
       transform: translateY(20px);
       width: 100%;
-      max-width: 450px;
+      max-width: 500px;
       position: relative;
       z-index: 100;
     }
 
     .name-display.active .contacts-inline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .7s;
+      animation-delay: .6s;
     }
 
     .contact-link{
@@ -348,7 +424,6 @@
       outline-offset: 2px;
     }
 
-    /* Icone SVG (Lucide) */
     .contact-link .icon{
       flex-shrink: 0;
       width: 22px;
@@ -387,8 +462,11 @@
       color: var(--txt);
     }
 
-    .reset-wrapper{
-      display: none !important;
+    @keyframes slideUp{ 
+      to{
+        opacity:1; 
+        transform: translateY(0);
+      } 
     }
 
     /* ========== RESPONSIVE ========== */
@@ -405,28 +483,47 @@
         padding: 25px 20px; 
         border: none;
       }
-      
-      .full-name{ 
-        font-size: 3.2rem; 
-      }
 
       .hint{
         bottom: 80px;
         font-size: 0.8rem;
       }
 
-      .job-title{
-        font-size: 1rem;
-        letter-spacing: 1.5px;
-      }
-
-      .tagline{
-        font-size: 0.88rem; /* Più piccolo su mobile */
-        max-width: 95%;
-      }
-      
       .name-display{
         padding-top: 30px;
+      }
+
+      .profile-header{
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .name-info{
+        text-align: center;
+      }
+
+      .avatar-circle{
+        width: 75px;
+        height: 75px;
+        font-size: 1.8rem;
+      }
+
+      .main-name{
+        font-size: 2rem;
+      }
+
+      .role-badge{
+        font-size: 0.75rem;
+        padding: 6px 14px;
+      }
+
+      .skill-pill{
+        font-size: 0.75rem;
+        padding: 7px 16px;
+      }
+
+      .bio-list li{
+        font-size: 0.85rem;
       }
       
       .contact-link{ 
@@ -449,28 +546,24 @@
         padding: 20px 16px; 
         border-radius: 16px;
       }
-      
-      .full-name{ 
-        font-size: 2.8rem; 
-      }
 
       .hint{
         bottom: 100px;
         font-size: 0.75rem;
       }
 
-      .job-title{
-        font-size: 0.9rem;
-        letter-spacing: 1px;
-      }
-
-      .tagline{
-        font-size: 0.82rem;
-        line-height: 1.6;
-      }
-      
       .name-display{
         padding-top: 20px;
+      }
+
+      .avatar-circle{
+        width: 65px;
+        height: 65px;
+        font-size: 1.5rem;
+      }
+
+      .main-name{
+        font-size: 1.7rem;
       }
     }
 
@@ -488,29 +581,51 @@
       <!-- LOGO INIZIALE -->
       <div class="logo-wrapper" id="logoWrapper" title="Interagisci per visualizzare i contatti">
         <canvas id="particleCanvas"></canvas>
-        <!-- FIX 4: "PREMI PER CONTINUARE" -->
         <div class="hint">Premi per continuare</div>
       </div>
 
-      <!-- NOME + CONTATTI -->
+      <!-- NUOVO LAYOUT COMBINATO -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
-        <div class="full-name">
-          <div class="name-part" id="andrea"></div>
-          <div class="name-part" id="gonnella"></div>
+        
+        <!-- Header con Avatar + Nome -->
+        <div class="profile-header">
+          <div class="avatar-circle">AG</div>
+          <div class="name-info">
+            <h1 class="main-name">Andrea Gonnella</h1>
+            <span class="role-badge">HR Training Manager</span>
+          </div>
         </div>
 
-        <!-- FIX 2: HR TRAINING MANAGER -->
-        <div class="job-title">HR Training Manager</div>
+        <!-- Competenze chiave in pillole -->
+        <div class="key-skills">
+          <span class="skill-pill">Formazione Finanziata</span>
+          <span class="skill-pill">Fondi Europei</span>
+          <span class="skill-pill">Upskilling & Reskilling</span>
+          <span class="skill-pill">Certificazioni</span>
+          <span class="skill-pill">Sistema Qualità</span>
+        </div>
 
-        <!-- FIX 3: Tagline completa -->
-        <p class="tagline">
-          Formazione finanziata e a catalogo, accesso ai fondi regionali e gestione dei fondi interprofessionali, analisi del bisogno formativo, progettazione formativa, erogazione e docenze, rendicontazione, upskilling e reskilling, onboarding e outboarding. Sistema qualità e certificazione delle competenze.
-        </p>
+        <!-- Sezione espandibile con dettagli -->
+        <details class="bio-section">
+          <summary class="bio-toggle">
+            <span>Aree di competenza</span>
+            <i data-lucide="chevron-down" class="toggle-icon"></i>
+          </summary>
+          <div class="bio-content">
+            <ul class="bio-list">
+              <li>Formazione finanziata e a catalogo</li>
+              <li>Accesso ai fondi regionali e gestione dei fondi interprofessionali</li>
+              <li>Analisi del bisogno formativo e progettazione formativa</li>
+              <li>Erogazione, docenze e rendicontazione</li>
+              <li>Upskilling, reskilling, onboarding e outboarding</li>
+              <li>Sistema qualità e certificazione delle competenze</li>
+            </ul>
+          </div>
+        </details>
 
-        <!-- Contatti con icone Lucide e link funzionanti -->
+        <!-- Contatti -->
         <div class="contacts-inline">
           
-          <!-- EMAIL: apre client email -->
           <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
             <i data-lucide="mail" class="icon"></i>
             <span class="text">
@@ -519,7 +634,6 @@
             </span>
           </a>
 
-          <!-- TELEFONO: apre dialer -->
           <a href="tel:+393331234567" class="contact-link">
             <i data-lucide="phone" class="icon"></i>
             <span class="text">
@@ -528,7 +642,6 @@
             </span>
           </a>
 
-          <!-- WHATSAPP: apre WhatsApp -->
           <a href="https://wa.me/393331234567" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="message-circle" class="icon"></i>
             <span class="text">
@@ -537,7 +650,6 @@
             </span>
           </a>
 
-          <!-- SITO WEB: va alla landing -->
           <a href="https://saolino91.github.io/agform" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="globe" class="icon"></i>
             <span class="text">
@@ -583,8 +695,6 @@
         canvas.width = size;
         canvas.height = size;
       }
-      
-      console.log(`📱 Canvas: ${canvas.width}x${canvas.height} (mobile: ${isMobile})`);
     }
 
     // ====== PARTICELLA ======
@@ -693,67 +803,13 @@
             pixels.push({
               x, y,
               color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
-              type: isWarm ? 'andrea' : 'gonnella'
+              type: isWarm ? 'warm' : 'cold'
             });
           }
         }
       }
       
       return pixels;
-    }
-
-    // ====== CREA LETTERE ======
-    function createLetters(container, text, highlightFirst){
-      container.innerHTML = '';
-      [...text].forEach((ch, i) => {
-        const s = document.createElement('span');
-        s.className = 'letter';
-        
-        if (i === 0 && highlightFirst){
-          s.classList.add(highlightFirst);
-        } else {
-          s.classList.add('normal');
-        }
-        
-        s.textContent = ch;
-        s.style.animationDelay = (0.08 + i * 0.04) + 's';
-        container.appendChild(s);
-      });
-    }
-
-    // ====== POSIZIONI LETTERE ======
-    function getLetterTargets(){
-      nameDisplay.style.visibility = 'visible';
-      nameDisplay.style.opacity = '1';
-      nameDisplay.style.pointerEvents = 'none';
-      
-      const forceLayout = nameDisplay.offsetHeight;
-      
-      const canvasRect = canvas.getBoundingClientRect();
-      
-      const A = [];
-      const G = [];
-
-      andreaDiv.querySelectorAll('.letter').forEach(el => {
-        const r = el.getBoundingClientRect();
-        A.push({
-          x: (r.left + r.width/2) - canvasRect.left,
-          y: (r.top + r.height/2) - canvasRect.top
-        });
-      });
-
-      gonnellaDiv.querySelectorAll('.letter').forEach(el => {
-        const r = el.getBoundingClientRect();
-        G.push({
-          x: (r.left + r.width/2) - canvasRect.left,
-          y: (r.top + r.height/2) - canvasRect.top
-        });
-      });
-
-      nameDisplay.style.opacity = '0';
-      nameDisplay.style.visibility = 'hidden';
-      
-      return { A, G };
     }
 
     // ====== ANIMAZIONE ======
@@ -795,55 +851,39 @@
 
       logoWrapper.classList.add('transforming');
 
-      createLetters(andreaDiv, 'ANDREA', 'big-a');
-      createLetters(gonnellaDiv, 'GONNELLA', 'big-g');
+      const pixels = samplePixels();
 
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          const pixels = samplePixels();
-
-          if (pixels.length === 0){
-            drawFallbackLogo();
-            setTimeout(() => {
-              const pixels2 = samplePixels();
-              if (pixels2.length === 0) {
-                logoWrapper.classList.add('hidden');
-                logoWrapper.style.display = 'none';
-                canvas.style.display = 'none';
-                nameDisplay.classList.add('active');
-                lucide.createIcons();
-                return;
-              }
-              continueTransform(pixels2);
-            }, 100);
-          } else {
-            continueTransform(pixels);
+      if (pixels.length === 0){
+        drawFallbackLogo();
+        setTimeout(() => {
+          const pixels2 = samplePixels();
+          if (pixels2.length === 0) {
+            logoWrapper.classList.add('hidden');
+            logoWrapper.style.display = 'none';
+            canvas.style.display = 'none';
+            nameDisplay.classList.add('active');
+            lucide.createIcons();
+            return;
           }
-        });
-      });
+          startParticles(pixels2);
+        }, 100);
+      } else {
+        startParticles(pixels);
+      }
     }
 
-    function continueTransform(pixels){
-      const { A, G } = getLetterTargets();
-
-      if (A.length === 0 || G.length === 0){
-        logoWrapper.classList.add('hidden');
-        logoWrapper.style.display = 'none';
-        canvas.style.display = 'none';
-        nameDisplay.classList.add('active');
-        lucide.createIcons();
-        return;
-      }
+    function startParticles(pixels){
+      // Crea particelle che vanno verso il centro
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
 
       particles = [];
       
       for (const px of pixels){
-        const targetList = (px.type === 'andrea') ? A : G;
-        const t = targetList[(Math.random() * targetList.length) | 0];
-
         particles.push(new Particle(
           px.x, px.y, px.color,
-          t.x, t.y,
+          centerX + (Math.random() - 0.5) * 200,
+          centerY + (Math.random() - 0.5) * 200,
           (Math.random()*26) | 0
         ));
       }
