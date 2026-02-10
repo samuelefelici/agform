@@ -481,201 +481,185 @@
     @keyframes slideUp{ to{ opacity:1; transform: translateY(0); } }
 
     /* ============================================================
-       RESPONSIVE MOBILE — FIX PRINCIPALE
-       Il problema era: .stage overflow:hidden + .name-display
-       position:absolute con altezza fissa tagliavano il contenuto
-       su schermi piccoli o con toolbar del browser.
+       RESPONSIVE MOBILE — STRATEGIA "LOCKED"
+       Il contenuto NON scrolla mai: si comprime per stare
+       dentro lo schermo usando flex-shrink e dimensioni dvh.
 
-       SOLUZIONE:
-       1. Su mobile .stage diventa overflow-y:auto
-       2. .name-display esce da position:absolute e diventa
-          un normale flex column con min-height:100%
-          così può crescere oltre lo schermo e scrollare
-       3. Scrollbar nascosta ma funzionale (-webkit-scrollbar)
+       TECNICA:
+       1. body/container/stage: tutti overflow:hidden
+       2. .name-display: position:absolute inset:0, overflow:hidden
+          → stesso box del genitore, mai fuori
+       3. I figli usano flex-shrink:1 + min-height:0
+          → si comprimono autonomamente se lo spazio è poco
+       4. Font/padding/gap scalano con clamp() e dvh units
     ============================================================ */
     @media (max-width: 768px){
 
       body{
         padding: 0;
-        padding-bottom: 0; /* gestiamo il safe area dentro .name-display */
-        align-items: stretch; /* il container si estende a tutta l'altezza */
+        overflow: hidden;          /* LOCKED: niente scroll sul body */
+        height: 100dvh;
       }
 
       .container{
-        /* FIX: non limitiamo più l'altezza con min() — lasciamo che cresca */
-        height: 100dvh;
         width: 100vw;
-        /* FIX: permette lo scroll verticale */
-        overflow-y: auto;
-        /* Nascondi scrollbar visivamente (rimane funzionale) */
-        scrollbar-width: none;
-        -ms-overflow-style: none;
+        height: 100dvh;
+        overflow: hidden;          /* LOCKED */
       }
-      .container::-webkit-scrollbar{ display: none; }
 
       .stage{
-        /* FIX: non più overflow:hidden — permettiamo al contenuto di uscire */
-        overflow: visible;
-        /* FIX: altezza minima invece di fissa, così si espande se serve */
-        min-height: 100dvh;
-        height: auto;
+        overflow: hidden;          /* LOCKED */
+        height: 100dvh;
+        min-height: unset;
         padding: 0;
         border: none;
         border-radius: 0;
-        /* Rimuoviamo align-items:center — il contenuto parte dall'alto */
-        align-items: stretch;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
-      /* Il canvas del logo resta centrato verticalmente */
+      /* Logo iniziale centrato */
       .logo-wrapper{
         justify-content: center;
         padding-top: 0;
-        /* Altezza fissa per la schermata iniziale */
-        height: 100dvh;
       }
 
-      /* Hint visibile */
       .hint{
-        bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 24px)) !important;
-        font-size: 0.8rem !important;
+        bottom: max(36px, calc(env(safe-area-inset-bottom, 0px) + 22px)) !important;
+        font-size: 0.78rem !important;
         color: #FFFFFF !important;
         opacity: 1 !important;
         font-weight: 800 !important;
         text-shadow:
           0 0 15px rgba(255,255,255,0.8),
-          0 0 25px rgba(255,255,255,0.5),
           0 3px 15px rgba(0,0,0,1) !important;
         background: rgba(0,0,0,0.6) !important;
-        padding: 9px 18px !important;
+        padding: 8px 16px !important;
         border-radius: 8px;
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255,255,255,0.2);
       }
 
-      /* ---- NAME DISPLAY: layout scrollabile ---- */
+      /* ---- NAME DISPLAY: box locked, mai overflow ---- */
       .name-display{
-        /* FIX: non più position:absolute — diventa un normale elemento nel flusso */
-        position: relative;
-        inset: auto;
-        /* FIX: altezza minima = schermo intero, poi si espande se il contenuto è più alto */
-        min-height: 100dvh;
-        height: auto;
-        /* FIX: scroll verticale abilitato */
-        overflow-y: auto;
-        overflow-x: hidden;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        /* Padding sicuro: top per notch, bottom per toolbar + safe area */
-        padding: max(24px, env(safe-area-inset-top, 24px)) 14px max(80px, calc(env(safe-area-inset-bottom, 0px) + 60px));
-        gap: 16px;
-        /* Contenuto centrato verticalmente se c'è spazio, allineato in alto se non c'è */
-        justify-content: safe center;
+        /* Rimane position:absolute inset:0 — stesso box del .stage */
+        position: absolute;
+        inset: 0;
+        overflow: hidden;          /* LOCKED — niente scroll */
+        /* Padding safe area: top notch, bottom toolbar */
+        padding:
+          max(16px, env(safe-area-inset-top, 16px))
+          14px
+          max(16px, env(safe-area-inset-bottom, 16px));
+        gap: clamp(6px, 1.5dvh, 14px);   /* gap si riduce sugli schermi bassi */
+        justify-content: center;
+        align-items: center;
       }
-      .name-display::-webkit-scrollbar{ display: none; }
 
-      /* Quando è attivo, occupa il suo spazio naturale */
       .name-display.active{
         display: flex !important;
       }
 
-      /* MOBILE: Logo SOPRA nome */
+      /* MOBILE: Logo SOPRA nome — si comprime */
       .profile-header{
         flex-direction: column;
-        gap: 12px;
+        gap: clamp(6px, 1.2dvh, 12px);
         align-items: center;
         margin-bottom: 0;
-        flex-shrink: 0;
+        flex-shrink: 1;            /* può restringersi se serve */
       }
+
       .name-info{ text-align: center; width: 100%; }
-      .logo-large{ width: 90px; }
+
+      .logo-large{
+        /* Si scala tra 60px e 90px in base all'altezza disponibile */
+        width: clamp(60px, 10dvh, 90px);
+        flex-shrink: 1;
+      }
 
       .main-name{
-        font-size: clamp(2.2rem, 7vw, 2.8rem);
+        font-size: clamp(1.6rem, 5.5dvh, 2.8rem);
         line-height: 1;
-        margin-bottom: 10px;
-        width: 100%;
+        margin-bottom: clamp(4px, 0.8dvh, 10px);
         letter-spacing: -0.04em;
       }
 
       .role-badge{
-        font-size: 0.78rem;
-        font-weight: 500;
-        letter-spacing: 2.2px;
-        padding: 0;
-        background: transparent;
-        border: none;
+        font-size: clamp(0.62rem, 1.5dvh, 0.78rem);
+        letter-spacing: 2px;
       }
-      .role-badge::after{ bottom: -5px; height: 1.5px; opacity: 0.5; }
 
+      /* Le tabs si comprimono prendendo lo spazio residuo */
       .expertise-tabs{
-        margin-bottom: 0;
         width: 100%;
+        margin-bottom: 0;
+        flex-shrink: 1;
+        min-height: 0;             /* fondamentale: senza questo flex ignora il shrink */
+        display: flex;
+        flex-direction: column;
+      }
+
+      .tabs-nav{
+        gap: 5px;
+        margin-bottom: clamp(6px, 1dvh, 10px);
         flex-shrink: 0;
       }
-      .tabs-nav{ gap: 6px; margin-bottom: 10px; }
+
       .tab-btn{
-        font-size: 0.72rem;
-        padding: 7px 13px;
+        font-size: clamp(0.6rem, 1.5dvh, 0.72rem);
+        padding: clamp(5px, 1dvh, 7px) clamp(9px, 2vw, 13px);
         font-weight: 700;
         background: rgba(255,255,255,.08);
         border: 1px solid rgba(255,255,255,.15);
       }
-      .tab-content{ padding: 12px 14px; min-height: auto; }
-      .expertise-list{ gap: 6px; }
-      .expertise-list li{ font-size: 0.78rem; line-height: 1.4; }
 
-      .contacts-inline{
-        gap: 7px;
-        margin-top: 0;
-        max-width: 100%;
-        flex-shrink: 0;
+      /* Il contenuto della tab si comprime senza tagliare */
+      .tab-content{
+        padding: clamp(8px, 1.5dvh, 12px) 12px;
+        min-height: unset;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
       }
-      .contact-link{ padding: 9px 13px; }
-      .contact-link .icon{ width: 17px; height: 17px; }
-      .contact-link .label{ font-size: 0.7rem; }
+
+      .expertise-list{ gap: clamp(4px, 0.8dvh, 7px); }
+
+      .expertise-list li{
+        font-size: clamp(0.68rem, 1.6dvh, 0.78rem);
+        line-height: 1.35;
+      }
+
+      /* I contatti si comprimono */
+      .contacts-inline{
+        gap: clamp(5px, 1dvh, 8px);
+        max-width: 100%;
+        flex-shrink: 1;
+        min-height: 0;
+      }
+
+      .contact-link{
+        padding: clamp(6px, 1.2dvh, 9px) 12px;
+        flex-shrink: 1;
+      }
+
+      .contact-link .icon{ width: 16px; height: 16px; }
+      .contact-link .label{ font-size: clamp(0.62rem, 1.3dvh, 0.7rem); }
+
       .contact-link .value{
-        font-size: 0.8rem;
+        font-size: clamp(0.7rem, 1.6dvh, 0.8rem);
         color: var(--txt) !important;
         -webkit-text-fill-color: var(--txt) !important;
       }
-      .copy-btn{ width: 28px; height: 28px; }
-      .copy-btn .icon{ width: 14px; height: 14px; }
-    }
 
-    @media (max-width: 480px){
-      .stage{ padding: 0; }
-      .hint{
-        bottom: max(28px, calc(env(safe-area-inset-bottom, 0px) + 16px)) !important;
-        font-size: 0.75rem !important;
-        padding: 8px 16px !important;
-      }
-      .name-display{
-        padding: max(20px, env(safe-area-inset-top, 20px)) 12px max(70px, calc(env(safe-area-inset-bottom, 0px) + 50px));
-        gap: 14px;
-      }
-      .logo-large{ width: 78px; }
-      .main-name{ font-size: clamp(1.9rem, 6.5vw, 2.4rem); margin-bottom: 8px; }
-      .role-badge{ font-size: 0.74rem; letter-spacing: 2px; }
-      .tab-btn{ font-size: 0.68rem; padding: 6px 11px; }
-      .tab-content{ padding: 11px 12px; }
-      .expertise-list{ gap: 5px; }
-      .expertise-list li{ font-size: 0.74rem; line-height: 1.35; }
-      .contacts-inline{ gap: 6px; }
-      .contact-link{ padding: 8px 11px; }
-      .contact-link .icon{ width: 16px; height: 16px; }
-      .contact-link .label{ font-size: 0.67rem; }
-      .contact-link .value{ font-size: 0.76rem; }
       .copy-btn{ width: 26px; height: 26px; }
       .copy-btn .icon{ width: 13px; height: 13px; }
     }
 
+    /* Schermi molto stretti in larghezza */
     @media (max-width: 375px){
-      .main-name{ font-size: clamp(1.7rem, 6vw, 2rem); }
-      .logo-large{ width: 68px; }
-      .role-badge{ font-size: 0.70rem; }
-      .tab-btn{ font-size: 0.64rem; padding: 5px 10px; }
-      .expertise-list li{ font-size: 0.7rem; }
-      .contact-link .value{ font-size: 0.72rem; }
+      .tabs-nav{ flex-wrap: wrap; }
+      .tab-btn{ font-size: 0.62rem; padding: 5px 9px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -896,15 +880,6 @@
         nameDisplay.style.opacity = '';
         nameDisplay.style.visibility = '';
         nameDisplay.classList.add('active');
-
-        // Su mobile, dopo la transizione scroll to top per assicurarsi
-        // che il contenuto parta dall'inizio
-        if (window.innerWidth <= 768) {
-          setTimeout(() => {
-            const container = document.querySelector('.container');
-            if (container) container.scrollTop = 0;
-          }, 100);
-        }
 
         setTimeout(() => lucide.createIcons(), 100);
       }, 500);
