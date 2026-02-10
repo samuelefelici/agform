@@ -179,10 +179,10 @@
       transition: opacity .8s ease;
       max-width: 100%;
       height: auto;
-      pointer-events: none; /* Canvas non blocca l'hint */
+      pointer-events: none;
     }
 
-    /* Hint - Desktop */
+    /* FIX: Hint FUORI dal wrapper - position fixed */
     .hint{
       font-size: 0.85rem;
       color: #FFFFFF;
@@ -192,17 +192,24 @@
       font-weight: 600;
       letter-spacing: 0.5px;
       text-transform: uppercase;
-      position: absolute;
+      position: fixed; /* CAMBIATO da absolute a fixed */
       bottom: 60px;
-      z-index: 9999;
+      left: 50%;
+      transform: translateX(-50%); /* Centrato orizzontalmente */
+      z-index: 99999;
       text-shadow: 0 2px 8px rgba(0,0,0,0.8);
       pointer-events: none;
+      transition: opacity 0.25s ease;
     }
+
     @keyframes pulseHint{
       0%,100%{opacity:.9}
       50%{opacity:.6}
     }
-    .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
+
+    .hint.hidden{
+      opacity: 0 !important;
+    }
 
     /* ========== LAYOUT SENZA SCROLL ========== */
     .name-display{
@@ -522,11 +529,10 @@
         border-radius: 0;
       }
 
-      /* FIX MOBILE: Hint super visibile */
+      /* FIX MOBILE: Hint super visibile con background */
       .hint{
-        bottom: 50px !important; /* Molto più in alto */
+        bottom: 50px !important;
         font-size: 0.85rem !important;
-        z-index: 99999 !important; /* Z-index altissimo */
         color: #FFFFFF !important;
         opacity: 1 !important;
         font-weight: 800 !important;
@@ -534,10 +540,11 @@
           0 0 15px rgba(255,255,255,0.8),
           0 0 25px rgba(255,255,255,0.5),
           0 3px 15px rgba(0,0,0,1) !important;
-        background: rgba(0,0,0,0.3); /* Background per contrasto */
-        padding: 8px 16px !important;
+        background: rgba(0,0,0,0.6) !important;
+        padding: 10px 20px !important;
         border-radius: 8px;
         backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
       }
 
       .name-display{
@@ -660,18 +667,7 @@
       .hint{
         bottom: 45px !important;
         font-size: 0.8rem !important;
-        z-index: 99999 !important;
-        color: #FFFFFF !important;
-        opacity: 1 !important;
-        font-weight: 800 !important;
-        text-shadow: 
-          0 0 15px rgba(255,255,255,0.8),
-          0 0 25px rgba(255,255,255,0.5),
-          0 3px 15px rgba(0,0,0,1) !important;
-        background: rgba(0,0,0,0.3);
-        padding: 7px 14px !important;
-        border-radius: 8px;
-        backdrop-filter: blur(10px);
+        padding: 9px 18px !important;
       }
 
       .name-display{
@@ -763,8 +759,10 @@
       <!-- LOGO INIZIALE -->
       <div class="logo-wrapper" id="logoWrapper" title="Interagisci per visualizzare i contatti">
         <canvas id="particleCanvas"></canvas>
-        <div class="hint">Premi per continuare</div>
       </div>
+      
+      <!-- HINT FUORI dal wrapper - SEMPRE visibile -->
+      <div class="hint" id="hint">Premi per continuare</div>
 
       <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
@@ -890,30 +888,28 @@
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const logoWrapper = document.getElementById('logoWrapper');
     const nameDisplay = document.getElementById('nameDisplay');
+    const hint = document.getElementById('hint');
 
     // ====== STATO ======
     let transformed = false;
     let logoImage = null;
 
-// ====== DIMENSIONE CANVAS RESPONSIVE ======
-function setCanvasSize(){
-  const stage = document.querySelector('.stage');
-  const stageRect = stage.getBoundingClientRect();
-  const isMobile = window.innerWidth <= 768;
-  
-  if (isMobile) {
-    // MOBILE: Canvas ancora più piccolo
-    const maxHeight = stageRect.height - 220; // Lascia 120px in basso per l'hint
-    const maxWidth = stageRect.width - 40;
-    const size = Math.min(maxWidth, maxHeight);
-    canvas.width = size;
-    canvas.height = size;
-  } else {
-    const size = Math.min(stageRect.width - 80, stageRect.height - 100, 420);
-    canvas.width = size;
-    canvas.height = size;
-  }
-}
+    // ====== DIMENSIONE CANVAS RESPONSIVE ======
+    function setCanvasSize(){
+      const stage = document.querySelector('.stage');
+      const stageRect = stage.getBoundingClientRect();
+      const isMobile = window.innerWidth <= 768;
+      
+      if (isMobile) {
+        const size = Math.min(stageRect.width - 40, stageRect.height - 100);
+        canvas.width = size;
+        canvas.height = size;
+      } else {
+        const size = Math.min(stageRect.width - 80, stageRect.height - 100, 420);
+        canvas.width = size;
+        canvas.height = size;
+      }
+    }
 
     // ====== DISEGNA LOGO ======
     function drawFallbackLogo(){
@@ -976,6 +972,11 @@ function setCanvasSize(){
       transformed = true;
 
       logoWrapper.classList.add('transforming');
+      
+      // Nascondi hint
+      if (hint) {
+        hint.classList.add('hidden');
+      }
       
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
