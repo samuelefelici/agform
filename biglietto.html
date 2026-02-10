@@ -902,8 +902,10 @@ function setCanvasSize(){
   const isMobile = window.innerWidth <= 768;
   
   if (isMobile) {
-    // MOBILE: Canvas più piccolo per lasciare spazio all'hint in basso
-    const size = Math.min(stageRect.width - 40, stageRect.height - 180); // Era -100, ora -180
+    // MOBILE: Canvas ancora più piccolo
+    const maxHeight = stageRect.height - 220; // Lascia 120px in basso per l'hint
+    const maxWidth = stageRect.width - 40;
+    const size = Math.min(maxWidth, maxHeight);
     canvas.width = size;
     canvas.height = size;
   } else {
