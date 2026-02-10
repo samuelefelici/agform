@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>AG Form | Andrea Gonnella</title>
   
   <!-- ========== FAVICON ========== -->
@@ -36,6 +36,8 @@
     body{
       font-family: Montserrat, system-ui, -apple-system, sans-serif;
       min-height:100vh;
+      /* FIX iPhone safe area */
+      min-height: 100dvh; /* Dynamic viewport height */
       color:var(--txt);
       background:
         radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
@@ -44,6 +46,8 @@
         linear-gradient(180deg, var(--bg), var(--bg2));
       overflow:hidden;
       padding: 12px;
+      /* FIX iPhone safe area */
+      padding-bottom: max(12px, env(safe-area-inset-bottom));
       display:flex;
       align-items:center;
       justify-content:center;
@@ -571,15 +575,21 @@
     @media (max-width: 768px){
       body{
         padding: 0;
+        /* FIX iPhone safe area - padding bottom per toolbar */
+        padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
       }
 
       .container{
         height: 100vh;
+        /* FIX iPhone dynamic viewport */
+        height: 100dvh;
         width: 100vw;
       }
       
       .stage{ 
-        padding: 16px 14px; /* Padding equilibrato */
+        padding: 16px 14px;
+        /* FIX iPhone safe area - padding bottom extra */
+        padding-bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 16px));
         border: none;
         border-radius: 0;
       }
@@ -605,14 +615,16 @@
       /* Logo iniziale più in alto */
       .logo-wrapper{
         justify-content: flex-start;
-        padding-top: 25vh; /* Logo al 25% dall'alto */
+        padding-top: 25vh;
       }
 
       /* Layout mobile BILANCIATO con space-evenly */
       .name-display{
-        padding: 0 14px; /* Solo ai lati */
-        gap: 0; /* NO gap fisso */
-        justify-content: space-evenly; /* DISTRIBUZIONE AUTOMATICA */
+        padding: 0 14px;
+        /* FIX iPhone safe area - padding bottom per evitare toolbar */
+        padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+        gap: 0;
+        justify-content: space-evenly;
       }
 
       /* MOBILE: Logo SOPRA nome */
@@ -628,21 +640,18 @@
         width: 100%;
       }
 
-      /* Logo grande */
       .logo-large{
         width: 100px;
       }
 
-      /* Nome grande e visibile */
       .main-name{
-        font-size: clamp(2.4rem, 7vw, 2.8rem); /* Responsive tra 2.4 e 2.8rem */
+        font-size: clamp(2.4rem, 7vw, 2.8rem);
         line-height: 1;
         margin-bottom: 10px;
         width: 100%;
         letter-spacing: -0.04em;
       }
 
-      /* Badge ben visibile */
       .role-badge{
         font-size: 0.82rem;
         font-weight: 500;
@@ -650,7 +659,7 @@
         padding: 0;
         background: transparent;
         border: none;
-        margin-bottom: 0; /* NO margine - gestito da space-evenly */
+        margin-bottom: 0;
       }
 
       .role-badge::after{
@@ -659,7 +668,6 @@
         opacity: 0.5;
       }
 
-      /* Tabs */
       .expertise-tabs{
         margin-bottom: 0;
         width: 100%;
@@ -670,7 +678,6 @@
         margin-bottom: 10px;
       }
 
-      /* Pulsanti leggibili */
       .tab-btn{
         font-size: 0.72rem;
         padding: 7px 13px;
@@ -693,11 +700,12 @@
         line-height: 1.4;
       }
 
-      /* Contatti ben spaziati */
       .contacts-inline{
         gap: 7px;
         margin-top: 0;
         max-width: 100%;
+        /* FIX iPhone safe area - margine bottom extra */
+        margin-bottom: max(8px, env(safe-area-inset-bottom, 0px));
       }
       
       .contact-link{ 
@@ -713,8 +721,11 @@
         font-size: 0.7rem;
       }
       
+      /* FIX 2: Partita IVA bianca su mobile */
       .contact-link .value{
         font-size: 0.8rem;
+        color: var(--txt) !important; /* Forza bianco */
+        -webkit-text-fill-color: var(--txt) !important; /* iOS override */
       }
 
       .copy-btn{
@@ -728,10 +739,10 @@
       }
     }
 
-    /* Schermi molto piccoli - mantenendo le proporzioni */
     @media (max-width: 480px){
       .stage{ 
         padding: 14px 12px;
+        padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 14px));
       }
 
       .hint{
@@ -746,6 +757,7 @@
 
       .name-display{
         padding: 0 12px;
+        padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
       }
 
       .logo-large{
@@ -782,6 +794,7 @@
 
       .contacts-inline{
         gap: 6px;
+        margin-bottom: max(6px, env(safe-area-inset-bottom, 0px));
       }
 
       .contact-link{
@@ -812,7 +825,6 @@
       }
     }
 
-    /* Schermi ultra piccoli */
     @media (max-width: 375px){
       .main-name{
         font-size: clamp(1.8rem, 6vw, 2.1rem);
