@@ -487,37 +487,40 @@
       } 
     }
 
-    /* ========== RESPONSIVE MOBILE OTTIMIZZATO ========== */
+    /* ========== RESPONSIVE MOBILE SATURATO ========== */
     @media (max-width: 768px){
       body{
-        padding: 6px;
+        padding: 0; /* RIMOSSO padding body */
       }
 
       .container{
-        height: 98vh;
+        height: 100vh; /* RIEMPI TUTTO LO SCHERMO */
+        width: 100vw;
       }
       
       .stage{ 
-        padding: 18px 14px; /* Padding ridotto per massimizzare spazio */
+        padding: 12px 14px; /* Padding minimo */
         border: none;
+        border-radius: 0; /* NO bordi arrotondati */
       }
 
       .hint{
-        bottom: 45px;
+        bottom: 30px;
         font-size: 0.7rem;
         z-index: 20;
       }
 
       .name-display{
-        padding: 16px 12px; /* Padding ridotto */
+        padding: 10px 12px; /* Padding minimo */
+        justify-content: space-evenly; /* DISTRIBUZIONE UNIFORME */
       }
 
-      /* Logo e nome più grandi su mobile */
+      /* Logo e nome grandi */
       .profile-header{
         flex-direction: row;
-        gap: 20px; /* Gap aumentato */
+        gap: 20px;
         align-items: center;
-        margin-bottom: 16px; /* Margine ridotto */
+        margin-bottom: 0; /* NO margine */
       }
 
       .name-info{
@@ -525,55 +528,58 @@
       }
 
       .logo-large{
-        width: 95px; /* Logo più grande: da 70px a 95px */
+        width: 100px; /* Logo più grande */
       }
 
       .main-name{
-        font-size: 2.3rem; /* Nome più grande: da 1.8rem a 2.3rem */
-        line-height: 1.1;
+        font-size: 2.5rem; /* Nome più grande */
+        line-height: 1.05;
+        margin-bottom: 6px;
       }
 
       .role-badge{
-        font-size: 0.72rem; /* Badge leggermente più grande */
+        font-size: 0.75rem;
         padding: 6px 12px;
       }
 
-      /* Tabs più compatti */
+      /* Tabs compatti */
       .expertise-tabs{
-        margin-bottom: 14px; /* Margine ridotto */
+        margin-bottom: 0; /* NO margine */
+        width: 100%;
       }
 
       .tabs-nav{
         gap: 6px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
 
       .tab-btn{
-        font-size: 0.68rem;
-        padding: 6px 11px; /* Padding ridotto */
+        font-size: 0.7rem;
+        padding: 7px 12px;
       }
 
       .tab-content{
-        padding: 12px 16px; /* Padding ridotto */
-        min-height: 85px; /* Altezza minima ridotta */
+        padding: 12px 14px;
+        min-height: auto; /* Altezza automatica */
       }
 
       .expertise-list{
-        gap: 6px; /* Gap ridotto */
+        gap: 5px;
       }
 
       .expertise-list li{
-        font-size: 0.78rem;
+        font-size: 0.8rem;
         line-height: 1.4;
       }
 
-      /* Contatti più compatti */
+      /* Contatti compatti */
       .contacts-inline{
-        gap: 7px; /* Gap ridotto */
+        gap: 6px;
+        margin-top: 0; /* NO margine */
       }
       
       .contact-link{ 
-        padding: 9px 14px; /* Padding ridotto */
+        padding: 9px 14px;
       }
 
       .contact-link .icon{
@@ -582,78 +588,80 @@
       }
 
       .contact-link .label{
-        font-size: 0.68rem;
+        font-size: 0.7rem;
       }
       
       .contact-link .value{
-        font-size: 0.8rem;
+        font-size: 0.82rem;
       }
     }
 
     @media (max-width: 480px){
       .container{
-        height: 99vh;
+        height: 100vh; /* RIEMPI TUTTO */
+        width: 100vw;
       }
 
       .stage{ 
-        padding: 14px 10px;
-        border-radius: 12px;
+        padding: 10px 12px;
+        border-radius: 0;
       }
 
       .hint{
-        bottom: 35px;
+        bottom: 25px;
         font-size: 0.65rem;
       }
 
       .name-display{
-        padding: 12px 10px;
+        padding: 8px 10px;
+        justify-content: space-evenly;
       }
 
       .profile-header{
         gap: 16px;
-        margin-bottom: 12px;
+        margin-bottom: 0;
       }
 
       .logo-large{
-        width: 80px; /* Logo grande anche su tiny: da 60px a 80px */
+        width: 85px;
       }
 
       .main-name{
-        font-size: 1.9rem; /* Nome grande: da 1.5rem a 1.9rem */
+        font-size: 2rem;
+        margin-bottom: 5px;
       }
 
       .role-badge{
-        font-size: 0.65rem;
+        font-size: 0.68rem;
         padding: 5px 10px;
       }
 
       .tabs-nav{
         gap: 5px;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
       }
 
       .tab-btn{
-        font-size: 0.62rem;
-        padding: 5px 9px;
+        font-size: 0.65rem;
+        padding: 6px 10px;
       }
 
       .tab-content{
-        padding: 10px 14px;
-        min-height: 75px;
+        padding: 10px 12px;
       }
 
       .expertise-list{
-        gap: 5px;
+        gap: 4px;
       }
 
       .expertise-list li{
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         line-height: 1.35;
         padding-left: 18px;
       }
 
       .contacts-inline{
-        gap: 6px;
+        gap: 5px;
       }
 
       .contact-link{
@@ -665,7 +673,7 @@
       }
 
       .contact-link .value{
-        font-size: 0.75rem;
+        font-size: 0.77rem;
       }
     }
 
