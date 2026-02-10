@@ -42,7 +42,7 @@
         radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
         radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
+      overflow:hidden; /* FIX 4: Niente scroll */
       padding: 12px;
       display:flex;
       align-items:center;
@@ -92,18 +92,19 @@
 
     .container{
       width:min(1100px, 100%);
+      height: min(95vh, 850px); /* FIX 4: Altezza fissa */
       position:relative;
     }
 
     /* ========== STAGE PRINCIPALE ========== */
     .stage{
-      min-height: 820px;
+      height: 100%; /* FIX 4: 100% dell'altezza container */
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
-      overflow:hidden;
-      padding: 50px 40px;
+      overflow:hidden; /* FIX 4: Niente scroll */
+      padding: 40px 35px; /* Ridotto padding */
       position:relative;
       display:flex;
       align-items:center;
@@ -176,24 +177,21 @@
     }
     .logo-wrapper.transforming .hint{ opacity:0; transition: opacity .25s ease; }
 
-    /* ========== NUOVA STRUTTURA COMBINATA ========== */
+    /* ========== LAYOUT SENZA SCROLL ========== */
     .name-display{
       position:absolute;
       inset: 0;
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:flex-start;
-      padding-top: 50px;
+      justify-content:center; /* FIX 4: Centrato verticalmente */
+      padding: 30px;
       gap: 0;
       opacity:0;
       visibility: hidden;
       pointer-events:none;
       text-align:center;
-      padding-left: 30px;
-      padding-right: 30px;
-      padding-bottom: 30px;
-      overflow-y: auto;
+      overflow:hidden; /* FIX 4: No scroll */
       z-index: 5;
     }
     .name-display.active{
@@ -209,12 +207,12 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* Header con Avatar e Info */
+    /* FIX 1: Avatar con logo.png */
     .profile-header{
       display: flex;
       align-items: center;
-      gap: 24px;
-      margin-bottom: 25px;
+      gap: 20px;
+      margin-bottom: 18px; /* Ridotto */
       opacity: 0;
       transform: translateY(20px);
     }
@@ -224,18 +222,24 @@
     }
 
     .avatar-circle{
-      width: 90px;
-      height: 90px;
+      width: 75px; /* Ridotto da 90px */
+      height: 75px;
       border-radius: 50%;
-      background: var(--gA);
+      background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
+      border: 2px solid rgba(255,255,255,.15);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: white;
       flex-shrink: 0;
-      box-shadow: 0 10px 30px rgba(255,138,60,.3);
+      box-shadow: 0 10px 30px rgba(0,0,0,.3);
+      overflow: hidden;
+      padding: 8px;
+    }
+
+    .avatar-circle img{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
     }
 
     .name-info{
@@ -243,9 +247,9 @@
     }
 
     .main-name{
-      font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+      font-size: clamp(1.6rem, 4vw, 2.3rem); /* Ridotto */
       font-weight: 900;
-      margin: 0 0 10px 0;
+      margin: 0 0 8px 0;
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
@@ -254,25 +258,25 @@
       display: inline-block;
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.2);
-      padding: 7px 18px;
+      padding: 6px 16px; /* Ridotto */
       border-radius: 20px;
-      font-size: 0.82rem;
+      font-size: 0.75rem; /* Ridotto */
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 1px;
       color: var(--mut);
       backdrop-filter: blur(10px);
     }
 
-    /* Pillole competenze chiave */
+    /* Pillole competenze chiave - ridotte */
     .key-skills{
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px; /* Ridotto */
       justify-content: center;
-      margin-bottom: 25px;
+      margin-bottom: 18px; /* Ridotto */
       opacity: 0;
-      max-width: 700px;
+      max-width: 650px; /* Ridotto */
     }
     .name-display.active .key-skills{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
@@ -282,9 +286,9 @@
     .skill-pill{
       background: linear-gradient(135deg, rgba(255,138,60,.12), rgba(30,136,229,.12));
       border: 1px solid rgba(255,255,255,.15);
-      padding: 9px 20px;
+      padding: 7px 16px; /* Ridotto */
       border-radius: 25px;
-      font-size: 0.82rem;
+      font-size: 0.75rem; /* Ridotto */
       font-weight: 600;
       color: var(--txt);
       backdrop-filter: blur(10px);
@@ -297,92 +301,31 @@
       transform: translateY(-2px);
     }
 
-    /* Sezione espandibile */
-    .bio-section{
+    /* FIX 2: Rimosso menu tendina, testo compatto */
+    .bio-compact{
       max-width: 720px;
-      margin-bottom: 25px;
+      margin-bottom: 18px;
       opacity: 0;
-      width: 100%;
+      font-size: 0.8rem; /* Più piccolo */
+      line-height: 1.5;
+      color: var(--mut);
+      text-align: center;
     }
-    .name-display.active .bio-section{
+    .name-display.active .bio-compact{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
       animation-delay: .45s;
     }
 
-    .bio-toggle{
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--txt);
-      padding: 14px 24px;
-      background: rgba(255,255,255,.06);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.12);
-      list-style: none;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all .3s;
-    }
-
-    .bio-toggle:hover{
-      background: rgba(255,255,255,.09);
-      border-color: rgba(255,255,255,.18);
-    }
-
-    .bio-toggle::-webkit-details-marker{display: none;}
-
-    .toggle-icon{
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-      stroke-width: 2;
-      transition: transform .3s;
-    }
-
-    .bio-section[open] .toggle-icon{
-      transform: rotate(180deg);
-    }
-
-    .bio-content{
-      padding: 20px 24px 10px 24px;
-    }
-
-    .bio-list{
-      list-style: none;
-      text-align: left;
-      display: grid;
-      gap: 12px;
-    }
-
-    .bio-list li{
-      font-size: 0.88rem;
-      line-height: 1.6;
-      color: var(--mut);
-      padding-left: 24px;
-      position: relative;
-    }
-
-    .bio-list li::before{
-      content: '→';
-      position: absolute;
-      left: 0;
-      color: var(--gA);
-      font-weight: 700;
-    }
-
-    /* Contatti */
+    /* Contatti - compatti */
     .contacts-inline{
-      margin-top: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px; /* Ridotto */
       align-items: center;
       opacity: 0;
       transform: translateY(20px);
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       position: relative;
       z-index: 100;
     }
@@ -395,9 +338,9 @@
     .contact-link{
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 22px;
-      border-radius: 14px;
+      gap: 12px;
+      padding: 11px 18px; /* Ridotto */
+      border-radius: 12px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
       text-decoration: none;
@@ -426,8 +369,8 @@
 
     .contact-link .icon{
       flex-shrink: 0;
-      width: 22px;
-      height: 22px;
+      width: 20px; /* Ridotto */
+      height: 20px;
       stroke: currentColor;
       stroke-width: 2;
       opacity: 0.9;
@@ -449,7 +392,7 @@
     }
 
     .contact-link .label{
-      font-size: 0.82rem;
+      font-size: 0.75rem; /* Ridotto */
       color: var(--mut);
       font-weight: 600;
       text-transform: uppercase;
@@ -457,7 +400,7 @@
     }
 
     .contact-link .value{
-      font-size: 0.95rem;
+      font-size: 0.88rem; /* Ridotto */
       font-weight: 700;
       color: var(--txt);
     }
@@ -472,30 +415,31 @@
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px){
       body{
-        padding: 8px;
-        align-items: flex-start;
-        padding-top: 20px;
+        padding: 6px;
+      }
+
+      .container{
+        height: 98vh; /* Massimizza su mobile */
       }
       
       .stage{ 
-        min-height: 90vh;
-        max-height: 95vh;
-        padding: 25px 20px; 
+        padding: 20px 16px;
         border: none;
       }
 
       .hint{
-        bottom: 80px;
-        font-size: 0.8rem;
+        bottom: 70px;
+        font-size: 0.75rem;
       }
 
       .name-display{
-        padding-top: 30px;
+        padding: 20px 16px;
       }
 
       .profile-header{
         flex-direction: column;
         text-align: center;
+        margin-bottom: 14px;
       }
 
       .name-info{
@@ -503,67 +447,87 @@
       }
 
       .avatar-circle{
-        width: 75px;
-        height: 75px;
-        font-size: 1.8rem;
+        width: 65px;
+        height: 65px;
       }
 
       .main-name{
-        font-size: 2rem;
+        font-size: 1.6rem;
       }
 
       .role-badge{
-        font-size: 0.75rem;
-        padding: 6px 14px;
+        font-size: 0.7rem;
+        padding: 5px 12px;
+      }
+
+      .key-skills{
+        gap: 6px;
+        margin-bottom: 14px;
       }
 
       .skill-pill{
-        font-size: 0.75rem;
-        padding: 7px 16px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
       }
 
-      .bio-list li{
-        font-size: 0.85rem;
+      .bio-compact{
+        font-size: 0.75rem;
+        margin-bottom: 14px;
+      }
+
+      .contacts-inline{
+        gap: 8px;
       }
       
       .contact-link{ 
-        padding: 11px 18px;
+        padding: 10px 16px;
+      }
+
+      .contact-link .icon{
+        width: 18px;
+        height: 18px;
+      }
+
+      .contact-link .label{
+        font-size: 0.7rem;
       }
       
       .contact-link .value{
-        font-size: 0.88rem;
+        font-size: 0.82rem;
       }
     }
 
     @media (max-width: 480px){
-      body{
-        padding: 6px;
-        padding-top: 15px;
+      .container{
+        height: 99vh;
       }
-      
+
       .stage{ 
-        min-height: 92vh;
-        padding: 20px 16px; 
-        border-radius: 16px;
+        padding: 16px 12px;
+        border-radius: 12px;
       }
 
       .hint{
-        bottom: 100px;
-        font-size: 0.75rem;
-      }
-
-      .name-display{
-        padding-top: 20px;
+        bottom: 80px;
+        font-size: 0.7rem;
       }
 
       .avatar-circle{
-        width: 65px;
-        height: 65px;
-        font-size: 1.5rem;
+        width: 55px;
+        height: 55px;
       }
 
       .main-name{
-        font-size: 1.7rem;
+        font-size: 1.4rem;
+      }
+
+      .skill-pill{
+        font-size: 0.65rem;
+        padding: 5px 10px;
+      }
+
+      .bio-compact{
+        font-size: 0.7rem;
       }
     }
 
@@ -584,12 +548,14 @@
         <div class="hint">Premi per continuare</div>
       </div>
 
-      <!-- NUOVO LAYOUT COMBINATO -->
+      <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- Header con Avatar + Nome -->
+        <!-- Header con Logo + Nome -->
         <div class="profile-header">
-          <div class="avatar-circle">AG</div>
+          <div class="avatar-circle">
+            <img src="logo.png" alt="AG Form Logo">
+          </div>
           <div class="name-info">
             <h1 class="main-name">Andrea Gonnella</h1>
             <span class="role-badge">HR Training Manager</span>
@@ -600,30 +566,16 @@
         <div class="key-skills">
           <span class="skill-pill">Formazione Finanziata</span>
           <span class="skill-pill">Fondi Europei</span>
-          <span class="skill-pill">Upskilling & Reskilling</span>
+          <span class="skill-pill">Upskilling</span>
           <span class="skill-pill">Certificazioni</span>
-          <span class="skill-pill">Sistema Qualità</span>
         </div>
 
-        <!-- Sezione espandibile con dettagli -->
-        <details class="bio-section">
-          <summary class="bio-toggle">
-            <span>Aree di competenza</span>
-            <i data-lucide="chevron-down" class="toggle-icon"></i>
-          </summary>
-          <div class="bio-content">
-            <ul class="bio-list">
-              <li>Formazione finanziata e a catalogo</li>
-              <li>Accesso ai fondi regionali e gestione dei fondi interprofessionali</li>
-              <li>Analisi del bisogno formativo e progettazione formativa</li>
-              <li>Erogazione, docenze e rendicontazione</li>
-              <li>Upskilling, reskilling, onboarding e outboarding</li>
-              <li>Sistema qualità e certificazione delle competenze</li>
-            </ul>
-          </div>
-        </details>
+        <!-- FIX 2: Testo compatto senza tendina -->
+        <p class="bio-compact">
+          Formazione finanziata e a catalogo • Fondi regionali e interprofessionali • Analisi bisogni formativi • Progettazione ed erogazione • Docenze e rendicontazione • Upskilling, reskilling, onboarding e outboarding • Sistema qualità e certificazioni
+        </p>
 
-        <!-- Contatti -->
+        <!-- Contatti compatti -->
         <div class="contacts-inline">
           
           <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
@@ -672,8 +624,6 @@
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const logoWrapper = document.getElementById('logoWrapper');
     const nameDisplay = document.getElementById('nameDisplay');
-    const andreaDiv = document.getElementById('andrea');
-    const gonnellaDiv = document.getElementById('gonnella');
 
     // ====== STATO ======
     let particles = [];
@@ -688,10 +638,11 @@
       const isMobile = window.innerWidth <= 768;
       
       if (isMobile) {
-        canvas.width = Math.floor(stageRect.width - 40);
-        canvas.height = Math.floor(stageRect.height - 50);
+        const size = Math.min(stageRect.width - 40, stageRect.height - 100);
+        canvas.width = size;
+        canvas.height = size;
       } else {
-        const size = Math.min(stageRect.width - 80, stageRect.height - 100);
+        const size = Math.min(stageRect.width - 80, stageRect.height - 100, 420);
         canvas.width = size;
         canvas.height = size;
       }
@@ -812,6 +763,21 @@
       return pixels;
     }
 
+    // FIX 3: DISSOLVENZA VERSO AVATAR (ripristinata logica precedente)
+    function getAvatarTarget(){
+      const avatarEl = document.querySelector('.avatar-circle');
+      if (!avatarEl) return null;
+
+      const stageRect = document.querySelector('.stage').getBoundingClientRect();
+      const avatarRect = avatarEl.getBoundingClientRect();
+      const canvasRect = canvas.getBoundingClientRect();
+
+      return {
+        x: (avatarRect.left + avatarRect.width/2) - canvasRect.left,
+        y: (avatarRect.top + avatarRect.height/2) - canvasRect.top
+      };
+    }
+
     // ====== ANIMAZIONE ======
     function animate(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
@@ -851,39 +817,57 @@
 
       logoWrapper.classList.add('transforming');
 
-      const pixels = samplePixels();
+      // Mostra temporaneamente per calcolare posizione avatar
+      nameDisplay.style.visibility = 'visible';
+      nameDisplay.style.opacity = '0.01';
+      nameDisplay.style.pointerEvents = 'none';
 
-      if (pixels.length === 0){
-        drawFallbackLogo();
-        setTimeout(() => {
-          const pixels2 = samplePixels();
-          if (pixels2.length === 0) {
-            logoWrapper.classList.add('hidden');
-            logoWrapper.style.display = 'none';
-            canvas.style.display = 'none';
-            nameDisplay.classList.add('active');
-            lucide.createIcons();
-            return;
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const pixels = samplePixels();
+          const avatarTarget = getAvatarTarget();
+
+          // Nascondi di nuovo
+          nameDisplay.style.opacity = '0';
+          nameDisplay.style.visibility = 'hidden';
+
+          if (pixels.length === 0){
+            drawFallbackLogo();
+            setTimeout(() => {
+              const pixels2 = samplePixels();
+              if (pixels2.length === 0) {
+                logoWrapper.classList.add('hidden');
+                logoWrapper.style.display = 'none';
+                canvas.style.display = 'none';
+                nameDisplay.classList.add('active');
+                lucide.createIcons();
+                return;
+              }
+              startParticles(pixels2, avatarTarget);
+            }, 100);
+          } else {
+            startParticles(pixels, avatarTarget);
           }
-          startParticles(pixels2);
-        }, 100);
-      } else {
-        startParticles(pixels);
-      }
+        });
+      });
     }
 
-    function startParticles(pixels){
-      // Crea particelle che vanno verso il centro
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
+    function startParticles(pixels, target){
+      if (!target) {
+        // Fallback: verso il centro
+        target = {
+          x: canvas.width / 2,
+          y: canvas.height / 2
+        };
+      }
 
       particles = [];
       
       for (const px of pixels){
         particles.push(new Particle(
           px.x, px.y, px.color,
-          centerX + (Math.random() - 0.5) * 200,
-          centerY + (Math.random() - 0.5) * 200,
+          target.x + (Math.random() - 0.5) * 60,
+          target.y + (Math.random() - 0.5) * 60,
           (Math.random()*26) | 0
         ));
       }
