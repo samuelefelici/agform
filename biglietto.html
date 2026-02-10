@@ -895,22 +895,23 @@
     let transformed = false;
     let logoImage = null;
 
-    // ====== DIMENSIONE CANVAS RESPONSIVE ======
-    function setCanvasSize(){
-      const stage = document.querySelector('.stage');
-      const stageRect = stage.getBoundingClientRect();
-      const isMobile = window.innerWidth <= 768;
-      
-      if (isMobile) {
-        const size = Math.min(stageRect.width - 40, stageRect.height - 100);
-        canvas.width = size;
-        canvas.height = size;
-      } else {
-        const size = Math.min(stageRect.width - 80, stageRect.height - 100, 420);
-        canvas.width = size;
-        canvas.height = size;
-      }
-    }
+// ====== DIMENSIONE CANVAS RESPONSIVE ======
+function setCanvasSize(){
+  const stage = document.querySelector('.stage');
+  const stageRect = stage.getBoundingClientRect();
+  const isMobile = window.innerWidth <= 768;
+  
+  if (isMobile) {
+    // MOBILE: Canvas più piccolo per lasciare spazio all'hint in basso
+    const size = Math.min(stageRect.width - 40, stageRect.height - 180); // Era -100, ora -180
+    canvas.width = size;
+    canvas.height = size;
+  } else {
+    const size = Math.min(stageRect.width - 80, stageRect.height - 100, 420);
+    canvas.width = size;
+    canvas.height = size;
+  }
+}
 
     // ====== DISEGNA LOGO ======
     function drawFallbackLogo(){
