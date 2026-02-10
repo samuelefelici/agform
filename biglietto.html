@@ -42,7 +42,7 @@
         radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
         radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow:hidden; /* FIX 4: Niente scroll */
+      overflow:hidden;
       padding: 12px;
       display:flex;
       align-items:center;
@@ -92,19 +92,19 @@
 
     .container{
       width:min(1100px, 100%);
-      height: min(95vh, 850px); /* FIX 4: Altezza fissa */
+      height: min(95vh, 850px);
       position:relative;
     }
 
     /* ========== STAGE PRINCIPALE ========== */
     .stage{
-      height: 100%; /* FIX 4: 100% dell'altezza container */
+      height: 100%;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
-      overflow:hidden; /* FIX 4: Niente scroll */
-      padding: 40px 35px; /* Ridotto padding */
+      overflow:hidden;
+      padding: 40px 35px;
       position:relative;
       display:flex;
       align-items:center;
@@ -184,14 +184,14 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      justify-content:center; /* FIX 4: Centrato verticalmente */
+      justify-content:center;
       padding: 30px;
       gap: 0;
       opacity:0;
       visibility: hidden;
       pointer-events:none;
       text-align:center;
-      overflow:hidden; /* FIX 4: No scroll */
+      overflow:hidden;
       z-index: 5;
     }
     .name-display.active{
@@ -207,12 +207,13 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    /* FIX 1: Avatar con logo.png */
+    /* FIX 1: Logo più grande senza bordo */
     .profile-header{
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 20px;
-      margin-bottom: 18px; /* Ridotto */
+      gap: 16px;
+      margin-bottom: 18px;
       opacity: 0;
       transform: translateY(20px);
     }
@@ -221,46 +222,38 @@
       animation-delay: .15s;
     }
 
-    .avatar-circle{
-      width: 75px; /* Ridotto da 90px */
-      height: 75px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.05));
-      border: 2px solid rgba(255,255,255,.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      box-shadow: 0 10px 30px rgba(0,0,0,.3);
-      overflow: hidden;
-      padding: 8px;
+    .logo-large{
+      width: 120px; /* Più grande */
+      height: auto;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,.4));
     }
 
-    .avatar-circle img{
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .name-info{
-      text-align: left;
-    }
-
+    /* FIX 2: Nome più grande con effetti 3D */
     .main-name{
-      font-size: clamp(1.6rem, 4vw, 2.3rem); /* Ridotto */
+      font-size: clamp(2.5rem, 5.5vw, 3.8rem); /* Molto più grande */
       font-weight: 900;
       margin: 0 0 8px 0;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      color: var(--txt);
+      text-shadow: 
+        0 1px 0 rgba(255,255,255,.1),
+        0 2px 0 rgba(255,255,255,.08),
+        0 3px 0 rgba(255,255,255,.06),
+        0 4px 0 rgba(255,255,255,.04),
+        0 5px 0 rgba(255,255,255,.02),
+        0 8px 20px rgba(0,0,0,.4),
+        0 12px 40px rgba(0,0,0,.3);
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
     }
 
     .role-badge{
       display: inline-block;
       background: rgba(255,255,255,.08);
       border: 1px solid rgba(255,255,255,.2);
-      padding: 6px 16px; /* Ridotto */
+      padding: 6px 16px;
       border-radius: 20px;
-      font-size: 0.75rem; /* Ridotto */
+      font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 1px;
@@ -268,59 +261,105 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Pillole competenze chiave - ridotte */
-    .key-skills{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px; /* Ridotto */
-      justify-content: center;
-      margin-bottom: 18px; /* Ridotto */
+    /* FIX 3: Menu compatto con tabs */
+    .expertise-tabs{
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 18px;
       opacity: 0;
-      max-width: 650px; /* Ridotto */
     }
-    .name-display.active .key-skills{
+    .name-display.active .expertise-tabs{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
       animation-delay: .3s;
     }
 
-    .skill-pill{
-      background: linear-gradient(135deg, rgba(255,138,60,.12), rgba(30,136,229,.12));
-      border: 1px solid rgba(255,255,255,.15);
-      padding: 7px 16px; /* Ridotto */
-      border-radius: 25px;
-      font-size: 0.75rem; /* Ridotto */
-      font-weight: 600;
-      color: var(--txt);
-      backdrop-filter: blur(10px);
-      transition: all .3s ease;
+    .tabs-nav{
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    .skill-pill:hover{
-      background: linear-gradient(135deg, rgba(255,138,60,.2), rgba(30,136,229,.2));
-      border-color: rgba(255,255,255,.25);
+    .tab-btn{
+      padding: 8px 16px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 20px;
+      color: var(--mut);
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all .3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tab-btn:hover{
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.2);
       transform: translateY(-2px);
     }
 
-    /* FIX 2: Rimosso menu tendina, testo compatto */
-    .bio-compact{
-      max-width: 720px;
-      margin-bottom: 18px;
-      opacity: 0;
-      font-size: 0.8rem; /* Più piccolo */
-      line-height: 1.5;
-      color: var(--mut);
-      text-align: center;
-    }
-    .name-display.active .bio-compact{
-      animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .45s;
+    .tab-btn.active{
+      background: var(--gA);
+      border-color: transparent;
+      color: white;
+      box-shadow: 0 4px 12px rgba(255,138,60,.3);
     }
 
-    /* Contatti - compatti */
+    .tab-content{
+      display: none;
+      padding: 16px 20px;
+      background: rgba(255,255,255,.04);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08);
+      min-height: 100px;
+    }
+
+    .tab-content.active{
+      display: block;
+      animation: fadeInContent .4s ease;
+    }
+
+    @keyframes fadeInContent{
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .expertise-list{
+      list-style: none;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .expertise-list li{
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: var(--mut);
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .expertise-list li::before{
+      content: '•';
+      position: absolute;
+      left: 6px;
+      background: var(--gA);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 900;
+      font-size: 1.2em;
+    }
+
+    /* Contatti compatti */
     .contacts-inline{
       display: flex;
       flex-direction: column;
-      gap: 10px; /* Ridotto */
+      gap: 10px;
       align-items: center;
       opacity: 0;
       transform: translateY(20px);
@@ -332,14 +371,14 @@
 
     .name-display.active .contacts-inline{
       animation: slideUp .8s cubic-bezier(.2,.9,.2,1) forwards;
-      animation-delay: .6s;
+      animation-delay: .5s;
     }
 
     .contact-link{
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 11px 18px; /* Ridotto */
+      padding: 11px 18px;
       border-radius: 12px;
       background: rgba(255,255,255,.06);
       border: 1px solid rgba(255,255,255,.10);
@@ -369,7 +408,7 @@
 
     .contact-link .icon{
       flex-shrink: 0;
-      width: 20px; /* Ridotto */
+      width: 20px;
       height: 20px;
       stroke: currentColor;
       stroke-width: 2;
@@ -392,7 +431,7 @@
     }
 
     .contact-link .label{
-      font-size: 0.75rem; /* Ridotto */
+      font-size: 0.75rem;
       color: var(--mut);
       font-weight: 600;
       text-transform: uppercase;
@@ -400,7 +439,7 @@
     }
 
     .contact-link .value{
-      font-size: 0.88rem; /* Ridotto */
+      font-size: 0.88rem;
       font-weight: 700;
       color: var(--txt);
     }
@@ -419,7 +458,7 @@
       }
 
       .container{
-        height: 98vh; /* Massimizza su mobile */
+        height: 98vh;
       }
       
       .stage{ 
@@ -436,23 +475,12 @@
         padding: 20px 16px;
       }
 
-      .profile-header{
-        flex-direction: column;
-        text-align: center;
-        margin-bottom: 14px;
-      }
-
-      .name-info{
-        text-align: center;
-      }
-
-      .avatar-circle{
-        width: 65px;
-        height: 65px;
+      .logo-large{
+        width: 90px;
       }
 
       .main-name{
-        font-size: 1.6rem;
+        font-size: 2.2rem;
       }
 
       .role-badge{
@@ -460,19 +488,13 @@
         padding: 5px 12px;
       }
 
-      .key-skills{
-        gap: 6px;
-        margin-bottom: 14px;
+      .tab-btn{
+        font-size: 0.72rem;
+        padding: 7px 14px;
       }
 
-      .skill-pill{
-        font-size: 0.7rem;
-        padding: 6px 12px;
-      }
-
-      .bio-compact{
-        font-size: 0.75rem;
-        margin-bottom: 14px;
+      .expertise-list li{
+        font-size: 0.78rem;
       }
 
       .contacts-inline{
@@ -512,22 +534,21 @@
         font-size: 0.7rem;
       }
 
-      .avatar-circle{
-        width: 55px;
-        height: 55px;
+      .logo-large{
+        width: 75px;
       }
 
       .main-name{
-        font-size: 1.4rem;
+        font-size: 1.8rem;
       }
 
-      .skill-pill{
-        font-size: 0.65rem;
-        padding: 5px 10px;
+      .tab-btn{
+        font-size: 0.68rem;
+        padding: 6px 12px;
       }
 
-      .bio-compact{
-        font-size: 0.7rem;
+      .expertise-list li{
+        font-size: 0.74rem;
       }
     }
 
@@ -551,29 +572,64 @@
       <!-- LAYOUT COMPATTO SENZA SCROLL -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- Header con Logo + Nome -->
+        <!-- FIX 1 & 2: Logo grande + Nome con effetti 3D -->
         <div class="profile-header">
-          <div class="avatar-circle">
-            <img src="logo.png" alt="AG Form Logo">
-          </div>
-          <div class="name-info">
+          <img src="logo.png" alt="AG Form Logo" class="logo-large">
+          <div>
             <h1 class="main-name">Andrea Gonnella</h1>
             <span class="role-badge">HR Training Manager</span>
           </div>
         </div>
 
-        <!-- Competenze chiave in pillole -->
-        <div class="key-skills">
-          <span class="skill-pill">Formazione Finanziata</span>
-          <span class="skill-pill">Fondi Europei</span>
-          <span class="skill-pill">Upskilling</span>
-          <span class="skill-pill">Certificazioni</span>
-        </div>
+        <!-- FIX 3: Menu a tabs compatto -->
+        <div class="expertise-tabs">
+          <div class="tabs-nav">
+            <button class="tab-btn active" data-tab="formazione">Formazione</button>
+            <button class="tab-btn" data-tab="fondi">Fondi</button>
+            <button class="tab-btn" data-tab="servizi">Servizi</button>
+            <button class="tab-btn" data-tab="hr">HR & Sviluppo</button>
+          </div>
 
-        <!-- FIX 2: Testo compatto senza tendina -->
-        <p class="bio-compact">
-          Formazione finanziata e a catalogo • Fondi regionali e interprofessionali • Analisi bisogni formativi • Progettazione ed erogazione • Docenze e rendicontazione • Upskilling, reskilling, onboarding e outboarding • Sistema qualità e certificazioni
-        </p>
+          <!-- Tab Formazione -->
+          <div class="tab-content active" id="formazione">
+            <ul class="expertise-list">
+              <li>Formazione finanziata e a catalogo</li>
+              <li>Analisi del bisogno formativo</li>
+              <li>Progettazione formativa personalizzata</li>
+              <li>Erogazione e docenze specialistiche</li>
+            </ul>
+          </div>
+
+          <!-- Tab Fondi -->
+          <div class="tab-content" id="fondi">
+            <ul class="expertise-list">
+              <li>Accesso ai fondi regionali</li>
+              <li>Gestione dei fondi interprofessionali</li>
+              <li>Rendicontazione e compliance</li>
+              <li>Supporto amministrativo completo</li>
+            </ul>
+          </div>
+
+          <!-- Tab Servizi -->
+          <div class="tab-content" id="servizi">
+            <ul class="expertise-list">
+              <li>Sistema qualità aziendale</li>
+              <li>Certificazione delle competenze</li>
+              <li>Audit e valutazione processi</li>
+              <li>Consulenza strategica formativa</li>
+            </ul>
+          </div>
+
+          <!-- Tab HR & Sviluppo -->
+          <div class="tab-content" id="hr">
+            <ul class="expertise-list">
+              <li>Upskilling e reskilling del personale</li>
+              <li>Onboarding strutturato</li>
+              <li>Outboarding e transizioni di carriera</li>
+              <li>Piani di sviluppo individuali</li>
+            </ul>
+          </div>
+        </div>
 
         <!-- Contatti compatti -->
         <div class="contacts-inline">
@@ -619,6 +675,21 @@
     // ====== INIZIALIZZA ICONE LUCIDE ======
     lucide.createIcons();
 
+    // ====== GESTIONE TABS ======
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab;
+        
+        // Remove active
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        // Add active
+        btn.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
+      });
+    });
+
     // ====== ELEMENTI ======
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
@@ -648,30 +719,48 @@
       }
     }
 
-    // ====== PARTICELLA ======
+    // ====== PARTICELLA MIGLIORATA ======
     class Particle{
       constructor(x, y, color, tx, ty, delay){
         this.sx = x; this.sy = y;
         this.x = x;  this.y = y;
         this.tx = tx; this.ty = ty;
         this.color = color;
-        this.size = 2.2 + Math.random() * 0.8;
+        this.size = 2.5 + Math.random() * 1.2; // Particelle più grandi
         this.t = 0;
         this.delay = delay;
-        this.speed = 0.014 + Math.random() * 0.010;
+        this.speed = 0.012 + Math.random() * 0.008; // Velocità variabile
+        this.rotation = Math.random() * Math.PI * 2;
+        this.rotationSpeed = (Math.random() - 0.5) * 0.1;
       }
       update(){
         if (this.delay > 0){ this.delay -= 1; return; }
         if (this.t < 1) this.t = Math.min(1, this.t + this.speed);
-        const eased = 1 - Math.pow(1 - this.t, 4);
+        
+        // Easing elastico
+        const eased = this.t < 0.5 
+          ? 2 * this.t * this.t 
+          : 1 - Math.pow(-2 * this.t + 2, 2) / 2;
+        
         this.x = this.sx + (this.tx - this.sx) * eased;
         this.y = this.sy + (this.ty - this.sy) * eased;
+        this.rotation += this.rotationSpeed;
       }
       draw(){
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation);
+        
+        // Glow effect
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = this.color;
+        
         ctx.fillStyle = this.color;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(0, 0, this.size, 0, Math.PI * 2);
         ctx.fill();
+        
+        ctx.restore();
       }
       done(){ return this.t >= 1; }
     }
@@ -741,7 +830,7 @@
     function samplePixels(){
       const data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
       const pixels = [];
-      const step = 3;
+      const step = 2; // Step più piccolo = più particelle
 
       for (let y=0; y<canvas.height; y+=step){
         for (let x=0; x<canvas.width; x+=step){
@@ -749,12 +838,10 @@
           const a = data[i+3];
           if (a > 60){
             const r = data[i], g = data[i+1], b = data[i+2];
-            const isWarm = isWarmColor(r, g, b);
             
             pixels.push({
               x, y,
               color: `rgba(${r},${g},${b},${(a/255).toFixed(3)})`,
-              type: isWarm ? 'warm' : 'cold'
             });
           }
         }
@@ -763,18 +850,17 @@
       return pixels;
     }
 
-    // FIX 3: DISSOLVENZA VERSO AVATAR (ripristinata logica precedente)
-    function getAvatarTarget(){
-      const avatarEl = document.querySelector('.avatar-circle');
-      if (!avatarEl) return null;
+    // FIX 4: DISSOLVENZA MIGLIORATA - verso logo in alto
+    function getLogoTarget(){
+      const logoEl = document.querySelector('.logo-large');
+      if (!logoEl) return null;
 
-      const stageRect = document.querySelector('.stage').getBoundingClientRect();
-      const avatarRect = avatarEl.getBoundingClientRect();
       const canvasRect = canvas.getBoundingClientRect();
+      const logoRect = logoEl.getBoundingClientRect();
 
       return {
-        x: (avatarRect.left + avatarRect.width/2) - canvasRect.left,
-        y: (avatarRect.top + avatarRect.height/2) - canvasRect.top
+        x: (logoRect.left + logoRect.width/2) - canvasRect.left,
+        y: (logoRect.top + logoRect.height/2) - canvasRect.top
       };
     }
 
@@ -817,7 +903,7 @@
 
       logoWrapper.classList.add('transforming');
 
-      // Mostra temporaneamente per calcolare posizione avatar
+      // Mostra temporaneamente per calcolare posizione
       nameDisplay.style.visibility = 'visible';
       nameDisplay.style.opacity = '0.01';
       nameDisplay.style.pointerEvents = 'none';
@@ -825,7 +911,7 @@
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
           const pixels = samplePixels();
-          const avatarTarget = getAvatarTarget();
+          const logoTarget = getLogoTarget();
 
           // Nascondi di nuovo
           nameDisplay.style.opacity = '0';
@@ -843,10 +929,10 @@
                 lucide.createIcons();
                 return;
               }
-              startParticles(pixels2, avatarTarget);
+              startParticles(pixels2, logoTarget);
             }, 100);
           } else {
-            startParticles(pixels, avatarTarget);
+            startParticles(pixels, logoTarget);
           }
         });
       });
@@ -854,21 +940,25 @@
 
     function startParticles(pixels, target){
       if (!target) {
-        // Fallback: verso il centro
         target = {
           x: canvas.width / 2,
-          y: canvas.height / 2
+          y: canvas.height * 0.3 // Verso l'alto
         };
       }
 
       particles = [];
       
-      for (const px of pixels){
+      // Raggruppa particelle per creare effetto esplosione coordinata
+      const groups = 8;
+      for (let i = 0; i < pixels.length; i++){
+        const px = pixels[i];
+        const groupDelay = (i % groups) * 3;
+        
         particles.push(new Particle(
           px.x, px.y, px.color,
-          target.x + (Math.random() - 0.5) * 60,
-          target.y + (Math.random() - 0.5) * 60,
-          (Math.random()*26) | 0
+          target.x + (Math.random() - 0.5) * 80,
+          target.y + (Math.random() - 0.5) * 80,
+          groupDelay
         ));
       }
 
