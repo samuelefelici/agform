@@ -10,10 +10,7 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   
-  <!-- Font professionale e moderno: Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <!-- Lucide Icons (libreria icone moderna e pulita) -->
   <script src="https://unpkg.com/lucide@latest"></script>
   
   <style>
@@ -25,8 +22,6 @@
       --line:rgba(255,255,255,.14);
       --shadow: 0 30px 90px rgba(0,0,0,.55);
       --r: 22px;
-
-      /* Gradienti del logo */
       --gA: linear-gradient(135deg, #FF8A3C 0%, #E91E63 100%);
       --gG: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
     }
@@ -36,24 +31,21 @@
     body{
       font-family: Montserrat, system-ui, -apple-system, sans-serif;
       min-height:100vh;
-      /* FIX iPhone safe area */
-      min-height: 100dvh; /* Dynamic viewport height */
+      min-height: 100dvh;
       color:var(--txt);
       background:
         radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
         radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
         radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
         linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow:hidden;
+      /* FIX: rimosso overflow:hidden dal body — bloccava lo scroll su mobile */
       padding: 12px;
-      /* FIX iPhone safe area */
       padding-bottom: max(12px, env(safe-area-inset-bottom));
       display:flex;
       align-items:center;
       justify-content:center;
     }
 
-    /* Dissolvenza iniziale */
     .veil{
       position:fixed; inset:0;
       background:
@@ -82,7 +74,6 @@
       to{opacity:0; transform: translateY(-10px); pointer-events:none}
     }
 
-    /* Scanline */
     .scan{
       position:fixed; inset:0;
       background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
@@ -100,14 +91,14 @@
       position:relative;
     }
 
-    /* ========== STAGE PRINCIPALE ========== */
     .stage{
       height: 100%;
       border-radius: var(--r);
       border: 1px solid var(--line);
       background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
       box-shadow: var(--shadow);
-      overflow:hidden;
+      /* FIX: era overflow:hidden — tagliava il contenuto su mobile */
+      overflow: hidden;
       padding: 40px 35px;
       position:relative;
       display:flex;
@@ -132,7 +123,6 @@
     @keyframes spin{to{transform: rotate(360deg)}}
     .stage > *{position:relative; z-index:1}
 
-    /* ========== LOGO WRAPPER ========== */
     .logo-wrapper{
       cursor: pointer;
       transition: transform .25s ease, opacity .6s ease;
@@ -158,23 +148,10 @@
       visibility: hidden;
     }
 
-    /* Dissolvenza pulita e elegante verso bianco */
     @keyframes fadeToWhite{
-      0%{
-        transform: scale(1);
-        opacity: 1;
-        filter: brightness(1) blur(0px);
-      }
-      60%{
-        transform: scale(1.05);
-        opacity: 0.8;
-        filter: brightness(1.8) blur(3px);
-      }
-      100%{
-        transform: scale(1.1);
-        opacity: 0;
-        filter: brightness(3) blur(8px);
-      }
+      0%{transform: scale(1); opacity: 1; filter: brightness(1) blur(0px);}
+      60%{transform: scale(1.05); opacity: 0.8; filter: brightness(1.8) blur(3px);}
+      100%{transform: scale(1.1); opacity: 0; filter: brightness(3) blur(8px);}
     }
 
     #particleCanvas{
@@ -186,7 +163,6 @@
       pointer-events: none;
     }
 
-    /* Hint FUORI dal wrapper - position fixed */
     .hint{
       font-size: 0.85rem;
       color: #FFFFFF;
@@ -205,17 +181,13 @@
       pointer-events: none;
       transition: opacity 0.25s ease;
     }
-
     @keyframes pulseHint{
       0%,100%{opacity:.9}
       50%{opacity:.6}
     }
+    .hint.hidden{ opacity: 0 !important; }
 
-    .hint.hidden{
-      opacity: 0 !important;
-    }
-
-    /* ========== LAYOUT SENZA SCROLL ========== */
+    /* ========== LAYOUT NAME DISPLAY ========== */
     .name-display{
       position:absolute;
       inset: 0;
@@ -229,7 +201,8 @@
       visibility: hidden;
       pointer-events:none;
       text-align:center;
-      overflow:hidden;
+      /* FIX: overflow nascosto ma scroll abilitato — il trucco chiave */
+      overflow: hidden;
       z-index: 5;
     }
     .name-display.active{
@@ -240,21 +213,11 @@
       z-index: 50 !important;
     }
 
-    /* Appare dal bianco */
     @keyframes fadeInFromWhite{
-      from { 
-        opacity: 0; 
-        filter: brightness(2) blur(5px);
-        transform: scale(1.05);
-      }
-      to { 
-        opacity: 1; 
-        filter: brightness(1) blur(0);
-        transform: scale(1);
-      }
+      from { opacity: 0; filter: brightness(2) blur(5px); transform: scale(1.05); }
+      to { opacity: 1; filter: brightness(1) blur(0); transform: scale(1); }
     }
 
-    /* Logo a sinistra di Andrea Gonnella (DESKTOP) */
     .profile-header{
       display: flex;
       flex-direction: row;
@@ -276,9 +239,7 @@
       flex-shrink: 0;
     }
 
-    .name-info{
-      text-align: left;
-    }
+    .name-info{ text-align: left; }
 
     .main-name{
       font-size: clamp(2.5rem, 5.5vw, 3.8rem);
@@ -291,14 +252,11 @@
         0 1px 0 rgba(255,255,255,.1),
         0 2px 0 rgba(255,255,255,.08),
         0 3px 0 rgba(255,255,255,.06),
-        0 4px 0 rgba(255,255,255,.04),
-        0 5px 0 rgba(255,255,255,.02),
         0 8px 20px rgba(0,0,0,.4),
         0 12px 40px rgba(0,0,0,.3);
       filter: drop-shadow(0 4px 8px rgba(0,0,0,.2));
     }
 
-    /* HR Training Manager visivamente diverso dai pulsanti */
     .role-badge{
       display: inline-block;
       background: transparent;
@@ -312,20 +270,15 @@
       color: var(--mut);
       position: relative;
     }
-
-    /* Linea sotto HR Training Manager */
     .role-badge::after{
       content: '';
       position: absolute;
-      bottom: -4px;
-      left: 0;
-      right: 0;
+      bottom: -4px; left: 0; right: 0;
       height: 1px;
       background: linear-gradient(90deg, transparent, var(--mut), transparent);
       opacity: 0.4;
     }
 
-    /* Menu a tabs compatto */
     .expertise-tabs{
       width: 100%;
       max-width: 680px;
@@ -359,13 +312,11 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
     .tab-btn:hover{
       background: rgba(255,255,255,.09);
       border-color: rgba(255,255,255,.2);
       transform: translateY(-2px);
     }
-
     .tab-btn.active{
       background: var(--gA);
       border-color: transparent;
@@ -381,12 +332,10 @@
       border: 1px solid rgba(255,255,255,.08);
       min-height: 100px;
     }
-
     .tab-content.active{
       display: block;
       animation: fadeInContent .3s ease;
     }
-
     @keyframes fadeInContent{
       from { opacity: 0; transform: translateY(5px); }
       to { opacity: 1; transform: translateY(0); }
@@ -399,7 +348,6 @@
       flex-direction: column;
       gap: 8px;
     }
-
     .expertise-list li{
       font-size: 0.82rem;
       line-height: 1.5;
@@ -407,7 +355,6 @@
       padding-left: 20px;
       position: relative;
     }
-
     .expertise-list li::before{
       content: '•';
       position: absolute;
@@ -420,7 +367,6 @@
       font-size: 1.2em;
     }
 
-    /* Contatti - larghezza uguale a descrizioni */
     .contacts-inline{
       display: flex;
       flex-direction: column;
@@ -433,7 +379,6 @@
       position: relative;
       z-index: 100;
     }
-
     .name-display.active .contacts-inline{
       animation: slideUp .5s ease-out forwards;
       animation-delay: .3s;
@@ -457,35 +402,26 @@
       position: relative;
       z-index: 101;
     }
-
     .contact-link:hover{
       background: rgba(255,255,255,.10);
       border-color: rgba(255,255,255,.20);
       transform: translateX(4px);
       box-shadow: 0 4px 20px rgba(0,0,0,.2);
     }
-
     .contact-link:active,
     .contact-link:focus{
       outline: 2px solid rgba(255,255,255,.3);
       outline-offset: 2px;
     }
-
     .contact-link .icon{
       flex-shrink: 0;
-      width: 20px;
-      height: 20px;
+      width: 20px; height: 20px;
       stroke: currentColor;
       stroke-width: 2;
       opacity: 0.9;
       pointer-events: none;
     }
-
-    .contact-link:hover .icon{
-      opacity: 1;
-      transform: scale(1.1);
-    }
-
+    .contact-link:hover .icon{ opacity: 1; transform: scale(1.1); }
     .contact-link .text{
       display: flex;
       flex-direction: column;
@@ -494,7 +430,6 @@
       flex: 1;
       pointer-events: none;
     }
-
     .contact-link .label{
       font-size: 0.75rem;
       color: var(--mut);
@@ -502,18 +437,15 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
-
     .contact-link .value{
       font-size: 0.88rem;
       font-weight: 700;
       color: var(--txt);
     }
 
-    /* Pulsante copia per Partita IVA */
     .copy-btn{
       flex-shrink: 0;
-      width: 32px;
-      height: 32px;
+      width: 32px; height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -524,25 +456,10 @@
       transition: all .25s ease;
       pointer-events: auto !important;
     }
+    .copy-btn:hover{ background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.25); transform: scale(1.1); }
+    .copy-btn:active{ transform: scale(0.95); }
+    .copy-btn .icon{ width: 16px; height: 16px; stroke: var(--txt); stroke-width: 2.5; }
 
-    .copy-btn:hover{
-      background: rgba(255,255,255,.15);
-      border-color: rgba(255,255,255,.25);
-      transform: scale(1.1);
-    }
-
-    .copy-btn:active{
-      transform: scale(0.95);
-    }
-
-    .copy-btn .icon{
-      width: 16px;
-      height: 16px;
-      stroke: var(--txt);
-      stroke-width: 2.5;
-    }
-
-    /* Feedback copia */
     .copy-feedback{
       position: fixed;
       bottom: 30px;
@@ -559,289 +476,206 @@
       pointer-events: none;
       transition: opacity 0.3s ease;
     }
+    .copy-feedback.show{ opacity: 1; }
 
-    .copy-feedback.show{
-      opacity: 1;
-    }
+    @keyframes slideUp{ to{ opacity:1; transform: translateY(0); } }
 
-    @keyframes slideUp{ 
-      to{
-        opacity:1; 
-        transform: translateY(0);
-      } 
-    }
+    /* ============================================================
+       RESPONSIVE MOBILE — FIX PRINCIPALE
+       Il problema era: .stage overflow:hidden + .name-display
+       position:absolute con altezza fissa tagliavano il contenuto
+       su schermi piccoli o con toolbar del browser.
 
- /* ========== RESPONSIVE MOBILE BILANCIATO ========== */
-@media (max-width: 768px){
-  body{
-    padding: 0;
-    padding-bottom: max(16px, env(safe-area-inset-bottom, 16px));
-  }
+       SOLUZIONE:
+       1. Su mobile .stage diventa overflow-y:auto
+       2. .name-display esce da position:absolute e diventa
+          un normale flex column con min-height:100%
+          così può crescere oltre lo schermo e scrollare
+       3. Scrollbar nascosta ma funzionale (-webkit-scrollbar)
+    ============================================================ */
+    @media (max-width: 768px){
 
-  .container{
-    height: 100vh;
-    height: 100dvh;
-    width: 100vw;
-  }
-  
-  .stage{ 
-    padding: 16px 14px;
-    padding-bottom: max(16px, calc(env(safe-area-inset-bottom, 0px) + 16px));
-    border: none;
-    border-radius: 0;
-  }
-
-  .hint{
-    bottom: 40px !important;
-    font-size: 0.8rem !important;
-    color: #FFFFFF !important;
-    opacity: 1 !important;
-    font-weight: 800 !important;
-    text-shadow: 
-      0 0 15px rgba(255,255,255,0.8),
-      0 0 25px rgba(255,255,255,0.5),
-      0 3px 15px rgba(0,0,0,1) !important;
-    background: rgba(0,0,0,0.6) !important;
-    padding: 9px 18px !important;
-    border-radius: 8px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-  }
-
-  .logo-wrapper{
-    justify-content: flex-start;
-    padding-top: 25vh;
-  }
-
-  .name-display{
-    padding: 0 14px;
-    padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 14px));
-    gap: 0;
-    justify-content: space-evenly;
-  }
-
-  .profile-header{
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 0;
-  }
-
-  .name-info{
-    text-align: center;
-    width: 100%;
-  }
-
-  .logo-large{
-    width: 100px;
-  }
-
-  .main-name{
-    font-size: clamp(2.4rem, 7vw, 2.8rem);
-    line-height: 1;
-    margin-bottom: 10px;
-    width: 100%;
-    letter-spacing: -0.04em;
-  }
-
-  .role-badge{
-    font-size: 0.82rem;
-    font-weight: 500;
-    letter-spacing: 2.2px;
-    padding: 0;
-    background: transparent;
-    border: none;
-    margin-bottom: 0;
-  }
-
-  .role-badge::after{
-    bottom: -5px;
-    height: 1.5px;
-    opacity: 0.5;
-  }
-
-  .expertise-tabs{
-    margin-bottom: 0;
-    width: 100%;
-  }
-
-  .tabs-nav{
-    gap: 5px; /* FIX: Ridotto da 6px */
-    margin-bottom: 8px; /* FIX: Ridotto da 10px */
-  }
-
-  /* FIX: Pulsanti più piccoli per stare su una riga */
-  .tab-btn{
-    font-size: 0.65rem; /* FIX: Ridotto da 0.72rem */
-    padding: 6px 10px; /* FIX: Ridotto da 7px 13px */
-    font-weight: 700;
-    background: rgba(255,255,255,.08);
-    border: 1px solid rgba(255,255,255,.15);
-    letter-spacing: 0.3px; /* FIX: Ridotto per compattare */
-  }
-
-  .tab-content{
-    padding: 10px 12px; /* FIX: Ridotto da 12px 14px */
-    min-height: auto;
-  }
-
-  .expertise-list{
-    gap: 5px; /* FIX: Ridotto da 6px */
-  }
-
-  .expertise-list li{
-    font-size: 0.75rem; /* FIX: Ridotto da 0.78rem */
-    line-height: 1.35; /* FIX: Ridotto da 1.4 */
-  }
-
-  .contacts-inline{
-    gap: 6px; /* FIX: Ridotto da 7px */
-    margin-top: 0;
-    max-width: 100%;
-    margin-bottom: max(8px, env(safe-area-inset-bottom, 0px));
-  }
-  
-  .contact-link{ 
-    padding: 8px 12px; /* FIX: Ridotto da 9px 13px */
-  }
-
-  .contact-link .icon{
-    width: 16px; /* FIX: Ridotto da 17px */
-    height: 16px;
-  }
-
-  .contact-link .label{
-    font-size: 0.68rem; /* FIX: Ridotto da 0.7rem */
-  }
-  
-  .contact-link .value{
-    font-size: 0.78rem; /* FIX: Ridotto da 0.8rem */
-    color: var(--txt) !important;
-    -webkit-text-fill-color: var(--txt) !important;
-  }
-
-  .copy-btn{
-    width: 26px; /* FIX: Ridotto da 28px */
-    height: 26px;
-  }
-
-  .copy-btn .icon{
-    width: 13px; /* FIX: Ridotto da 14px */
-    height: 13px;
-  }
-}
-
-    @media (max-width: 480px){
-      .stage{ 
-        padding: 14px 12px;
-        padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) + 14px));
+      body{
+        padding: 0;
+        padding-bottom: 0; /* gestiamo il safe area dentro .name-display */
+        align-items: stretch; /* il container si estende a tutta l'altezza */
       }
 
+      .container{
+        /* FIX: non limitiamo più l'altezza con min() — lasciamo che cresca */
+        height: 100dvh;
+        width: 100vw;
+        /* FIX: permette lo scroll verticale */
+        overflow-y: auto;
+        /* Nascondi scrollbar visivamente (rimane funzionale) */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .container::-webkit-scrollbar{ display: none; }
+
+      .stage{
+        /* FIX: non più overflow:hidden — permettiamo al contenuto di uscire */
+        overflow: visible;
+        /* FIX: altezza minima invece di fissa, così si espande se serve */
+        min-height: 100dvh;
+        height: auto;
+        padding: 0;
+        border: none;
+        border-radius: 0;
+        /* Rimuoviamo align-items:center — il contenuto parte dall'alto */
+        align-items: stretch;
+      }
+
+      /* Il canvas del logo resta centrato verticalmente */
+      .logo-wrapper{
+        justify-content: center;
+        padding-top: 0;
+        /* Altezza fissa per la schermata iniziale */
+        height: 100dvh;
+      }
+
+      /* Hint visibile */
       .hint{
-        bottom: 35px !important;
+        bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 24px)) !important;
+        font-size: 0.8rem !important;
+        color: #FFFFFF !important;
+        opacity: 1 !important;
+        font-weight: 800 !important;
+        text-shadow:
+          0 0 15px rgba(255,255,255,0.8),
+          0 0 25px rgba(255,255,255,0.5),
+          0 3px 15px rgba(0,0,0,1) !important;
+        background: rgba(0,0,0,0.6) !important;
+        padding: 9px 18px !important;
+        border-radius: 8px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.2);
+      }
+
+      /* ---- NAME DISPLAY: layout scrollabile ---- */
+      .name-display{
+        /* FIX: non più position:absolute — diventa un normale elemento nel flusso */
+        position: relative;
+        inset: auto;
+        /* FIX: altezza minima = schermo intero, poi si espande se il contenuto è più alto */
+        min-height: 100dvh;
+        height: auto;
+        /* FIX: scroll verticale abilitato */
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        /* Padding sicuro: top per notch, bottom per toolbar + safe area */
+        padding: max(24px, env(safe-area-inset-top, 24px)) 14px max(80px, calc(env(safe-area-inset-bottom, 0px) + 60px));
+        gap: 16px;
+        /* Contenuto centrato verticalmente se c'è spazio, allineato in alto se non c'è */
+        justify-content: safe center;
+      }
+      .name-display::-webkit-scrollbar{ display: none; }
+
+      /* Quando è attivo, occupa il suo spazio naturale */
+      .name-display.active{
+        display: flex !important;
+      }
+
+      /* MOBILE: Logo SOPRA nome */
+      .profile-header{
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .name-info{ text-align: center; width: 100%; }
+      .logo-large{ width: 90px; }
+
+      .main-name{
+        font-size: clamp(2.2rem, 7vw, 2.8rem);
+        line-height: 1;
+        margin-bottom: 10px;
+        width: 100%;
+        letter-spacing: -0.04em;
+      }
+
+      .role-badge{
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 2.2px;
+        padding: 0;
+        background: transparent;
+        border: none;
+      }
+      .role-badge::after{ bottom: -5px; height: 1.5px; opacity: 0.5; }
+
+      .expertise-tabs{
+        margin-bottom: 0;
+        width: 100%;
+        flex-shrink: 0;
+      }
+      .tabs-nav{ gap: 6px; margin-bottom: 10px; }
+      .tab-btn{
+        font-size: 0.72rem;
+        padding: 7px 13px;
+        font-weight: 700;
+        background: rgba(255,255,255,.08);
+        border: 1px solid rgba(255,255,255,.15);
+      }
+      .tab-content{ padding: 12px 14px; min-height: auto; }
+      .expertise-list{ gap: 6px; }
+      .expertise-list li{ font-size: 0.78rem; line-height: 1.4; }
+
+      .contacts-inline{
+        gap: 7px;
+        margin-top: 0;
+        max-width: 100%;
+        flex-shrink: 0;
+      }
+      .contact-link{ padding: 9px 13px; }
+      .contact-link .icon{ width: 17px; height: 17px; }
+      .contact-link .label{ font-size: 0.7rem; }
+      .contact-link .value{
+        font-size: 0.8rem;
+        color: var(--txt) !important;
+        -webkit-text-fill-color: var(--txt) !important;
+      }
+      .copy-btn{ width: 28px; height: 28px; }
+      .copy-btn .icon{ width: 14px; height: 14px; }
+    }
+
+    @media (max-width: 480px){
+      .stage{ padding: 0; }
+      .hint{
+        bottom: max(28px, calc(env(safe-area-inset-bottom, 0px) + 16px)) !important;
         font-size: 0.75rem !important;
         padding: 8px 16px !important;
       }
-
-      .logo-wrapper{
-        padding-top: 22vh;
-      }
-
       .name-display{
-        padding: 0 12px;
-        padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) + 12px));
+        padding: max(20px, env(safe-area-inset-top, 20px)) 12px max(70px, calc(env(safe-area-inset-bottom, 0px) + 50px));
+        gap: 14px;
       }
-
-      .logo-large{
-        width: 85px;
-      }
-
-      .main-name{
-        font-size: clamp(2rem, 6.5vw, 2.4rem);
-        margin-bottom: 8px;
-      }
-
-      .role-badge{
-        font-size: 0.76rem;
-        letter-spacing: 2px;
-      }
-
-      .tab-btn{
-        font-size: 0.68rem;
-        padding: 6px 11px;
-      }
-
-      .tab-content{
-        padding: 11px 12px;
-      }
-
-      .expertise-list{
-        gap: 5px;
-      }
-
-      .expertise-list li{
-        font-size: 0.74rem;
-        line-height: 1.35;
-      }
-
-      .contacts-inline{
-        gap: 6px;
-        margin-bottom: max(6px, env(safe-area-inset-bottom, 0px));
-      }
-
-      .contact-link{
-        padding: 8px 11px;
-      }
-
-      .contact-link .icon{
-        width: 16px;
-        height: 16px;
-      }
-
-      .contact-link .label{
-        font-size: 0.67rem;
-      }
-
-      .contact-link .value{
-        font-size: 0.76rem;
-      }
-
-      .copy-btn{
-        width: 26px;
-        height: 26px;
-      }
-
-      .copy-btn .icon{
-        width: 13px;
-        height: 13px;
-      }
+      .logo-large{ width: 78px; }
+      .main-name{ font-size: clamp(1.9rem, 6.5vw, 2.4rem); margin-bottom: 8px; }
+      .role-badge{ font-size: 0.74rem; letter-spacing: 2px; }
+      .tab-btn{ font-size: 0.68rem; padding: 6px 11px; }
+      .tab-content{ padding: 11px 12px; }
+      .expertise-list{ gap: 5px; }
+      .expertise-list li{ font-size: 0.74rem; line-height: 1.35; }
+      .contacts-inline{ gap: 6px; }
+      .contact-link{ padding: 8px 11px; }
+      .contact-link .icon{ width: 16px; height: 16px; }
+      .contact-link .label{ font-size: 0.67rem; }
+      .contact-link .value{ font-size: 0.76rem; }
+      .copy-btn{ width: 26px; height: 26px; }
+      .copy-btn .icon{ width: 13px; height: 13px; }
     }
 
     @media (max-width: 375px){
-      .main-name{
-        font-size: clamp(1.8rem, 6vw, 2.1rem);
-      }
-
-      .logo-large{
-        width: 75px;
-      }
-
-      .role-badge{
-        font-size: 0.72rem;
-      }
-
-      .tab-btn{
-        font-size: 0.64rem;
-        padding: 5px 10px;
-      }
-
-      .expertise-list li{
-        font-size: 0.7rem;
-      }
-
-      .contact-link .value{
-        font-size: 0.72rem;
-      }
+      .main-name{ font-size: clamp(1.7rem, 6vw, 2rem); }
+      .logo-large{ width: 68px; }
+      .role-badge{ font-size: 0.70rem; }
+      .tab-btn{ font-size: 0.64rem; padding: 5px 10px; }
+      .expertise-list li{ font-size: 0.7rem; }
+      .contact-link .value{ font-size: 0.72rem; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -860,13 +694,12 @@
         <canvas id="particleCanvas"></canvas>
       </div>
       
-      <!-- HINT FUORI dal wrapper - SEMPRE visibile -->
+      <!-- HINT FUORI dal wrapper -->
       <div class="hint" id="hint">Premi per continuare</div>
 
-      <!-- LAYOUT COMPATTO SENZA SCROLL -->
+      <!-- LAYOUT COMPATTO SENZA SCROLL (desktop) / CON SCROLL (mobile) -->
       <div class="name-display" id="nameDisplay" aria-live="polite">
         
-        <!-- Logo sopra nome su mobile, a sinistra su desktop -->
         <div class="profile-header">
           <img src="logo.png" alt="AG Form Logo" class="logo-large">
           <div class="name-info">
@@ -875,7 +708,6 @@
           </div>
         </div>
 
-        <!-- Menu a tabs compatto -->
         <div class="expertise-tabs">
           <div class="tabs-nav">
             <button class="tab-btn active" data-tab="formazione">Formazione</button>
@@ -884,7 +716,6 @@
             <button class="tab-btn" data-tab="hr">HR & Sviluppo</button>
           </div>
 
-          <!-- Tab Formazione -->
           <div class="tab-content active" id="formazione">
             <ul class="expertise-list">
               <li>Formazione finanziata e a catalogo</li>
@@ -893,8 +724,6 @@
               <li>Erogazione e docenze specialistiche</li>
             </ul>
           </div>
-
-          <!-- Tab Fondi -->
           <div class="tab-content" id="fondi">
             <ul class="expertise-list">
               <li>Accesso ai fondi regionali</li>
@@ -903,8 +732,6 @@
               <li>Supporto amministrativo completo</li>
             </ul>
           </div>
-
-          <!-- Tab Servizi -->
           <div class="tab-content" id="servizi">
             <ul class="expertise-list">
               <li>Sistema qualità aziendale</li>
@@ -913,8 +740,6 @@
               <li>Consulenza strategica formativa</li>
             </ul>
           </div>
-
-          <!-- Tab HR & Sviluppo -->
           <div class="tab-content" id="hr">
             <ul class="expertise-list">
               <li>Upskilling e reskilling del personale</li>
@@ -925,9 +750,7 @@
           </div>
         </div>
 
-        <!-- Contatti compatti -->
         <div class="contacts-inline">
-          
           <a href="mailto:andrea.gonnella@agform.it" class="contact-link">
             <i data-lucide="mail" class="icon"></i>
             <span class="text">
@@ -935,7 +758,6 @@
               <span class="value">andrea.gonnella@agform.it</span>
             </span>
           </a>
-
           <a href="tel:+393331234567" class="contact-link">
             <i data-lucide="phone" class="icon"></i>
             <span class="text">
@@ -943,7 +765,6 @@
               <span class="value">+39 333 123 4567</span>
             </span>
           </a>
-
           <a href="https://wa.me/393331234567" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="message-circle" class="icon"></i>
             <span class="text">
@@ -951,7 +772,6 @@
               <span class="value">+39 333 123 4567</span>
             </span>
           </a>
-
           <a href="https://saolino91.github.io/agform" target="_blank" rel="noopener noreferrer" class="contact-link">
             <i data-lucide="globe" class="icon"></i>
             <span class="text">
@@ -959,8 +779,6 @@
               <span class="value">saolino91.github.io/agform</span>
             </span>
           </a>
-
-          <!-- Partita IVA con pulsante copia -->
           <div class="contact-link">
             <i data-lucide="file-text" class="icon"></i>
             <span class="text">
@@ -971,66 +789,50 @@
               <i data-lucide="copy" class="icon"></i>
             </button>
           </div>
-
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Feedback copia -->
   <div class="copy-feedback" id="copyFeedback">Partita IVA copiata!</div>
 
   <script>
-    // ====== INIZIALIZZA ICONE LUCIDE ======
     lucide.createIcons();
 
-    // ====== GESTIONE TABS ======
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const tabId = btn.dataset.tab;
-        
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-        
         btn.classList.add('active');
         document.getElementById(tabId).classList.add('active');
       });
     });
 
-    // ====== FUNZIONE COPIA PARTITA IVA ======
     function copyPIVA() {
       const piva = document.getElementById('piva').textContent;
       const feedback = document.getElementById('copyFeedback');
-      
       navigator.clipboard.writeText(piva).then(() => {
         feedback.classList.add('show');
-        setTimeout(() => {
-          feedback.classList.remove('show');
-        }, 2000);
-      }).catch(err => {
-        console.error('Errore copia:', err);
-      });
+        setTimeout(() => feedback.classList.remove('show'), 2000);
+      }).catch(err => console.error('Errore copia:', err));
     }
 
-    // ====== ELEMENTI ======
     const canvas = document.getElementById('particleCanvas');
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const logoWrapper = document.getElementById('logoWrapper');
     const nameDisplay = document.getElementById('nameDisplay');
     const hint = document.getElementById('hint');
 
-    // ====== STATO ======
     let transformed = false;
     let logoImage = null;
 
-    // ====== DIMENSIONE CANVAS RESPONSIVE ======
     function setCanvasSize(){
       const stage = document.querySelector('.stage');
       const stageRect = stage.getBoundingClientRect();
       const isMobile = window.innerWidth <= 768;
-      
       if (isMobile) {
-        const size = Math.min(stageRect.width - 40, stageRect.height - 100);
+        const size = Math.min(stageRect.width - 40, window.innerHeight - 100);
         canvas.width = size;
         canvas.height = size;
       } else {
@@ -1040,29 +842,23 @@
       }
     }
 
-    // ====== DISEGNA LOGO ======
     function drawFallbackLogo(){
       ctx.clearRect(0,0,canvas.width,canvas.height);
-
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      
       const g = ctx.createLinearGradient(0,0,canvas.width,canvas.height);
       g.addColorStop(0,'#FF8A3C');
       g.addColorStop(0.5,'#E91E63');
       g.addColorStop(1,'#1E88E5');
-
       ctx.fillStyle = g;
       const fontSize = Math.min(canvas.width, canvas.height) * 0.31;
       ctx.font = `900 ${fontSize}px Montserrat, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillText('AG', centerX, centerY - fontSize * 0.15);
-
       const g2 = ctx.createLinearGradient(0,centerY,canvas.width,canvas.height);
       g2.addColorStop(0,'#1E88E5');
       g2.addColorStop(1,'#26C281');
-
       ctx.fillStyle = g2;
       ctx.font = `800 ${fontSize * 0.35}px Montserrat, sans-serif`;
       ctx.fillText('FORM', centerX, centerY + fontSize * 0.55);
@@ -1070,68 +866,55 @@
 
     function loadAndDrawLogo(){
       setCanvasSize();
-      
       logoImage = new Image();
       logoImage.src = 'logo.png';
-
       logoImage.onload = () => {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        
-        const scale = Math.min(
-          canvas.width / logoImage.width, 
-          canvas.height / logoImage.height
-        ) * 0.65;
-        
+        const scale = Math.min(canvas.width / logoImage.width, canvas.height / logoImage.height) * 0.65;
         const w = logoImage.width * scale;
         const h = logoImage.height * scale;
         const x = (canvas.width - w) / 2;
         const y = (canvas.height - h) / 2;
-        
         ctx.drawImage(logoImage, x, y, w, h);
       };
-
-      logoImage.onerror = () => {
-        drawFallbackLogo();
-      };
+      logoImage.onerror = () => drawFallbackLogo();
     }
 
-    // ====== TRANSFORM SEMPLICE ======
     function transform(){
       if (transformed) return;
       transformed = true;
 
       logoWrapper.classList.add('transforming');
-      
-      if (hint) {
-        hint.classList.add('hidden');
-      }
+      if (hint) hint.classList.add('hidden');
       
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         logoWrapper.style.display = 'none';
         canvas.style.opacity = '0';
         canvas.style.display = 'none';
-        
+
         nameDisplay.style.opacity = '';
         nameDisplay.style.visibility = '';
         nameDisplay.classList.add('active');
-        
-        setTimeout(() => {
-          lucide.createIcons();
-        }, 100);
+
+        // Su mobile, dopo la transizione scroll to top per assicurarsi
+        // che il contenuto parta dall'inizio
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            const container = document.querySelector('.container');
+            if (container) container.scrollTop = 0;
+          }, 100);
+        }
+
+        setTimeout(() => lucide.createIcons(), 100);
       }, 500);
     }
 
-    // ====== EVENTI ======
     logoWrapper.addEventListener('click', transform);
-
     window.addEventListener('resize', () => {
-      if (!transformed) {
-        loadAndDrawLogo();
-      }
+      if (!transformed) loadAndDrawLogo();
     });
 
-    // ====== INIT ======
     loadAndDrawLogo();
   </script>
 </body>
