@@ -241,7 +241,7 @@
     /* Logo a sinistra di Andrea Gonnella */
     .profile-header{
       display: flex;
-      flex-direction: row;
+      flex-direction: row; /* Desktop: orizzontale */
       align-items: center;
       gap: 24px;
       margin-bottom: 18px;
@@ -502,44 +502,49 @@
         border: none;
       }
 
+      /* FIX 2: Hint visibile su mobile */
       .hint{
-        bottom: 70px;
-        font-size: 0.75rem;
+        bottom: 50px; /* Più in alto */
+        font-size: 0.72rem;
+        z-index: 20; /* Sopra il canvas */
       }
 
       .name-display{
         padding: 20px 16px;
       }
 
+      /* FIX 1: Logo a sinistra anche su mobile */
       .profile-header{
-        flex-direction: column;
-        text-align: center;
+        flex-direction: row; /* Mantieni orizzontale */
+        gap: 16px; /* Gap ridotto */
+        align-items: center;
       }
 
       .name-info{
-        text-align: center;
+        text-align: left; /* Mantieni allineamento sinistro */
       }
 
       .logo-large{
-        width: 90px;
+        width: 70px; /* Logo più piccolo su mobile */
       }
 
       .main-name{
-        font-size: 2.2rem;
+        font-size: 1.8rem; /* Nome più piccolo */
+        line-height: 1.1;
       }
 
       .role-badge{
-        font-size: 0.7rem;
-        padding: 5px 12px;
+        font-size: 0.65rem;
+        padding: 5px 10px;
       }
 
       .tab-btn{
-        font-size: 0.72rem;
-        padding: 7px 14px;
+        font-size: 0.7rem;
+        padding: 6px 12px;
       }
 
       .expertise-list li{
-        font-size: 0.78rem;
+        font-size: 0.76rem;
       }
 
       .contacts-inline{
@@ -574,26 +579,32 @@
         border-radius: 12px;
       }
 
+      /* FIX 2: Hint ancora più visibile */
       .hint{
-        bottom: 80px;
-        font-size: 0.7rem;
+        bottom: 40px;
+        font-size: 0.68rem;
       }
 
       .logo-large{
-        width: 75px;
+        width: 60px; /* Ancora più piccolo su schermi tiny */
       }
 
       .main-name{
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+      }
+
+      .role-badge{
+        font-size: 0.6rem;
+        padding: 4px 8px;
       }
 
       .tab-btn{
-        font-size: 0.68rem;
-        padding: 6px 12px;
+        font-size: 0.65rem;
+        padding: 5px 10px;
       }
 
       .expertise-list li{
-        font-size: 0.74rem;
+        font-size: 0.72rem;
       }
     }
 
@@ -822,7 +833,6 @@
 
       logoWrapper.classList.add('transforming');
       
-      // Dopo 500ms (durata animazione fadeToWhite)
       setTimeout(() => {
         logoWrapper.classList.add('hidden');
         logoWrapper.style.display = 'none';
