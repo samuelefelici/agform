@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
     <title>AG Form | Formazione Finanziata e Fondi Europei con Andrea Gonnella</title>
+    
+    <!-- ========== FAVICON ========== -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
@@ -88,12 +94,115 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Glass morphism */
-        .glass {
-            background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+        /* ========== COOKIE BANNER ========== */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(7, 10, 18, 0.98), rgba(11, 20, 48, 0.98));
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,.14);
-            box-shadow: 0 30px 90px rgba(0,0,0,.55);
+            border-top: 2px solid rgba(30, 136, 229, 0.5);
+            padding: 1.5rem 2rem;
+            z-index: 10000;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
+        }
+
+        .cookie-banner.show {
+            transform: translateY(0);
+        }
+
+        .cookie-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .cookie-text p {
+            font-size: 0.95rem;
+            color: var(--gray-medium);
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .cookie-text a:hover {
+            color: var(--primary-green);
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cookie-btn-accept {
+            background: var(--gradient-cta);
+            color: white;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
+        }
+
+        .cookie-btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(30, 136, 229, 0.6);
+        }
+
+        .cookie-btn-decline {
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .cookie-btn-decline:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        .cookie-btn-settings {
+            background: transparent;
+            color: var(--gray-medium);
+            border: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .cookie-btn-settings:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: var(--white);
         }
 
         /* Header */
@@ -693,6 +802,20 @@
             .process-steps {
                 grid-template-columns: 1fr;
             }
+
+            /* Cookie banner mobile */
+            .cookie-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-buttons {
+                flex-direction: column;
+            }
+
+            .cookie-btn {
+                width: 100%;
+            }
         }
 
         /* Animations */
@@ -710,19 +833,26 @@
         .fade-in {
             animation: fadeInUp 0.8s ease-out;
         }
-
-        /* Particle effect (optional - decorative) */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
     </style>
 </head>
 <body>
     <!-- Background glow -->
     <div class="bg-glow"></div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h3>🍪 Utilizzo dei Cookie</h3>
+                <p>Utilizziamo cookie per migliorare la tua esperienza sul sito. Continuando la navigazione accetti la nostra <a href="#privacy">Privacy Policy</a>.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accetta tutti</button>
+                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Rifiuta</button>
+                <button class="cookie-btn cookie-btn-settings" onclick="openCookieSettings()">Impostazioni</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Header -->
     <header class="header">
@@ -936,7 +1066,44 @@
     </footer>
 
     <script>
-        // Smooth scroll
+        // ========== COOKIE MANAGEMENT ==========
+        function showCookieBanner() {
+            const cookieBanner = document.getElementById('cookieBanner');
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            
+            if (!cookieConsent) {
+                setTimeout(() => {
+                    cookieBanner.classList.add('show');
+                }, 1500);
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            hideCookieBanner();
+            // Qui puoi attivare Google Analytics o altri tracker
+            console.log('Cookie accettati');
+        }
+
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            hideCookieBanner();
+            console.log('Cookie rifiutati');
+        }
+
+        function openCookieSettings() {
+            alert('Impostazioni cookie: qui puoi scegliere quali cookie accettare (funzionalità da implementare)');
+        }
+
+        function hideCookieBanner() {
+            const cookieBanner = document.getElementById('cookieBanner');
+            cookieBanner.classList.remove('show');
+        }
+
+        // Mostra il banner all'avvio
+        showCookieBanner();
+
+        // ========== SMOOTH SCROLL ==========
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -950,7 +1117,7 @@
             });
         });
 
-        // Intersection Observer per animazioni
+        // ========== INTERSECTION OBSERVER ==========
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
