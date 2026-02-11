@@ -6,10 +6,11 @@
     <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
     <title>AG Form | Formazione Finanziata e Fondi Europei con Andrea Gonnella</title>
     
-    <!-- ========== FAVICON ========== -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <!-- ========== FAVICON (path corretto) ========== -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="shortcut icon" href="./favicon-32x32.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -92,6 +93,55 @@
 
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        /* ========== PARTICELLE FLUTTUANTI ========== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(30, 136, 229, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 10px rgba(30, 136, 229, 0.8);
+        }
+
+        /* Diversi tipi di particelle */
+        .particle.orange {
+            background: rgba(255, 138, 60, 0.6);
+            box-shadow: 0 0 10px rgba(255, 138, 60, 0.8);
+        }
+
+        .particle.green {
+            background: rgba(38, 194, 129, 0.6);
+            box-shadow: 0 0 10px rgba(38, 194, 129, 0.8);
+        }
+
+        .particle.pink {
+            background: rgba(233, 30, 99, 0.6);
+            box-shadow: 0 0 10px rgba(233, 30, 99, 0.8);
+        }
+
+        /* ========== CURSOR GLOW ========== */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.15), transparent 70%);
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s ease;
+            opacity: 0;
         }
 
         /* ========== COOKIE BANNER ========== */
@@ -215,6 +265,12 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
             padding: 1.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 0.8rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
 
         .header-content {
@@ -230,6 +286,12 @@
             height: 55px;
             width: auto;
             filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
+            transition: all 0.3s ease;
+        }
+
+        .logo-img:hover {
+            filter: drop-shadow(0 0 30px rgba(255,138,60,0.6));
+            transform: scale(1.05);
         }
 
         .header-cta {
@@ -244,6 +306,26 @@
             box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .header-cta:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .header-cta:hover {
@@ -275,8 +357,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 40px rgba(30,136,229,0.3);
             letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out;
         }
 
         .hero-subtitle {
@@ -286,12 +368,14 @@
             color: var(--gray-medium);
             max-width: 800px;
             font-weight: 500;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero-cta-group {
             display: flex;
             gap: 1.5rem;
             flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .btn-primary {
@@ -307,6 +391,26 @@
             box-shadow: 0 10px 40px rgba(30,136,229,0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 400px;
+            height: 400px;
         }
 
         .btn-primary:hover {
@@ -360,9 +464,9 @@
         }
 
         .stat-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-5px) scale(1.05);
             border-color: rgba(255,255,255,.2);
-            box-shadow: 0 20px 60px rgba(30,136,229,0.2);
+            box-shadow: 0 20px 60px rgba(30,136,229,0.3);
         }
 
         .stat-item h3 {
@@ -374,6 +478,12 @@
             background-clip: text;
             margin-bottom: 0.5rem;
             filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .stat-item p {
@@ -412,6 +522,12 @@
             filter: blur(40px);
             opacity: 0.3;
             z-index: -1;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
         }
 
         .about-image img {
@@ -420,6 +536,11 @@
             border-radius: 25px;
             border: 2px solid rgba(255,255,255,0.2);
             box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.02);
         }
 
         .about-text h2 {
@@ -442,6 +563,12 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 8px 25px rgba(30,136,229,0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .about-text p {
@@ -519,7 +646,7 @@
         }
 
         .service-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-10px) rotate(-1deg);
             border-color: rgba(255,255,255,0.25);
             box-shadow: 0 30px 80px rgba(30,136,229,0.3);
         }
@@ -528,6 +655,13 @@
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
             filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .service-card h3 {
@@ -572,7 +706,7 @@
         }
 
         .benefit-item:hover {
-            transform: translateX(8px);
+            transform: translateX(10px);
             border-color: rgba(255,255,255,.2);
             box-shadow: 0 20px 60px rgba(30,136,229,0.2);
         }
@@ -624,7 +758,7 @@
         }
 
         .step:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.02);
             border-color: rgba(255,255,255,.2);
             box-shadow: 0 25px 70px rgba(30,136,229,0.25);
         }
@@ -642,6 +776,12 @@
             font-weight: 900;
             margin: 0 auto 2rem;
             box-shadow: 0 10px 40px rgba(30, 136, 229, 0.5);
+            animation: rotate-pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes rotate-pulse {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(5deg) scale(1.1); }
         }
 
         .step h3 {
@@ -713,6 +853,12 @@
             height: 70px;
             margin-bottom: 2rem;
             filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
+            transition: all 0.3s ease;
+        }
+
+        .footer-logo:hover {
+            filter: drop-shadow(0 0 30px rgba(255,138,60,0.6));
+            transform: scale(1.05);
         }
 
         .footer p {
@@ -731,12 +877,13 @@
             text-decoration: none;
             margin: 0 1.5rem;
             opacity: 0.7;
-            transition: opacity 0.3s ease;
+            transition: all 0.3s ease;
             font-weight: 600;
         }
 
         .footer-links a:hover {
             opacity: 1;
+            color: var(--primary-blue);
         }
 
         /* Responsive */
@@ -769,7 +916,6 @@
             .about-content {
                 grid-template-columns: 1fr;
                 gap: 3rem;
-                padding: 0 1.5rem;
             }
 
             .about-image img {
@@ -803,7 +949,6 @@
                 grid-template-columns: 1fr;
             }
 
-            /* Cookie banner mobile */
             .cookie-content {
                 flex-direction: column;
                 align-items: stretch;
@@ -815,6 +960,10 @@
 
             .cookie-btn {
                 width: 100%;
+            }
+
+            .cursor-glow {
+                display: none;
             }
         }
 
@@ -839,6 +988,12 @@
     <!-- Background glow -->
     <div class="bg-glow"></div>
 
+    <!-- Cursor glow effect -->
+    <div class="cursor-glow" id="cursorGlow"></div>
+
+    <!-- Particelle fluttuanti -->
+    <div class="particles" id="particles"></div>
+
     <!-- Cookie Banner -->
     <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-content">
@@ -855,7 +1010,7 @@
     </div>
 
     <!-- Header -->
-    <header class="header">
+    <header class="header" id="header">
         <div class="header-content">
             <img src="logo.png" alt="AG Form Logo" class="logo-img">
             <a href="#contatti" class="header-cta">Consulenza Gratuita</a>
@@ -864,7 +1019,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-content fade-in">
+        <div class="hero-content">
             <h1>Forma il tuo team.<br>Senza spendere un euro.</h1>
             <p class="hero-subtitle">Trasformo i fondi europei in opportunità concrete per la tua azienda. Ti guido passo dopo passo nell'accesso ai finanziamenti per la formazione.</p>
             <div class="hero-cta-group">
@@ -1066,6 +1221,66 @@
     </footer>
 
     <script>
+        // ========== PARTICELLE FLUTTUANTI ==========
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            const colors = ['blue', 'orange', 'green', 'pink'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${colors[Math.floor(Math.random() * colors.length)]}`;
+                
+                // Posizione random
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Animazione random
+                const duration = 15 + Math.random() * 25;
+                const delay = Math.random() * 5;
+                const xMove = (Math.random() - 0.5) * 200;
+                const yMove = (Math.random() - 0.5) * 200;
+                
+                particle.style.animation = `particleFloat${i} ${duration}s ${delay}s infinite ease-in-out`;
+                
+                // Crea keyframe unico per ogni particella
+                const styleSheet = document.styleSheets[0];
+                const keyframes = `
+                    @keyframes particleFloat${i} {
+                        0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+                        25% { transform: translate(${xMove}px, ${yMove}px); opacity: 0.8; }
+                        50% { transform: translate(${xMove * 1.5}px, ${-yMove}px); opacity: 0.5; }
+                        75% { transform: translate(${-xMove}px, ${yMove * 1.5}px); opacity: 0.8; }
+                    }
+                `;
+                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // ========== CURSOR GLOW ==========
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+            cursorGlow.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+        });
+
+        // ========== HEADER SCROLL EFFECT ==========
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
         // ========== COOKIE MANAGEMENT ==========
         function showCookieBanner() {
             const cookieBanner = document.getElementById('cookieBanner');
@@ -1081,7 +1296,6 @@
         function acceptCookies() {
             localStorage.setItem('cookieConsent', 'accepted');
             hideCookieBanner();
-            // Qui puoi attivare Google Analytics o altri tracker
             console.log('Cookie accettati');
         }
 
@@ -1099,9 +1313,6 @@
             const cookieBanner = document.getElementById('cookieBanner');
             cookieBanner.classList.remove('show');
         }
-
-        // Mostra il banner all'avvio
-        showCookieBanner();
 
         // ========== SMOOTH SCROLL ==========
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -1137,6 +1348,12 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1)';
             observer.observe(el);
+        });
+
+        // ========== INIT ==========
+        window.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            showCookieBanner();
         });
     </script>
 </body>
