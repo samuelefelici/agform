@@ -6,10 +6,12 @@
     <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
     <title>AG Form | Formazione Finanziata e Fondi Europei</title>
     
-    <!-- ========== FAVICON FIX DEFINITIVO ========== -->
-    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD8ElEQVR4Aa2XA5QjSxSG/6pO0rZt27Zt27Zt27Zt27Zt2/FMt5NOdzWS/d+dc3f2zM7Mvffe7676qm5VdQGRSCQSiUQikUj/w..." sizes="32x32">
+    <!-- ========== FAVICON CORRETTO ========== -->
+    <!-- Genera un favicon SVG inline - sempre funzionante -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23FF8A3C'/%3E%3Ctext x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'%3EAG%3C/text%3E%3C/svg%3E">
+    <!-- Fallback per browser più vecchi -->
+    <link rel="alternate icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="shortcut icon" type="image/x-icon" href="logo.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -56,6 +58,7 @@
             z-index: -2;
         }
 
+        /* Scan line effect - ottimizzato */
         body::after {
             content: '';
             position: fixed;
@@ -63,15 +66,17 @@
             background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
             opacity: 0.08;
             transform: translateY(-120%);
-            animation: scan 6s linear infinite;
+            animation: scan 8s linear infinite;
             pointer-events: none;
             z-index: -1;
+            will-change: transform;
         }
 
         @keyframes scan {
             to { transform: translateY(120%); }
         }
 
+        /* Glow background - ottimizzato per performance */
         .bg-glow {
             position: fixed;
             inset: -50%;
@@ -83,16 +88,17 @@
                 rgba(255,107,53,.18));
             filter: blur(60px);
             opacity: 0.4;
-            animation: spin 20s linear infinite;
+            animation: spin 25s linear infinite;
             z-index: -1;
             pointer-events: none;
+            will-change: transform;
         }
 
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
 
-        /* ========== COOKIE BANNER (FORZATO VISIBILE) ========== */
+        /* ========== COOKIE BANNER (CORRETTO) ========== */
         .cookie-banner {
             position: fixed;
             bottom: 0;
@@ -106,12 +112,12 @@
             box-shadow: 0 -10px 50px rgba(0,0,0,0.8);
             transform: translateY(100%);
             transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            opacity: 1 !important;
-            visibility: visible !important;
+            display: none; /* Nascosto di default */
         }
 
         .cookie-banner.show {
-            transform: translateY(0) !important;
+            display: block;
+            transform: translateY(0);
         }
 
         .cookie-content {
@@ -146,6 +152,7 @@
             color: var(--primary-blue);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .cookie-text a:hover {
@@ -192,7 +199,7 @@
             background: rgba(255,255,255,0.15);
         }
 
-        /* ========== CURSOR TRAIL (SCIA FUTURISTICA) ========== */
+        /* ========== CURSOR TRAIL (OTTIMIZZATO) ========== */
         .cursor-trail {
             position: fixed;
             width: 300px;
@@ -202,20 +209,21 @@
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease, transform 0.1s ease;
+            transition: opacity 0.3s ease;
             opacity: 0;
+            will-change: transform;
         }
 
         .trail-particle {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--primary-blue);
             pointer-events: none;
             z-index: 9997;
             box-shadow: 0 0 15px rgba(30, 136, 229, 0.8);
-            animation: trail-fade 1s ease-out forwards;
+            animation: trail-fade 0.8s ease-out forwards;
         }
 
         @keyframes trail-fade {
@@ -225,11 +233,11 @@
             }
             100% {
                 opacity: 0;
-                transform: scale(0.3);
+                transform: scale(0.2);
             }
         }
 
-        /* ========== HERO ANIMATED SHAPES (FORME SPAZIALI) ========== */
+        /* ========== HERO ANIMATED SHAPES (OTTIMIZZATE) ========== */
         .hero-shapes {
             position: absolute;
             inset: 0;
@@ -242,6 +250,7 @@
             border-radius: 50%;
             filter: blur(60px);
             opacity: 0.3;
+            will-change: transform;
         }
 
         .shape-1 {
@@ -539,7 +548,34 @@
                 width: 100%;
             }
 
-            .cursor-trail {
+            .cursor-trail, .trail-particle {
+                display: none;
+            }
+
+            /* Riduce animazioni su mobile per performance */
+            .bg-glow {
+                animation: spin 40s linear infinite;
+            }
+
+            .floating-shape {
+                display: none;
+            }
+        }
+
+        /* Disabilita animazioni pesanti se preferenze utente lo richiedono */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .cursor-trail,
+            .trail-particle,
+            .bg-glow,
+            .floating-shape {
                 display: none;
             }
         }
@@ -560,16 +596,16 @@
     <div class="bg-glow"></div>
     <div class="cursor-trail" id="cursorTrail"></div>
 
-    <!-- Cookie Banner (SEMPRE VISIBILE) -->
-    <div class="cookie-banner show" id="cookieBanner">
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-content">
             <div class="cookie-text">
                 <h3>🍪 Cookie Policy</h3>
                 <p>Utilizziamo cookie per migliorare la tua esperienza. Continuando accetti la nostra <a href="#privacy">Privacy Policy</a>.</p>
             </div>
             <div class="cookie-buttons">
-                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accetta tutti</button>
-                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Rifiuta</button>
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()" aria-label="Accetta tutti i cookie">Accetta tutti</button>
+                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()" aria-label="Rifiuta i cookie">Rifiuta</button>
             </div>
         </div>
     </div>
@@ -577,7 +613,7 @@
     <!-- Header -->
     <header class="header" id="header">
         <div class="header-content">
-            <img src="logo.png" alt="AG Form Logo" class="logo-img">
+            <img src="logo.png" alt="AG Form Logo" class="logo-img" onerror="this.style.display='none'">
             <a href="#contatti" class="header-cta">Consulenza Gratuita</a>
         </div>
     </header>
@@ -618,13 +654,13 @@
             <p>Scopri subito se hai diritto ai fondi</p>
         </div>
         <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-            <a href="https://wa.me/393331234567" class="btn-primary">WhatsApp</a>
+            <a href="https://wa.me/393331234567" class="btn-primary" target="_blank" rel="noopener noreferrer">WhatsApp</a>
             <a href="mailto:andrea.gonnella@agform.it" class="btn-secondary">Email</a>
         </div>
     </section>
 
     <footer class="footer">
-        <img src="logo.png" alt="AG Form" style="height: 60px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));">
+        <img src="logo.png" alt="AG Form" style="height: 60px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));" onerror="this.style.display='none'">
         <p><strong>Andrea Gonnella</strong> - HR Training Manager</p>
         <p>Formazione finanziata e accesso ai fondi europei</p>
         <p>P.IVA/CF: 10495954030</p>
@@ -632,32 +668,41 @@
     </footer>
 
     <script>
-        // ========== CURSOR TRAIL (SCIA FUTURISTICA) ==========
+        // ========== VARIABILI GLOBALI ==========
+        let cursorTrailTimeout;
+        let particleCreationInterval;
+        let lastParticleTime = 0;
+
+        // ========== CURSOR TRAIL (OTTIMIZZATO) ==========
         const cursorTrail = document.getElementById('cursorTrail');
-        let lastX = 0, lastY = 0;
-        let trailInterval;
+        
+        // Verifica se il dispositivo supporta il mouse
+        const hasMouseSupport = window.matchMedia('(pointer: fine)').matches;
+        
+        if (hasMouseSupport && cursorTrail) {
+            document.addEventListener('mousemove', throttle((e) => {
+                cursorTrail.style.left = e.clientX + 'px';
+                cursorTrail.style.top = e.clientY + 'px';
+                cursorTrail.style.opacity = '1';
 
-        document.addEventListener('mousemove', (e) => {
-            cursorTrail.style.left = e.clientX + 'px';
-            cursorTrail.style.top = e.clientY + 'px';
-            cursorTrail.style.opacity = '1';
-
-            // Crea particelle di scia
-            if (!trailInterval) {
-                trailInterval = setInterval(() => {
+                // Crea particelle con throttling
+                const now = Date.now();
+                if (now - lastParticleTime > 50) {
                     createTrailParticle(e.clientX, e.clientY);
-                }, 50);
-            }
+                    lastParticleTime = now;
+                }
 
-            lastX = e.clientX;
-            lastY = e.clientY;
-        });
+                // Reset timeout
+                clearTimeout(cursorTrailTimeout);
+                cursorTrailTimeout = setTimeout(() => {
+                    cursorTrail.style.opacity = '0';
+                }, 100);
+            }, 16)); // ~60fps
 
-        document.addEventListener('mouseleave', () => {
-            cursorTrail.style.opacity = '0';
-            clearInterval(trailInterval);
-            trailInterval = null;
-        });
+            document.addEventListener('mouseleave', () => {
+                cursorTrail.style.opacity = '0';
+            });
+        }
 
         function createTrailParticle(x, y) {
             const particle = document.createElement('div');
@@ -666,13 +711,35 @@
             particle.style.top = y + 'px';
             document.body.appendChild(particle);
 
-            setTimeout(() => particle.remove(), 1000);
+            // Rimuovi dopo animazione
+            setTimeout(() => {
+                if (particle && particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 800);
         }
 
-        // ========== PARTICELLE SPAZIALI (STELLE) ==========
+        // Throttle function per performance
+        function throttle(func, limit) {
+            let inThrottle;
+            return function() {
+                const args = arguments;
+                const context = this;
+                if (!inThrottle) {
+                    func.apply(context, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
+                }
+            }
+        }
+
+        // ========== PARTICELLE SPAZIALI ==========
         function createSpaceParticles() {
             const container = document.getElementById('spaceParticles');
-            const particleCount = 50;
+            if (!container) return;
+
+            // Meno particelle su mobile
+            const particleCount = window.innerWidth < 768 ? 20 : 50;
 
             for (let i = 0; i < particleCount; i++) {
                 const particle = document.createElement('div');
@@ -685,63 +752,115 @@
         }
 
         // ========== HEADER SCROLL ==========
-        window.addEventListener('scroll', () => {
+        let lastScroll = 0;
+        window.addEventListener('scroll', throttle(() => {
             const header = document.getElementById('header');
-            if (window.scrollY > 100) {
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
             }
-        });
 
-        // ========== COOKIE BANNER (FORZATO) ==========
+            lastScroll = currentScroll;
+        }, 100));
+
+        // ========== COOKIE BANNER (CORRETTO) ==========
         function acceptCookies() {
-            localStorage.setItem('cookieConsent', 'accepted');
-            const banner = document.getElementById('cookieBanner');
-            banner.style.transform = 'translateY(100%)';
-            setTimeout(() => {
-                banner.style.display = 'none';
-            }, 500);
+            try {
+                localStorage.setItem('cookieConsent', 'accepted');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+            hideCookieBanner();
         }
 
         function declineCookies() {
-            localStorage.setItem('cookieConsent', 'declined');
-            const banner = document.getElementById('cookieBanner');
-            banner.style.transform = 'translateY(100%)';
-            setTimeout(() => {
-                banner.style.display = 'none';
-            }, 500);
+            try {
+                localStorage.setItem('cookieConsent', 'declined');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+            hideCookieBanner();
         }
 
-        // Mostra sempre il banner se non c'è consenso
-        window.addEventListener('DOMContentLoaded', () => {
-            const consent = localStorage.getItem('cookieConsent');
+        function hideCookieBanner() {
             const banner = document.getElementById('cookieBanner');
-            
-            if (consent) {
-                banner.style.display = 'none';
-            } else {
-                // Mostra dopo 1.5 secondi
+            if (banner) {
+                banner.classList.remove('show');
+                setTimeout(() => {
+                    banner.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        function showCookieBanner() {
+            const banner = document.getElementById('cookieBanner');
+            if (banner) {
+                banner.style.display = 'block';
+                // Forza reflow
+                banner.offsetHeight;
                 setTimeout(() => {
                     banner.classList.add('show');
-                }, 1500);
+                }, 100);
             }
-        });
+        }
 
         // ========== SMOOTH SCROLL ==========
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    const headerHeight = document.getElementById('header')?.offsetHeight || 0;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
 
-        // ========== INIT ==========
-        window.addEventListener('DOMContentLoaded', () => {
+        // ========== INIZIALIZZAZIONE ==========
+        function init() {
+            // Crea particelle spaziali
             createSpaceParticles();
+
+            // Gestisci cookie banner
+            let consent = null;
+            try {
+                consent = localStorage.getItem('cookieConsent');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+
+            if (!consent) {
+                // Mostra banner dopo 1.5 secondi
+                setTimeout(showCookieBanner, 1500);
+            }
+        }
+
+        // Esegui init quando DOM è pronto
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        // Performance: pausa animazioni quando tab non è visibile
+        document.addEventListener('visibilitychange', () => {
+            const bgGlow = document.querySelector('.bg-glow');
+            if (document.hidden) {
+                if (bgGlow) bgGlow.style.animationPlayState = 'paused';
+            } else {
+                if (bgGlow) bgGlow.style.animationPlayState = 'running';
+            }
         });
     </script>
 </body>
