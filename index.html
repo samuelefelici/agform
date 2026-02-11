@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
-    <title>AG Form | Formazione Finanziata e Fondi Europei</title>
+    <title>AG Form | Formazione Finanziata e Fondi Europei con Andrea Gonnella</title>
     
     <!-- ========== FAVICON ========== -->
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
@@ -26,8 +26,11 @@
             --primary-pink: #E91E63;
             --dark: #070A12;
             --dark-2: #0B1430;
+            --gray-dark: #1a1a2e;
             --gray-medium: rgba(234, 240, 255, 0.72);
+            --gray-light: rgba(255, 255, 255, 0.14);
             --white: #EAF0FF;
+            --gradient-hero: linear-gradient(135deg, #FF8A3C 0%, #E91E63 50%, #1E88E5 100%);
             --gradient-cta: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
             --gradient-bg: radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
                            radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
@@ -35,18 +38,16 @@
                            linear-gradient(180deg, #070A12, #0B1430);
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
             color: var(--white);
             background: var(--dark);
             overflow-x: hidden;
+            position: relative;
         }
 
+        /* Background animato */
         body::before {
             content: '';
             position: fixed;
@@ -55,6 +56,7 @@
             z-index: -2;
         }
 
+        /* Scanline effect */
         body::after {
             content: '';
             position: fixed;
@@ -71,6 +73,7 @@
             to { transform: translateY(120%); }
         }
 
+        /* Conic gradient rotating */
         .bg-glow {
             position: fixed;
             inset: -50%;
@@ -104,7 +107,7 @@
             z-index: 10000;
             box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
             transform: translateY(100%);
-            transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+            transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.3, 1);
         }
 
         .cookie-banner.show {
@@ -123,7 +126,7 @@
 
         .cookie-text {
             flex: 1;
-            min-width: 280px;
+            min-width: 300px;
         }
 
         .cookie-text h3 {
@@ -143,6 +146,7 @@
             color: var(--primary-blue);
             text-decoration: none;
             font-weight: 600;
+            transition: color 0.3s ease;
         }
 
         .cookie-text a:hover {
@@ -156,11 +160,11 @@
         }
 
         .cookie-btn {
-            padding: 0.85rem 2rem;
+            padding: 0.8rem 2rem;
             border: none;
             border-radius: 50px;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.3s ease;
             font-family: 'Montserrat', sans-serif;
@@ -187,98 +191,18 @@
 
         .cookie-btn-decline:hover {
             background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
         }
 
-        /* ========== HERO ANIMATED SHAPES ========== */
-        .hero-shapes {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            overflow: hidden;
+        .cookie-btn-settings {
+            background: transparent;
+            color: var(--gray-medium);
+            border: 2px solid rgba(255,255,255,0.1);
         }
 
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.4;
-        }
-
-        .shape-1 {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 138, 60, 0.4), transparent);
-            top: 10%;
-            right: 10%;
-            animation: float-diagonal 20s ease-in-out infinite;
-        }
-
-        .shape-2 {
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, rgba(30, 136, 229, 0.4), transparent);
-            bottom: 20%;
-            left: 5%;
-            animation: float-diagonal-reverse 18s ease-in-out infinite;
-        }
-
-        .shape-3 {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(233, 30, 99, 0.3), transparent);
-            top: 50%;
-            left: 50%;
-            animation: float-pulse 15s ease-in-out infinite;
-        }
-
-        @keyframes float-diagonal {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.1); }
-            50% { transform: translate(100px, 50px) scale(0.9); }
-            75% { transform: translate(-50px, 100px) scale(1.05); }
-        }
-
-        @keyframes float-diagonal-reverse {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(-60px, 60px) scale(0.95); }
-            50% { transform: translate(-120px, -60px) scale(1.1); }
-            75% { transform: translate(60px, -120px) scale(1); }
-        }
-
-        @keyframes float-pulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
-            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
-        }
-
-        /* ========== MONETE CHE CADONO ========== */
-        .hero-coins {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        .coin {
-            position: absolute;
-            font-size: 3rem;
-            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.6));
-            animation: coin-fall 12s linear infinite;
-        }
-
-        @keyframes coin-fall {
-            0% {
-                transform: translateY(-100px) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(800px) rotate(720deg);
-                opacity: 0;
-            }
+        .cookie-btn-settings:hover {
+            border-color: rgba(255,255,255,0.3);
+            color: var(--white);
         }
 
         /* Header */
@@ -291,12 +215,6 @@
             border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 1000;
             padding: 1.2rem 0;
-            transition: all 0.3s ease;
-        }
-
-        .header.scrolled {
-            padding: 0.8rem 0;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         }
 
         .header-content {
@@ -339,14 +257,13 @@
             padding: 8rem 3rem 6rem;
             position: relative;
             overflow: hidden;
-            min-height: 70vh;
         }
 
         .hero-content {
             max-width: 1400px;
             margin: 0 auto;
             position: relative;
-            z-index: 10;
+            z-index: 1;
         }
 
         .hero h1 {
@@ -358,8 +275,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            text-shadow: 0 0 40px rgba(30,136,229,0.3);
             letter-spacing: -0.02em;
-            animation: fadeInUp 0.8s ease-out;
         }
 
         .hero-subtitle {
@@ -369,14 +286,12 @@
             color: var(--gray-medium);
             max-width: 800px;
             font-weight: 500;
-            animation: fadeInUp 0.8s ease-out 0.2s both;
         }
 
         .hero-cta-group {
             display: flex;
             gap: 1.5rem;
             flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease-out 0.4s both;
         }
 
         .btn-primary {
@@ -417,41 +332,411 @@
 
         .btn-secondary:hover {
             background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
             transform: translateY(-3px);
         }
 
-        /* Stats, About, Services, Benefits, Process, CTA, Footer - Aggiungi tutte le sezioni */
-        .section {
-            padding: 6rem 3rem;
+        /* Stats Section */
+        .stats {
+            padding: 4rem 3rem;
+            position: relative;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 20px 60px rgba(30,136,229,0.2);
+        }
+
+        .stat-item h3 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient-cta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 3rem;
+            position: relative;
+        }
+
+        .about-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: var(--gradient-cta);
+            border-radius: 25px;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .about-text h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .about-text .label {
+            display: inline-block;
+            background: var(--gradient-cta);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(30,136,229,0.4);
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--gray-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 8rem 3rem;
+        }
+
+        .services-content {
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
         }
 
         .section-header h2 {
-            font-size: 3rem;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
             color: var(--white);
             font-weight: 900;
-            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .section-header p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            color: var(--gray-medium);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,.12);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-cta);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 30px 80px rgba(30,136,229,0.3);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .service-card p {
+            color: var(--gray-medium);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 8rem 3rem;
+        }
+
+        .benefits-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .benefit-item {
+            background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+            padding: 2.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 20px 60px rgba(30,136,229,0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 15px rgba(30,136,229,0.5));
+        }
+
+        .benefit-text h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .benefit-text p {
+            color: var(--gray-medium);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 8rem 3rem;
+        }
+
+        .process-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2.5rem;
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 25px 70px rgba(30,136,229,0.25);
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-cta);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 40px rgba(30, 136, 229, 0.5);
+        }
+
+        .step h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .step p {
+            color: var(--gray-medium);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 3rem;
+            background: linear-gradient(135deg, rgba(255,138,60,0.15), rgba(30,136,229,0.15));
+            position: relative;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-content p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
             color: var(--gray-medium);
         }
 
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
         .footer {
             background: rgba(0,0,0,0.3);
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding: 3rem 2rem 2rem;
+            color: white;
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
             text-align: center;
+        }
+
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
         }
 
         .footer p {
             color: var(--gray-medium);
-            margin: 0.5rem 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
         }
 
         /* Responsive */
@@ -481,7 +766,29 @@
                 font-size: 1.1rem;
             }
 
-            .hero-cta-group {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                padding: 0 1.5rem;
+            }
+
+            .about-image img {
+                max-width: 100%;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-content p {
+                font-size: 1.1rem;
+            }
+
+            .hero-cta-group, .cta-buttons {
                 flex-direction: column;
             }
 
@@ -490,24 +797,28 @@
                 text-align: center;
             }
 
+            .services-grid,
+            .benefits-grid,
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            /* Cookie banner mobile */
             .cookie-content {
                 flex-direction: column;
+                align-items: stretch;
             }
 
             .cookie-buttons {
                 flex-direction: column;
-                width: 100%;
             }
 
             .cookie-btn {
                 width: 100%;
             }
-
-            .coin {
-                font-size: 2rem;
-            }
         }
 
+        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -518,27 +829,33 @@
                 transform: translateY(0);
             }
         }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
     </style>
 </head>
 <body>
+    <!-- Background glow -->
     <div class="bg-glow"></div>
 
     <!-- Cookie Banner -->
     <div class="cookie-banner" id="cookieBanner">
         <div class="cookie-content">
             <div class="cookie-text">
-                <h3>🍪 Cookie Policy</h3>
-                <p>Utilizziamo cookie per migliorare la tua esperienza. Continuando accetti la nostra <a href="#privacy">Privacy Policy</a>.</p>
+                <h3>🍪 Utilizzo dei Cookie</h3>
+                <p>Utilizziamo cookie per migliorare la tua esperienza sul sito. Continuando la navigazione accetti la nostra <a href="#privacy">Privacy Policy</a>.</p>
             </div>
             <div class="cookie-buttons">
                 <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accetta tutti</button>
                 <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Rifiuta</button>
+                <button class="cookie-btn cookie-btn-settings" onclick="openCookieSettings()">Impostazioni</button>
             </div>
         </div>
     </div>
 
     <!-- Header -->
-    <header class="header" id="header">
+    <header class="header">
         <div class="header-content">
             <img src="logo.png" alt="AG Form Logo" class="logo-img">
             <a href="#contatti" class="header-cta">Consulenza Gratuita</a>
@@ -547,15 +864,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-shapes">
-            <div class="floating-shape shape-1"></div>
-            <div class="floating-shape shape-2"></div>
-            <div class="floating-shape shape-3"></div>
-        </div>
-
-        <div class="hero-coins" id="heroCoins"></div>
-
-        <div class="hero-content">
+        <div class="hero-content fade-in">
             <h1>Forma il tuo team.<br>Senza spendere un euro.</h1>
             <p class="hero-subtitle">Trasformo i fondi europei in opportunità concrete per la tua azienda. Ti guido passo dopo passo nell'accesso ai finanziamenti per la formazione.</p>
             <div class="hero-cta-group">
@@ -565,67 +874,199 @@
         </div>
     </section>
 
-    <!-- Altre sezioni -->
-    <section class="section">
-        <div class="section-header">
-            <h2>I tuoi vantaggi</h2>
-            <p>Formazione finanziata al 100%</p>
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Finanziabile</p>
+            </div>
+            <div class="stat-item">
+                <h3>0€</h3>
+                <p>Anticipo richiesto</p>
+            </div>
+            <div class="stat-item">
+                <h3>Zero</h3>
+                <p>Burocrazia per te</p>
+            </div>
         </div>
-        <p style="text-align: center; max-width: 800px; margin: 0 auto; color: var(--gray-medium);">
-            Con AG Form accedi a formazione di qualità completamente finanziata da fondi europei. Zero costi, zero burocrazia, massimo risultato.
-        </p>
     </section>
 
-    <section class="section" id="contatti" style="background: linear-gradient(135deg, rgba(255,138,60,0.15), rgba(30,136,229,0.15));">
-        <div class="section-header">
-            <h2>Contattami</h2>
-            <p>Scopri subito se hai diritto ai fondi</p>
+    <!-- About Section -->
+    <section class="about" id="chi-sono">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="foto.png" alt="Andrea Gonnella - HR Training Manager">
+            </div>
+            <div class="about-text">
+                <span class="label">Chi sono</span>
+                <h2>Andrea Gonnella</h2>
+                <p>Sono <strong>HR Training Manager</strong> e specialista in formazione finanziata. Da anni aiuto imprese, enti e professionisti a <strong>sbloccare opportunità di crescita</strong> attraverso i fondi europei.</p>
+                <p>La mia missione? <strong>Rendere accessibile ciò che sembra complesso.</strong> Mi occupo io della burocrazia, delle pratiche, della progettazione. Tu ti concentri su ciò che conta: far crescere il tuo team.</p>
+                <p>Con <strong>AG Form</strong> hai un partner che conosce ogni meccanismo dei bandi, ogni scadenza, ogni opportunità. E che lavora al tuo fianco fino al risultato.</p>
+            </div>
         </div>
-        <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
-            <a href="https://wa.me/393331234567" class="btn-primary">WhatsApp</a>
-            <a href="mailto:andrea.gonnella@agform.it" class="btn-secondary">Email</a>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="servizi">
+        <div class="services-content">
+            <div class="section-header">
+                <h2>Cosa faccio per te</h2>
+                <p>Dalla strategia all'erogazione: un servizio completo per accedere ai fondi europei</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔍</div>
+                    <h3>Analisi opportunità</h3>
+                    <p>Mappo tutti i bandi e i fondi disponibili per il tuo settore e individuo quelli più adatti alla tua realtà aziendale.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📋</div>
+                    <h3>Progettazione formativa</h3>
+                    <p>Disegno percorsi formativi su misura che rispondono ai tuoi obiettivi di crescita e ai requisiti dei bandi.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Gestione burocratica</h3>
+                    <p>Mi occupo di tutta la documentazione, le domande, le rendicontazioni. Tu non muovi un dito.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Coordinamento</h3>
+                    <p>Organizzo formatori, calendari, logistica. Garantisco che tutto fili liscio dall'inizio alla fine.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💰</div>
+                    <h3>Accesso ai fondi UE</h3>
+                    <p>Conosco ogni strumento finanziario europeo e ti guido nell'ottenere i finanziamenti disponibili.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Monitoraggio risultati</h3>
+                    <p>Verifico l'andamento del progetto formativo e garantisco la conformità con i requisiti dei finanziatori.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="benefits-content">
+            <div class="section-header">
+                <h2>Perché scegliere AG Form</h2>
+                <p>Vantaggi concreti per la tua azienda</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">✅</div>
+                    <div class="benefit-text">
+                        <h4>Formazione a costo zero</h4>
+                        <p>Accedi a corsi e percorsi formativi professionali completamente finanziati da fondi pubblici.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⏱️</div>
+                    <div class="benefit-text">
+                        <h4>Risparmio di tempo</h4>
+                        <p>Non perdi ore su pratiche burocratiche. Penso a tutto io, tu ti concentri sul business.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎓</div>
+                    <div class="benefit-text">
+                        <h4>Formazione su misura</h4>
+                        <p>Percorsi personalizzati sulle reali esigenze del tuo team e dei tuoi obiettivi aziendali.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-text">
+                        <h4>Sicurezza e conformità</h4>
+                        <p>Gestisco ogni aspetto tecnico e normativo garantendo la piena conformità ai requisiti.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-text">
+                        <h4>Competitività aziendale</h4>
+                        <p>Un team più formato significa più produttività, innovazione e vantaggio competitivo.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🤝</div>
+                    <div class="benefit-text">
+                        <h4>Partner affidabile</h4>
+                        <p>Un referente unico, sempre aggiornato, che segue il progetto dalla A alla Z.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="come-funziona">
+        <div class="process-content">
+            <div class="section-header">
+                <h2>Come funziona</h2>
+                <p>Quattro passi per ottenere la formazione finanziata</p>
+            </div>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Consulenza gratuita</h3>
+                    <p>Analizziamo insieme le tue esigenze formative e verifico la tua eleggibilità ai fondi disponibili.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Strategia su misura</h3>
+                    <p>Disegno il piano formativo ideale e identifico i bandi più adatti alla tua realtà aziendale.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Gestione completa</h3>
+                    <p>Mi occupo di tutte le pratiche, dalla domanda di finanziamento all'organizzazione dei corsi.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Risultati garantiti</h3>
+                    <p>Il tuo team si forma, tu non spendi nulla, la tua azienda cresce in competenze e competitività.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contatti">
+        <div class="cta-content">
+            <h2>Hai diritto ai fondi europei?</h2>
+            <p>Scoprilo in una consulenza gratuita di 30 minuti. Nessun impegno, solo risposte concrete.</p>
+            <div class="cta-buttons">
+                <a href="https://wa.me/393331234567" class="btn-primary">Scrivimi su WhatsApp</a>
+                <a href="mailto:andrea.gonnella@agform.it" class="btn-secondary">Invia una email</a>
+            </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <img src="logo.png" alt="AG Form" style="height: 60px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));">
-        <p><strong>Andrea Gonnella</strong> - HR Training Manager</p>
-        <p>Formazione finanziata e accesso ai fondi europei</p>
-        <p>P.IVA/CF: 10495954030</p>
-        <p style="margin-top: 2rem; font-size: 0.85rem; opacity: 0.5;">© 2025 AG Form. Tutti i diritti riservati.</p>
+        <div class="footer-content">
+            <img src="logo.png" alt="AG Form" class="footer-logo">
+            <p><strong>Andrea Gonnella</strong> - HR Training Manager</p>
+            <p>Formazione finanziata e accesso ai fondi europei</p>
+            <p style="margin-top: 1rem;">P.IVA/CF: 10495954030</p>
+            <div class="footer-links">
+                <a href="#chi-sono">Chi sono</a>
+                <a href="#servizi">Servizi</a>
+                <a href="#come-funziona">Come funziona</a>
+                <a href="#contatti">Contatti</a>
+            </div>
+            <p style="margin-top: 2.5rem; font-size: 0.9rem; opacity: 0.5;">© 2025 AG Form - Andrea Gonnella. Tutti i diritti riservati.</p>
+        </div>
     </footer>
 
     <script>
-        // Monete che cadono
-        function createFallingCoins() {
-            const heroCoins = document.getElementById('heroCoins');
-            const coinSymbols = ['💶', '💷', '💴', '💵'];
-            
-            setInterval(() => {
-                const coin = document.createElement('div');
-                coin.className = 'coin';
-                coin.textContent = coinSymbols[Math.floor(Math.random() * coinSymbols.length)];
-                coin.style.left = Math.random() * 100 + '%';
-                coin.style.animationDuration = (8 + Math.random() * 4) + 's';
-                
-                heroCoins.appendChild(coin);
-                
-                setTimeout(() => coin.remove(), 12000);
-            }, 2000);
-        }
-
-        // Header scroll
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // Cookie banner
+        // ========== COOKIE MANAGEMENT ==========
         function showCookieBanner() {
             const cookieBanner = document.getElementById('cookieBanner');
             const cookieConsent = localStorage.getItem('cookieConsent');
@@ -633,35 +1074,69 @@
             if (!cookieConsent) {
                 setTimeout(() => {
                     cookieBanner.classList.add('show');
-                }, 2000);
+                }, 1500);
             }
         }
 
         function acceptCookies() {
             localStorage.setItem('cookieConsent', 'accepted');
-            document.getElementById('cookieBanner').classList.remove('show');
+            hideCookieBanner();
+            // Qui puoi attivare Google Analytics o altri tracker
+            console.log('Cookie accettati');
         }
 
         function declineCookies() {
             localStorage.setItem('cookieConsent', 'declined');
-            document.getElementById('cookieBanner').classList.remove('show');
+            hideCookieBanner();
+            console.log('Cookie rifiutati');
         }
 
-        // Smooth scroll
+        function openCookieSettings() {
+            alert('Impostazioni cookie: qui puoi scegliere quali cookie accettare (funzionalità da implementare)');
+        }
+
+        function hideCookieBanner() {
+            const cookieBanner = document.getElementById('cookieBanner');
+            cookieBanner.classList.remove('show');
+        }
+
+        // Mostra il banner all'avvio
+        showCookieBanner();
+
+        // ========== SMOOTH SCROLL ==========
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
                 }
             });
         });
 
-        // Init
-        window.addEventListener('DOMContentLoaded', () => {
-            createFallingCoins();
-            showCookieBanner();
+        // ========== INTERSECTION OBSERVER ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .benefit-item, .step, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1)';
+            observer.observe(el);
         });
     </script>
 </body>
