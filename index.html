@@ -6,11 +6,10 @@
     <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
     <title>AG Form | Formazione Finanziata e Fondi Europei</title>
     
-    <!-- ========== FAVICON FIX ========== -->
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
-    <link rel="shortcut icon" type="image/png" href="favicon-32x32.png?v=2">
+    <!-- ========== FAVICON ========== -->
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -27,11 +26,8 @@
             --primary-pink: #E91E63;
             --dark: #070A12;
             --dark-2: #0B1430;
-            --gray-dark: #1a1a2e;
             --gray-medium: rgba(234, 240, 255, 0.72);
-            --gray-light: rgba(255, 255, 255, 0.14);
             --white: #EAF0FF;
-            --gradient-hero: linear-gradient(135deg, #FF8A3C 0%, #E91E63 50%, #1E88E5 100%);
             --gradient-cta: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
             --gradient-bg: radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
                            radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
@@ -39,16 +35,18 @@
                            linear-gradient(180deg, #070A12, #0B1430);
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             line-height: 1.6;
             color: var(--white);
             background: var(--dark);
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Background animato */
         body::before {
             content: '';
             position: fixed;
@@ -57,7 +55,6 @@
             z-index: -2;
         }
 
-        /* Scanline effect */
         body::after {
             content: '';
             position: fixed;
@@ -74,7 +71,6 @@
             to { transform: translateY(120%); }
         }
 
-        /* Conic gradient rotating */
         .bg-glow {
             position: fixed;
             inset: -50%;
@@ -135,9 +131,6 @@
             margin-bottom: 0.5rem;
             color: var(--white);
             font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
         .cookie-text p {
@@ -150,7 +143,6 @@
             color: var(--primary-blue);
             text-decoration: none;
             font-weight: 600;
-            transition: color 0.3s ease;
         }
 
         .cookie-text a:hover {
@@ -195,55 +187,6 @@
 
         .cookie-btn-decline:hover {
             background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.4);
-        }
-
-        /* ========== PARTICELLE FLUTTUANTI ========== */
-        .particles {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .particle {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(30, 136, 229, 0.6);
-            border-radius: 50%;
-            filter: blur(1px);
-            box-shadow: 0 0 10px rgba(30, 136, 229, 0.8);
-        }
-
-        .particle.orange {
-            background: rgba(255, 138, 60, 0.6);
-            box-shadow: 0 0 10px rgba(255, 138, 60, 0.8);
-        }
-
-        .particle.green {
-            background: rgba(38, 194, 129, 0.6);
-            box-shadow: 0 0 10px rgba(38, 194, 129, 0.8);
-        }
-
-        .particle.pink {
-            background: rgba(233, 30, 99, 0.6);
-            box-shadow: 0 0 10px rgba(233, 30, 99, 0.8);
-        }
-
-        /* ========== CURSOR GLOW ========== */
-        .cursor-glow {
-            position: fixed;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(30, 136, 229, 0.15), transparent 70%);
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.3s ease;
-            opacity: 0;
         }
 
         /* ========== HERO ANIMATED SHAPES ========== */
@@ -307,7 +250,7 @@
             50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
         }
 
-        /* ========== ANIMATED COINS (Euro) ========== */
+        /* ========== MONETE CHE CADONO ========== */
         .hero-coins {
             position: absolute;
             inset: 0;
@@ -369,12 +312,6 @@
             height: 55px;
             width: auto;
             filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
-            transition: all 0.3s ease;
-        }
-
-        .logo-img:hover {
-            filter: drop-shadow(0 0 30px rgba(255,138,60,0.6));
-            transform: scale(1.05);
         }
 
         .header-cta {
@@ -389,26 +326,6 @@
             box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header-cta::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .header-cta:hover::before {
-            width: 300px;
-            height: 300px;
         }
 
         .header-cta:hover {
@@ -475,26 +392,6 @@
             box-shadow: 0 10px 40px rgba(30,136,229,0.4);
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .btn-primary:hover::before {
-            width: 400px;
-            height: 400px;
         }
 
         .btn-primary:hover {
@@ -520,155 +417,42 @@
 
         .btn-secondary:hover {
             background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.4);
             transform: translateY(-3px);
         }
 
-        /* Stats Section */
-        .stats {
-            padding: 4rem 3rem;
-            position: relative;
+        /* Stats, About, Services, Benefits, Process, CTA, Footer - Aggiungi tutte le sezioni */
+        .section {
+            padding: 6rem 3rem;
         }
 
-        .stats-grid {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 3rem;
+            color: var(--white);
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+        }
+
+        .footer {
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem 2rem 2rem;
             text-align: center;
         }
 
-        .stat-item {
-            padding: 2rem;
-            border-radius: 20px;
-            background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-            border: 1px solid rgba(255,255,255,.1);
-            transition: all 0.3s ease;
-        }
-
-        .stat-item:hover {
-            transform: translateY(-5px) scale(1.05);
-            border-color: rgba(255,255,255,.2);
-            box-shadow: 0 20px 60px rgba(30,136,229,0.3);
-        }
-
-        .stat-item h3 {
-            font-size: 4rem;
-            font-weight: 900;
-            background: var(--gradient-cta);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 0.5rem;
-            filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .stat-item p {
-            font-size: 1.2rem;
+        .footer p {
             color: var(--gray-medium);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            margin: 0.5rem 0;
         }
-
-        /* About Section */
-        .about {
-            padding: 8rem 3rem;
-            position: relative;
-        }
-
-        .about-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1.5fr;
-            gap: 5rem;
-            align-items: center;
-        }
-
-        .about-image {
-            position: relative;
-        }
-
-        .about-image::before {
-            content: '';
-            position: absolute;
-            inset: -20px;
-            background: var(--gradient-cta);
-            border-radius: 25px;
-            filter: blur(40px);
-            opacity: 0.3;
-            z-index: -1;
-            animation: pulse-glow 3s ease-in-out infinite;
-        }
-
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.05); }
-        }
-
-        .about-image img {
-            width: 100%;
-            max-width: 450px;
-            border-radius: 25px;
-            border: 2px solid rgba(255,255,255,0.2);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-            transition: transform 0.3s ease;
-        }
-
-        .about-image img:hover {
-            transform: scale(1.02);
-        }
-
-        .about-text h2 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            color: var(--white);
-            font-weight: 900;
-            letter-spacing: -0.02em;
-        }
-
-        .about-text .label {
-            display: inline-block;
-            background: var(--gradient-cta);
-            color: white;
-            padding: 0.6rem 1.8rem;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 0.85rem;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(30,136,229,0.4);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .about-text p {
-            font-size: 1.15rem;
-            line-height: 1.8;
-            color: var(--gray-medium);
-            margin-bottom: 1.5rem;
-        }
-
-        .about-text strong {
-            color: var(--white);
-            font-weight: 700;
-        }
-
-        /* Continua con le altre sezioni (Services, Benefits, Process, CTA, Footer) identiche alla versione precedente... */
-        /* Per brevità, includerei tutte le altre sezioni qui */
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -697,15 +481,6 @@
                 font-size: 1.1rem;
             }
 
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .about-image img {
-                max-width: 100%;
-            }
-
             .hero-cta-group {
                 flex-direction: column;
             }
@@ -717,19 +492,15 @@
 
             .cookie-content {
                 flex-direction: column;
-                align-items: stretch;
             }
 
             .cookie-buttons {
                 flex-direction: column;
+                width: 100%;
             }
 
             .cookie-btn {
                 width: 100%;
-            }
-
-            .cursor-glow {
-                display: none;
             }
 
             .coin {
@@ -737,7 +508,6 @@
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -748,21 +518,10 @@
                 transform: translateY(0);
             }
         }
-
-        .fade-in {
-            animation: fadeInUp 0.8s ease-out;
-        }
     </style>
 </head>
 <body>
-    <!-- Background glow -->
     <div class="bg-glow"></div>
-
-    <!-- Cursor glow effect -->
-    <div class="cursor-glow" id="cursorGlow"></div>
-
-    <!-- Particelle fluttuanti -->
-    <div class="particles" id="particles"></div>
 
     <!-- Cookie Banner -->
     <div class="cookie-banner" id="cookieBanner">
@@ -788,14 +547,12 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <!-- Forme animate -->
         <div class="hero-shapes">
             <div class="floating-shape shape-1"></div>
             <div class="floating-shape shape-2"></div>
             <div class="floating-shape shape-3"></div>
         </div>
 
-        <!-- Monete che cadono -->
         <div class="hero-coins" id="heroCoins"></div>
 
         <div class="hero-content">
@@ -808,29 +565,39 @@
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-grid">
-            <div class="stat-item">
-                <h3>100%</h3>
-                <p>Finanziabile</p>
-            </div>
-            <div class="stat-item">
-                <h3>0€</h3>
-                <p>Anticipo richiesto</p>
-            </div>
-            <div class="stat-item">
-                <h3>Zero</h3>
-                <p>Burocrazia per te</p>
-            </div>
+    <!-- Altre sezioni -->
+    <section class="section">
+        <div class="section-header">
+            <h2>I tuoi vantaggi</h2>
+            <p>Formazione finanziata al 100%</p>
+        </div>
+        <p style="text-align: center; max-width: 800px; margin: 0 auto; color: var(--gray-medium);">
+            Con AG Form accedi a formazione di qualità completamente finanziata da fondi europei. Zero costi, zero burocrazia, massimo risultato.
+        </p>
+    </section>
+
+    <section class="section" id="contatti" style="background: linear-gradient(135deg, rgba(255,138,60,0.15), rgba(30,136,229,0.15));">
+        <div class="section-header">
+            <h2>Contattami</h2>
+            <p>Scopri subito se hai diritto ai fondi</p>
+        </div>
+        <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+            <a href="https://wa.me/393331234567" class="btn-primary">WhatsApp</a>
+            <a href="mailto:andrea.gonnella@agform.it" class="btn-secondary">Email</a>
         </div>
     </section>
 
-    <!-- About Section (e tutte le altre sezioni identiche alla versione precedente) -->
-    <!-- ... -->
+    <!-- Footer -->
+    <footer class="footer">
+        <img src="logo.png" alt="AG Form" style="height: 60px; margin-bottom: 1.5rem; filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));">
+        <p><strong>Andrea Gonnella</strong> - HR Training Manager</p>
+        <p>Formazione finanziata e accesso ai fondi europei</p>
+        <p>P.IVA/CF: 10495954030</p>
+        <p style="margin-top: 2rem; font-size: 0.85rem; opacity: 0.5;">© 2025 AG Form. Tutti i diritti riservati.</p>
+    </footer>
 
     <script>
-        // ========== MONETE CHE CADONO (HERO) ==========
+        // Monete che cadono
         function createFallingCoins() {
             const heroCoins = document.getElementById('heroCoins');
             const coinSymbols = ['💶', '💷', '💴', '💵'];
@@ -841,7 +608,6 @@
                 coin.textContent = coinSymbols[Math.floor(Math.random() * coinSymbols.length)];
                 coin.style.left = Math.random() * 100 + '%';
                 coin.style.animationDuration = (8 + Math.random() * 4) + 's';
-                coin.style.animationDelay = Math.random() * 2 + 's';
                 
                 heroCoins.appendChild(coin);
                 
@@ -849,56 +615,9 @@
             }, 2000);
         }
 
-        // ========== PARTICELLE FLUTTUANTI ==========
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            const colors = ['blue', 'orange', 'green', 'pink'];
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = `particle ${colors[Math.floor(Math.random() * colors.length)]}`;
-                
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                
-                const duration = 15 + Math.random() * 25;
-                const delay = Math.random() * 5;
-                const xMove = (Math.random() - 0.5) * 200;
-                const yMove = (Math.random() - 0.5) * 200;
-                
-                particle.style.animation = `particleFloat${i} ${duration}s ${delay}s infinite ease-in-out`;
-                
-                const styleSheet = document.styleSheets[0];
-                const keyframes = `
-                    @keyframes particleFloat${i} {
-                        0%, 100% { transform: translate(0, 0); opacity: 0.3; }
-                        25% { transform: translate(${xMove}px, ${yMove}px); opacity: 0.8; }
-                        50% { transform: translate(${xMove * 1.5}px, ${-yMove}px); opacity: 0.5; }
-                        75% { transform: translate(${-xMove}px, ${yMove * 1.5}px); opacity: 0.8; }
-                    }
-                `;
-                styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
-                
-                particlesContainer.appendChild(particle);
-            }
-        }
-
-        // ========== CURSOR GLOW ==========
-        const cursorGlow = document.getElementById('cursorGlow');
-        document.addEventListener('mousemove', (e) => {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-            cursorGlow.style.opacity = '1';
-        });
-
-        document.addEventListener('mouseleave', () => {
-            cursorGlow.style.opacity = '0';
-        });
-
-        // ========== HEADER SCROLL EFFECT ==========
-        const header = document.getElementById('header');
+        // Header scroll
         window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
             if (window.scrollY > 100) {
                 header.classList.add('scrolled');
             } else {
@@ -906,7 +625,7 @@
             }
         });
 
-        // ========== COOKIE MANAGEMENT ==========
+        // Cookie banner
         function showCookieBanner() {
             const cookieBanner = document.getElementById('cookieBanner');
             const cookieConsent = localStorage.getItem('cookieConsent');
@@ -920,36 +639,27 @@
 
         function acceptCookies() {
             localStorage.setItem('cookieConsent', 'accepted');
-            hideCookieBanner();
+            document.getElementById('cookieBanner').classList.remove('show');
         }
 
         function declineCookies() {
             localStorage.setItem('cookieConsent', 'declined');
-            hideCookieBanner();
+            document.getElementById('cookieBanner').classList.remove('show');
         }
 
-        function hideCookieBanner() {
-            const cookieBanner = document.getElementById('cookieBanner');
-            cookieBanner.classList.remove('show');
-        }
-
-        // ========== SMOOTH SCROLL ==========
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
 
-        // ========== INIT ==========
+        // Init
         window.addEventListener('DOMContentLoaded', () => {
-            createParticles();
             createFallingCoins();
             showCookieBanner();
         });
