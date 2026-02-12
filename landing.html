@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Formazione finanziata e accesso ai fondi europei per la tua azienda. Andrea Gonnella, HR Training Manager, ti guida nell'ottenere finanziamenti per formare il tuo team.">
+    <title>AG Form | Formazione Finanziata e Fondi Europei con Andrea Gonnella</title>
+    
+    <!-- ========== FAVICON CORRETTO ========== -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23FF8A3C'/%3E%3Ctext x='50' y='65' font-size='50' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'%3EAG%3C/text%3E%3C/svg%3E">
+    <link rel="alternate icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #FF8A3C;
+            --primary-blue: #1E88E5;
+            --primary-green: #26C281;
+            --primary-pink: #E91E63;
+            --dark: #070A12;
+            --dark-2: #0B1430;
+            --gray-medium: rgba(234, 240, 255, 0.72);
+            --white: #EAF0FF;
+            --gradient-cta: linear-gradient(135deg, #1E88E5 0%, #26C281 100%);
+            --gradient-bg: radial-gradient(900px 700px at 12% 18%, rgba(233,30,99,.22), transparent 60%),
+                           radial-gradient(900px 700px at 85% 22%, rgba(30,136,229,.22), transparent 60%),
+                           radial-gradient(900px 700px at 55% 88%, rgba(38,194,129,.18), transparent 60%),
+                           linear-gradient(180deg, #070A12, #0B1430);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--white);
+            background: var(--dark);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background animato */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: var(--gradient-bg);
+            z-index: -2;
+        }
+
+        /* Scanline effect */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,.05) 50%, transparent 100%);
+            opacity: 0.08;
+            transform: translateY(-120%);
+            animation: scan 8s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            to { transform: translateY(120%); }
+        }
+
+        /* Conic gradient rotating */
+        .bg-glow {
+            position: fixed;
+            inset: -50%;
+            background: conic-gradient(from 190deg,
+                rgba(255,107,53,.18),
+                rgba(233,30,99,.20),
+                rgba(30,136,229,.20),
+                rgba(38,194,129,.14),
+                rgba(255,107,53,.18));
+            filter: blur(60px);
+            opacity: 0.4;
+            animation: spin 25s linear infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== INTRO LOADER CON LOGO.PNG ========== */
+        .intro-loader {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #070A12, #0B1430);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .intro-logo {
+            width: 200px;
+            height: auto;
+            position: relative;
+            margin-bottom: 3rem;
+            animation: logoReveal 1.5s ease-out;
+            filter: drop-shadow(0 0 40px rgba(255, 138, 60, 0.6));
+        }
+
+        .intro-logo img {
+            width: 100%;
+            height: auto;
+            animation: logoPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes logoReveal {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) rotate(-180deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 40px rgba(255, 138, 60, 0.6));
+            }
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 60px rgba(255, 138, 60, 0.8));
+            }
+        }
+
+        .intro-text {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .intro-text h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #FFFFFF, var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: textGlow 2s ease-in-out infinite;
+        }
+
+        .intro-text p {
+            font-size: 1rem;
+            color: var(--gray-medium);
+            font-weight: 500;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .intro-progress {
+            width: 300px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .intro-progress-bar {
+            height: 100%;
+            background: var(--gradient-cta);
+            border-radius: 50px;
+            width: 0%;
+            animation: progressFill 2.5s ease-in-out forwards;
+            box-shadow: 0 0 20px rgba(30, 136, 229, 0.8);
+        }
+
+        @keyframes progressFill {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .intro-particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .intro-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            animation: particleRise 3s ease-out infinite;
+        }
+
+        @keyframes particleRise {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ========== COOKIE BANNER ========== */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(180deg, rgba(7, 10, 18, 0.98), rgba(11, 20, 48, 0.98));
+            backdrop-filter: blur(20px);
+            border-top: 2px solid rgba(30, 136, 229, 0.5);
+            padding: 1.5rem 2rem;
+            z-index: 10000;
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.5);
+            transform: translateY(100%);
+            transition: transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1);
+            display: none;
+        }
+
+        .cookie-banner.show {
+            display: block;
+            transform: translateY(0);
+        }
+
+        .cookie-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .cookie-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .cookie-text p {
+            font-size: 0.95rem;
+            color: var(--gray-medium);
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .cookie-text a:hover {
+            color: var(--primary-green);
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cookie-btn-accept {
+            background: var(--gradient-cta);
+            color: white;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
+        }
+
+        .cookie-btn-accept:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(30, 136, 229, 0.6);
+        }
+
+        .cookie-btn-decline {
+            background: rgba(255,255,255,0.08);
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .cookie-btn-decline:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
+        }
+
+        /* ========== PARTICELLE FLUTTUANTI ========== */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(30, 136, 229, 0.6);
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 10px rgba(30, 136, 229, 0.8);
+        }
+
+        .particle.orange {
+            background: rgba(255, 138, 60, 0.6);
+            box-shadow: 0 0 10px rgba(255, 138, 60, 0.8);
+        }
+
+        .particle.green {
+            background: rgba(38, 194, 129, 0.6);
+            box-shadow: 0 0 10px rgba(38, 194, 129, 0.8);
+        }
+
+        .particle.pink {
+            background: rgba(233, 30, 99, 0.6);
+            box-shadow: 0 0 10px rgba(233, 30, 99, 0.8);
+        }
+
+        /* ========== HERO ANIMATED SHAPES ========== */
+        .hero-shapes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.4;
+        }
+
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 138, 60, 0.4), transparent);
+            top: 10%;
+            right: 10%;
+            animation: float-diagonal 20s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(30, 136, 229, 0.4), transparent);
+            bottom: 20%;
+            left: 5%;
+            animation: float-diagonal-reverse 18s ease-in-out infinite;
+        }
+
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(233, 30, 99, 0.3), transparent);
+            top: 50%;
+            left: 50%;
+            animation: float-pulse 15s ease-in-out infinite;
+        }
+
+        @keyframes float-diagonal {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -50px) scale(1.1); }
+            50% { transform: translate(100px, 50px) scale(0.9); }
+            75% { transform: translate(-50px, 100px) scale(1.05); }
+        }
+
+        @keyframes float-diagonal-reverse {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(-60px, 60px) scale(0.95); }
+            50% { transform: translate(-120px, -60px) scale(1.1); }
+            75% { transform: translate(60px, -120px) scale(1); }
+        }
+
+        @keyframes float-pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; }
+            50% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.5; }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(7, 10, 18, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            padding: 1.2rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .header.scrolled {
+            padding: 0.8rem 0;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
+            transition: all 0.3s ease;
+        }
+
+        .logo-img:hover {
+            filter: drop-shadow(0 0 30px rgba(255,138,60,0.6));
+            transform: scale(1.05);
+        }
+
+        .header-cta {
+            background: var(--gradient-cta);
+            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(30, 136, 229, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-cta::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .header-cta:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .header-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(30, 136, 229, 0.6);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 90px;
+            padding: 8rem 3rem 6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            line-height: 1.6;
+            margin-bottom: 3rem;
+            color: var(--gray-medium);
+            max-width: 800px;
+            font-weight: 500;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            background: var(--gradient-cta);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            box-shadow: 0 10px 40px rgba(30,136,229,0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn-primary:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 50px rgba(30,136,229,0.6);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 2px solid rgba(255,255,255,0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateY(-3px);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 3rem;
+            position: relative;
+        }
+
+        .stats-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            border-radius: 20px;
+            background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 20px 60px rgba(30,136,229,0.3);
+        }
+
+        .stat-item h3 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: var(--gradient-cta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+            animation: statPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            color: var(--gray-medium);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 3rem;
+            position: relative;
+        }
+
+        .about-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: var(--gradient-cta);
+            border-radius: 25px;
+            filter: blur(40px);
+            opacity: 0.3;
+            z-index: -1;
+            animation: pulse-glow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.05); }
+        }
+
+        .about-image img {
+            width: 100%;
+            max-width: 450px;
+            border-radius: 25px;
+            border: 2px solid rgba(255,255,255,0.2);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.02);
+        }
+
+        .about-text h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .about-text .label {
+            display: inline-block;
+            background: var(--gradient-cta);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 25px rgba(30,136,229,0.4);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .about-text p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: var(--gray-medium);
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text strong {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 8rem 3rem;
+        }
+
+        .services-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-header h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--white);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header p {
+            font-size: 1.3rem;
+            color: var(--gray-medium);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .service-card {
+            background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+            padding: 3rem;
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,.12);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-cta);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 30px 80px rgba(30,136,229,0.3);
+        }
+
+        .service-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 20px rgba(30,136,229,0.5));
+        }
+
+        .service-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .service-card p {
+            color: var(--gray-medium);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* Benefits Section */
+        .benefits {
+            padding: 8rem 3rem;
+        }
+
+        .benefits-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .benefit-item {
+            background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+            padding: 2.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-item:hover {
+            transform: translateX(8px);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 20px 60px rgba(30,136,229,0.2);
+        }
+
+        .benefit-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+            filter: drop-shadow(0 0 15px rgba(30,136,229,0.5));
+        }
+
+        .benefit-text h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .benefit-text p {
+            color: var(--gray-medium);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 8rem 3rem;
+        }
+
+        .process-content {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2.5rem;
+            position: relative;
+            background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,.1);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255,255,255,.2);
+            box-shadow: 0 25px 70px rgba(30,136,229,0.25);
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-cta);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0 auto 2rem;
+            box-shadow: 0 10px 40px rgba(30, 136, 229, 0.5);
+        }
+
+        .step h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--white);
+            font-weight: 800;
+        }
+
+        .step p {
+            color: var(--gray-medium);
+            line-height: 1.7;
+            font-size: 1.05rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 8rem 3rem;
+            background: linear-gradient(135deg, rgba(255,138,60,0.15), rgba(30,136,229,0.15));
+            position: relative;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .cta-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cta-content p {
+            font-size: 1.4rem;
+            margin-bottom: 3rem;
+            color: var(--gray-medium);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 4rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .footer-logo {
+            height: 70px;
+            margin-bottom: 2rem;
+            filter: drop-shadow(0 0 20px rgba(255,138,60,0.3));
+        }
+
+        .footer p {
+            color: var(--gray-medium);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin: 0 1.5rem;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+            font-weight: 600;
+        }
+
+        .footer-links a:hover {
+            opacity: 1;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 0 1.5rem;
+            }
+
+            .logo-img {
+                height: 45px;
+            }
+
+            .header-cta {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding: 5rem 1.5rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-image img {
+                max-width: 100%;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2.2rem;
+            }
+
+            .cta-content p {
+                font-size: 1.1rem;
+            }
+
+            .hero-cta-group, .cta-buttons {
+                flex-direction: column;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .services-grid,
+            .benefits-grid,
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .cookie-content {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .cookie-buttons {
+                flex-direction: column;
+            }
+
+            .cookie-btn {
+                width: 100%;
+            }
+
+            .intro-logo {
+                width: 150px;
+            }
+
+            .intro-text h2 {
+                font-size: 1.5rem;
+            }
+
+            .intro-progress {
+                width: 250px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- ========== INTRO LOADER CON LOGO.PNG ========== -->
+    <div class="intro-loader" id="introLoader">
+        <div class="intro-particles" id="introParticles"></div>
+        
+        <div class="intro-logo">
+            <img src="logo.png" alt="AG Form" onerror="this.parentElement.innerHTML='<div style=\'font-size:4rem;font-weight:900;color:white;\'>AG</div>'">
+        </div>
+        
+        <div class="intro-text">
+            <h2>AG Form</h2>
+            <p>Accesso ai fondi europei...</p>
+        </div>
+        
+        <div class="intro-progress">
+            <div class="intro-progress-bar"></div>
+        </div>
+    </div>
+
+    <!-- Background glow -->
+    <div class="bg-glow"></div>
+
+    <!-- Particelle fluttuanti -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Cookie Banner -->
+    <div class="cookie-banner" id="cookieBanner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <h3>🍪 Utilizzo dei Cookie</h3>
+                <p>Utilizziamo cookie per migliorare la tua esperienza sul sito. Continuando la navigazione accetti la nostra <a href="#privacy">Privacy Policy</a>.</p>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-btn-accept" onclick="acceptCookies()">Accetta tutti</button>
+                <button class="cookie-btn cookie-btn-decline" onclick="declineCookies()">Rifiuta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-content">
+            <img src="logo.png" alt="AG Form Logo" class="logo-img" onerror="this.style.display='none'">
+            <a href="#contatti" class="header-cta">Consulenza Gratuita</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Forme animate -->
+        <div class="hero-shapes">
+            <div class="floating-shape shape-1"></div>
+            <div class="floating-shape shape-2"></div>
+            <div class="floating-shape shape-3"></div>
+        </div>
+
+        <div class="hero-content fade-in">
+            <h1>Forma il tuo team.<br>Senza spendere un euro.</h1>
+            <p class="hero-subtitle">Trasformo i fondi europei in opportunità concrete per la tua azienda. Ti guido passo dopo passo nell'accesso ai finanziamenti per la formazione.</p>
+            <div class="hero-cta-group">
+                <a href="#contatti" class="btn-primary">Scopri se hai diritto ai fondi</a>
+                <a href="#come-funziona" class="btn-secondary">Come funziona</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>100%</h3>
+                <p>Finanziabile</p>
+            </div>
+            <div class="stat-item">
+                <h3>0€</h3>
+                <p>Anticipo richiesto</p>
+            </div>
+            <div class="stat-item">
+                <h3>Zero</h3>
+                <p>Burocrazia per te</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="chi-sono">
+        <div class="about-content">
+            <div class="about-image">
+                <img src="foto.png" alt="Andrea Gonnella - HR Training Manager" onerror="this.style.display='none'">
+            </div>
+            <div class="about-text">
+                <span class="label">Chi sono</span>
+                <h2>Andrea Gonnella</h2>
+                <p>Sono <strong>HR Training Manager</strong> e specialista in formazione finanziata. Da anni aiuto imprese, enti e professionisti a <strong>sbloccare opportunità di crescita</strong> attraverso i fondi europei.</p>
+                <p>La mia missione? <strong>Rendere accessibile ciò che sembra complesso.</strong> Mi occupo io della burocrazia, delle pratiche, della progettazione. Tu ti concentri su ciò che conta: far crescere il tuo team.</p>
+                <p>Con <strong>AG Form</strong> hai un partner che conosce ogni meccanismo dei bandi, ogni scadenza, ogni opportunità. E che lavora al tuo fianco fino al risultato.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="servizi">
+        <div class="services-content">
+            <div class="section-header">
+                <h2>Cosa faccio per te</h2>
+                <p>Dalla strategia all'erogazione: un servizio completo per accedere ai fondi europei</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔍</div>
+                    <h3>Analisi opportunità</h3>
+                    <p>Mappo tutti i bandi e i fondi disponibili per il tuo settore e individuo quelli più adatti alla tua realtà aziendale.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📋</div>
+                    <h3>Progettazione formativa</h3>
+                    <p>Disegno percorsi formativi su misura che rispondono ai tuoi obiettivi di crescita e ai requisiti dei bandi.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>Gestione burocratica</h3>
+                    <p>Mi occupo di tutta la documentazione, le domande, le rendicontazioni. Tu non muovi un dito.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🎯</div>
+                    <h3>Coordinamento</h3>
+                    <p>Organizzo formatori, calendari, logistica. Garantisco che tutto fili liscio dall'inizio alla fine.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">💰</div>
+                    <h3>Accesso ai fondi UE</h3>
+                    <p>Conosco ogni strumento finanziario europeo e ti guido nell'ottenere i finanziamenti disponibili.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>Monitoraggio risultati</h3>
+                    <p>Verifico l'andamento del progetto formativo e garantisco la conformità con i requisiti dei finanziatori.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="benefits-content">
+            <div class="section-header">
+                <h2>Perché scegliere AG Form</h2>
+                <p>Vantaggi concreti per la tua azienda</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <div class="benefit-icon">✅</div>
+                    <div class="benefit-text">
+                        <h4>Formazione a costo zero</h4>
+                        <p>Accedi a corsi e percorsi formativi professionali completamente finanziati da fondi pubblici.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">⏱️</div>
+                    <div class="benefit-text">
+                        <h4>Risparmio di tempo</h4>
+                        <p>Non perdi ore su pratiche burocratiche. Penso a tutto io, tu ti concentri sul business.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🎓</div>
+                    <div class="benefit-text">
+                        <h4>Formazione su misura</h4>
+                        <p>Percorsi personalizzati sulle reali esigenze del tuo team e dei tuoi obiettivi aziendali.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-text">
+                        <h4>Sicurezza e conformità</h4>
+                        <p>Gestisco ogni aspetto tecnico e normativo garantendo la piena conformità ai requisiti.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">📈</div>
+                    <div class="benefit-text">
+                        <h4>Competitività aziendale</h4>
+                        <p>Un team più formato significa più produttività, innovazione e vantaggio competitivo.</p>
+                    </div>
+                </div>
+                <div class="benefit-item">
+                    <div class="benefit-icon">🤝</div>
+                    <div class="benefit-text">
+                        <h4>Partner affidabile</h4>
+                        <p>Un referente unico, sempre aggiornato, che segue il progetto dalla A alla Z.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="come-funziona">
+        <div class="process-content">
+            <div class="section-header">
+                <h2>Come funziona</h2>
+                <p>Quattro passi per ottenere la formazione finanziata</p>
+            </div>
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Consulenza gratuita</h3>
+                    <p>Analizziamo insieme le tue esigenze formative e verifico la tua eleggibilità ai fondi disponibili.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Strategia su misura</h3>
+                    <p>Disegno il piano formativo ideale e identifico i bandi più adatti alla tua realtà aziendale.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Gestione completa</h3>
+                    <p>Mi occupo di tutte le pratiche, dalla domanda di finanziamento all'organizzazione dei corsi.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Risultati garantiti</h3>
+                    <p>Il tuo team si forma, tu non spendi nulla, la tua azienda cresce in competenze e competitività.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contatti">
+        <div class="cta-content">
+            <h2>Hai diritto ai fondi europei?</h2>
+            <p>Scoprilo in una consulenza gratuita di 30 minuti. Nessun impegno, solo risposte concrete.</p>
+            <div class="cta-buttons">
+                <a href="https://wa.me/393331234567" class="btn-primary" target="_blank" rel="noopener noreferrer">Scrivimi su WhatsApp</a>
+                <a href="mailto:andrea.gonnella@agform.it" class="btn-secondary">Invia una email</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <img src="logo.png" alt="AG Form" class="footer-logo" onerror="this.style.display='none'">
+            <p><strong>Andrea Gonnella</strong> - HR Training Manager</p>
+            <p>Formazione finanziata e accesso ai fondi europei</p>
+            <p style="margin-top: 1rem;">P.IVA/CF: 10495954030</p>
+            <div class="footer-links">
+                <a href="#chi-sono">Chi sono</a>
+                <a href="#servizi">Servizi</a>
+                <a href="#come-funziona">Come funziona</a>
+                <a href="#contatti">Contatti</a>
+            </div>
+            <p style="margin-top: 2.5rem; font-size: 0.9rem; opacity: 0.5;">© 2025 AG Form - Andrea Gonnella. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ========== INTRO LOADER ==========
+        function initIntroLoader() {
+            const loader = document.getElementById('introLoader');
+            const introParticlesContainer = document.getElementById('introParticles');
+
+            // Crea particelle per l'intro
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'intro-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 3 + 's';
+                particle.style.animationDuration = (2 + Math.random() * 2) + 's';
+                introParticlesContainer.appendChild(particle);
+            }
+
+            // Nascondi loader dopo 3 secondi
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                
+                // Inizializza resto del sito
+                setTimeout(() => {
+                    initSite();
+                }, 800);
+            }, 3000);
+        }
+
+        // ========== INIZIALIZZAZIONE SITO ==========
+        function initSite() {
+            createParticles();
+            showCookieBanner();
+        }
+
+        // ========== PARTICELLE FLUTTUANTI ==========
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            if (!particlesContainer) return;
+
+            const particleCount = window.innerWidth < 768 ? 15 : 30;
+            const colors = ['blue', 'orange', 'green', 'pink'];
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = `particle ${colors[Math.floor(Math.random() * colors.length)]}`;
+                
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                const duration = 15 + Math.random() * 25;
+                const delay = Math.random() * 5;
+                const xMove = (Math.random() - 0.5) * 200;
+                const yMove = (Math.random() - 0.5) * 200;
+                
+                particle.style.animation = `particleFloat${i} ${duration}s ${delay}s infinite ease-in-out`;
+                
+                const styleSheet = document.styleSheets[0];
+                const keyframes = `
+                    @keyframes particleFloat${i} {
+                        0%, 100% { transform: translate(0, 0); opacity: 0.3; }
+                        25% { transform: translate(${xMove}px, ${yMove}px); opacity: 0.8; }
+                        50% { transform: translate(${xMove * 1.5}px, ${-yMove}px); opacity: 0.5; }
+                        75% { transform: translate(${-xMove}px, ${yMove * 1.5}px); opacity: 0.8; }
+                    }
+                `;
+                
+                try {
+                    styleSheet.insertRule(keyframes, styleSheet.cssRules.length);
+                } catch (e) {
+                    console.warn('Cannot insert keyframe');
+                }
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // ========== HEADER SCROLL ==========
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (header) {
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
+        });
+
+        // ========== COOKIE MANAGEMENT ==========
+        function showCookieBanner() {
+            const cookieBanner = document.getElementById('cookieBanner');
+            let cookieConsent = null;
+            
+            try {
+                cookieConsent = localStorage.getItem('cookieConsent');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+            
+            if (!cookieConsent && cookieBanner) {
+                setTimeout(() => {
+                    cookieBanner.style.display = 'block';
+                    setTimeout(() => {
+                        cookieBanner.classList.add('show');
+                    }, 100);
+                }, 4000); // Mostra dopo l'intro
+            }
+        }
+
+        function acceptCookies() {
+            try {
+                localStorage.setItem('cookieConsent', 'accepted');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+            hideCookieBanner();
+        }
+
+        function declineCookies() {
+            try {
+                localStorage.setItem('cookieConsent', 'declined');
+            } catch (e) {
+                console.warn('LocalStorage non disponibile');
+            }
+            hideCookieBanner();
+        }
+
+        function hideCookieBanner() {
+            const cookieBanner = document.getElementById('cookieBanner');
+            if (cookieBanner) {
+                cookieBanner.classList.remove('show');
+                setTimeout(() => {
+                    cookieBanner.style.display = 'none';
+                }, 500);
+            }
+        }
+
+        // ========== SMOOTH SCROLL ==========
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const headerHeight = document.getElementById('header')?.offsetHeight || 0;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ========== INTERSECTION OBSERVER ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .benefit-item, .step, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.8s cubic-bezier(0.2, 0.9, 0.3, 1)';
+            observer.observe(el);
+        });
+
+        // ========== INIT ON LOAD ==========
+        window.addEventListener('DOMContentLoaded', () => {
+            initIntroLoader();
+        });
+
+        // Performance: pausa animazioni quando tab non è visibile
+        document.addEventListener('visibilitychange', () => {
+            const bgGlow = document.querySelector('.bg-glow');
+            if (document.hidden) {
+                if (bgGlow) bgGlow.style.animationPlayState = 'paused';
+            } else {
+                if (bgGlow) bgGlow.style.animationPlayState = 'running';
+            }
+        });
+    </script>
+</body>
+</html>
